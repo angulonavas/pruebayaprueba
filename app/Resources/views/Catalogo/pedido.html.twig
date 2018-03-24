@@ -1,0 +1,61 @@
+{% extends 'Contenido/raiz.html.twig' %}
+
+{% block bloqueB %}
+	<div>Cabecera de pedido</div>
+
+	<table>
+		{% 
+			set conceptos = [
+				{
+					'id': 2,
+					'descripcion': 'Seccion S1 de Temario T3 de Asignatura A2', 
+					'precio': '20€',
+				}, 
+				{
+					'id': 3,
+					'descripcion': 'Servicio S112',
+					'precio': '12€',
+				}, 
+				{
+					'id': 4,
+					'descripcion': 'Temario T3 de Asignatura A1', 
+					'precio': '20€',
+				}, 
+			] 
+		%}
+
+
+		<tr>
+			<th>Descripción</th>
+			<th>Precio</th>
+			<th>&nbsp;</th>
+		</tr>
+
+		{% for concepto in conceptos %}
+			<tr>
+				<td>{{concepto.descripcion}}</td>
+				<td>{{concepto.precio}}</td>
+				<td><a href="{{ path('catalogo_eliminar_concepto', {'concepto': concepto.id}) }}">Eliminar</a></td>
+			</tr>
+		{% endfor %}
+
+		<tr>
+			<td>IVA (21%)</td>
+			<td>2,34€</td>
+			<td>&nbsp;</td>
+		</tr>
+
+		<tr>
+			<td>Total</td>
+			<td>12,75€</td>
+			<td>&nbsp;</td>
+		</tr>
+	</table>
+
+	<div>
+		<a href="{{ path('catalogo_abonar') }}">Abonar matrícula</a>
+	</div>
+
+{% endblock %}
+
+

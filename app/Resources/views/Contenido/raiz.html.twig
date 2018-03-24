@@ -1,0 +1,44 @@
+{% extends 'Contenido/base.html.twig' %}
+
+{% block body %}
+    
+    <div>
+        {% include('Contenido/cabecera.html.twig') %}
+    </div>
+
+    <div id="bloqueA">
+        bloqueA:
+        <div>
+            {% include('Contenido/anuncios.html.twig') %}
+        </div>
+        <div>
+            {% include('Contenido/acceso_asignaturas.html.twig') %}
+        </div>
+        <div>
+            {% if false %}
+                {% include('Aula/indice_secciones.html.twig') %}
+            {% endif %}
+        </div>
+    </div>
+
+    <div id="bloqueB">
+        bloqueB:
+        <div>
+            {% include('Contenido/breadcrums.html.twig') %}
+        </div>
+
+        {% block bloqueB %}
+            <br>
+        {% endblock %}
+    </div>
+
+    <div>
+        {% include('Contenido/pie.html.twig') %}
+    </div>
+
+    <div>aceptar cookies</div>
+
+{% endblock %}
+    
+{% block javascripts %}
+{% endblock %}

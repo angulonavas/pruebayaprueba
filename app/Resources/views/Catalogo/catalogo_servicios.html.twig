@@ -1,0 +1,56 @@
+{% extends 'Catalogo/catalogo.html.twig' %}
+
+{% block cuerpo_catalogo %}
+
+	<div>Catálogo de servicios</div>
+
+	<table>
+		{% 
+			set servicios = [
+				{
+					'id': 32,
+					'descripcion': 'Servicio S1', 
+					'precio': '20€',
+					'matriculado': true,
+				}, 
+				{
+					'id': 33,
+					'descripcion': 'Servicio S112',
+					'precio': '12€',
+					'matriculado': false,
+				}, 
+				{
+					'id': 42,
+					'descripcion': 'Servicio S4', 
+					'precio': '20€',
+					'matriculado': false,
+				}, 
+			] 
+		%}
+
+
+		<tr>
+			<th>Descripción</th>
+			<th>Precio</th>
+			<th>Matrícula</th>
+		</tr>
+
+		{% for servicio in servicios %}
+			<tr>
+				<td>{{servicio.descripcion}}</td>
+				<td>{{servicio.precio}}</td>
+				<td>
+					{% if servicio.matriculado %}
+						Matriculado
+					{% else %}
+						<a href="{{ path('catalogo_incluir_servicio', {'servicio': servicio.id}) }}">Matricularse</a>
+					{% endif %}
+				</td>
+			</tr>
+		{% endfor %}
+
+	</table>	
+
+{% endblock %}
+
+

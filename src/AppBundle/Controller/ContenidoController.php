@@ -12,65 +12,53 @@ class ContenidoController extends Controller {
      * @Route("/intro", name="contenido_intro")
      */
     public function cargar_introAction(Request $request) {
-        echo 'q1';
-        // replace this example code with whatever you need
-        return $this->render('default/index.html.twig', [
-            'base_dir' => realpath($this->getParameter('kernel.project_dir')).DIRECTORY_SEPARATOR,
-        ]);
+        /*  
+            el dominio apuntará directamente a la intro. Con lo cual siempre se cargará esta función.
+            Se realizarán las comprobaciones oportunas para ver si se debe mostrar la intro o no.
+         */
+        $intro = true;
+        if ($intro == true) return $this->render('Contenido/intro.html.twig', []);
+        else     return $this->redirectToRoute('contenido_raiz');
+
+            //return $this->render('@Seguridad/credenciales.html.twig', []);
     }
 
     /**
      * @Route("/", name="contenido_raiz")
      */
-    public function cargar_raizAction(Request $request) {
-        echo 'q2';
-        // replace this example code with whatever you need
-        return $this->render('default/index.html.twig', [
-            'base_dir' => realpath($this->getParameter('kernel.project_dir')).DIRECTORY_SEPARATOR,
-        ]);
+    public function cargar_raizAction() {        
+        return $this->render('Contenido/raiz.html.twig', []);
     }  
 
     /**
      * @Route("/nosotros", name="contenido_nosotros")
      */
-    public function cargar_examenAction(Request $request) {
-        echo 'q3';
+    public function nosotrosAction(Request $request) {
         // replace this example code with whatever you need
-        return $this->render('default/index.html.twig', [
-            'base_dir' => realpath($this->getParameter('kernel.project_dir')).DIRECTORY_SEPARATOR,
-        ]);
+        return $this->render('Contenido/nosotros.html.twig', []);
     } 
 
     /**
      * @Route("/colabora", name="contenido_colabora")
      */
-    public function evaluar_examenAction(Request $request) {
-        echo 'q4';
+    public function colaboraAction(Request $request) {
         // replace this example code with whatever you need
-        return $this->render('default/index.html.twig', [
-            'base_dir' => realpath($this->getParameter('kernel.project_dir')).DIRECTORY_SEPARATOR,
-        ]);
+        return $this->render('Contenido/colabora.html.twig', []);
     }       
 
     /**
      * @Route("/actividad", name="contenido_actividad")
      */
-    public function cargar_consultas_seccionAction(Request $request) {
-        echo 'q5';
+    public function actividadAction(Request $request) {
         // replace this example code with whatever you need
-        return $this->render('default/index.html.twig', [
-            'base_dir' => realpath($this->getParameter('kernel.project_dir')).DIRECTORY_SEPARATOR,
-        ]);
+        return $this->render('Contenido/actividad.html.twig', []);
     }
 
     /**
      * @Route("/legal", name="contenido_legal")
      */
-    public function enviar_consultaAction(Request $request) {
-        echo 'q6';
+    public function aviso_legalAction(Request $request) {
         // replace this example code with whatever you need
-        return $this->render('default/index.html.twig', [
-            'base_dir' => realpath($this->getParameter('kernel.project_dir')).DIRECTORY_SEPARATOR,
-        ]);
+        return $this->render('Contenido/aviso_legal.html.twig', []);
     }    
 }

@@ -1,0 +1,17 @@
+{% extends 'Contenido/raiz.html.twig' %}
+
+{% block bloqueB %}
+    
+    <div>
+    	{% include('@Seguridad/login.html.twig') %}
+    </div>
+    <div>
+    	<a href="{{ path('usuario_olvido') }}">Olvido</a>
+    </div>
+
+    <div>formulario para recordarme, y poder realizar registro</div>
+
+{% endblock %}
+   
+{% block javascripts %}
+{% endblock %}
