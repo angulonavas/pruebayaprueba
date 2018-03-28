@@ -1,0 +1,25 @@
+{% extends 'Contenido/raiz.html.twig' %}
+
+{% block bloqueB %}	
+	<div>Perfil de usuario</div>
+
+	{% if actualizado %}
+		<div>
+			Tus datos se han actualizado con éxito.
+		</div>
+	{% endif %}
+
+	<div>Nombre:{{usuario.nombre ~ ' ' ~ usuario.apellidos}}</div>
+	<div>Usuario:{{usuario.username}}</div>
+	<div>Email:{{usuario.email}}</div>
+	<div>Universidad:{{usuario.universidad}}</div>
+
+	<div>Cambio de clave:</div>
+
+	<div>
+		{{ form_start(form) }}
+		{{ form_widget(form) }}
+		{{ form_end(form) }}
+	</div>
+	
+{% endblock %}

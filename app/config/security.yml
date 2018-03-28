@@ -6,6 +6,13 @@ security:
     providers:
         in_memory:
             memory: ~
+    
+        # a continuación definiendo la entidad proveedora de la seguridad
+        # es preciso para poder autentificar a los usuarios
+        our_db_provider:
+            entity:
+                class: SeguridadBundle:Usuario
+                property: username
 
     firewalls:
         # disables authentication for assets and the profiler, adapt it according to your needs
@@ -15,10 +22,31 @@ security:
 
         main:
             anonymous: ~
-            # activate different ways to authenticate
+
+            # se indica en el firewall de producción que el proveedor de seguridad es el definido en providers
+            provider: our_db_provider            
 
             # https://symfony.com/doc/current/security.html#a-configuring-how-your-users-will-authenticate
             #http_basic: ~
 
+            # activamos el formulario preciso para autenticarse
             # https://symfony.com/doc/current/security/form_login_setup.html
-            #form_login: ~
+            form_login:
+                login_path: usuario_autentificar
+                check_path: usuario_autentificar
+
+            # configuramos la opción de recordar al usuario y que no tenga que volver a logearse
+            remember_me:
+                secret:   '%secret%'
+                lifetime: 604800 # 1 week in seconds
+                path: /
+
+            # se indica a producción cual es el path para cerrar la sesión de usuario
+            logout:
+                path:   /logout
+                target: /            
+
+    encoders:
+        SeguridadBundle\Entity\Usuario: 
+            algorithm: bcrypt
+            cost: 15

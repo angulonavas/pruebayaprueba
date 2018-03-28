@@ -1,0 +1,14 @@
+{# app/Resources/views/Emails/registration.html.twig #}
+<h3>Te has registrado con éxito en nuestra web</h3>
+
+Hola {{ usuario.nombre }}! You're successfully registered.
+
+{# example, assuming you have a route named "login" #}
+To login, go to: <a href="{{ url('usuario_activar_registro', {
+		'username': usuario.username,
+		'codigo': usuario.codigo
+	}) }}">Aquí</a>
+
+Thanks!
+
+<img src="{{ absolute_url(asset('apple-touch-icon.png')) }}">

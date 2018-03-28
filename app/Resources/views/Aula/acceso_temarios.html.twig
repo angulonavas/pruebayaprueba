@@ -1,0 +1,35 @@
+
+{% extends 'Aula/aula_asignatura.html.twig' %}
+
+{% block cuerpo_aula %}
+	<div>Lista de temarios para acceder</div>
+	
+		{% 
+			set temarios = [
+				{
+					'id': 2,
+					'descripcion': 'Temario T1', 
+				}, 
+				{
+					'id': 3,
+					'descripcion': 'Temario T2',
+				}, 
+			] 
+		%}
+
+<div>
+	{% for temario in temarios %}
+
+		<div>
+			<a href="{{ path('contenido_cargar_secciones', {
+				'asignatura': 'Asignatura A1',
+				'temario': temario.descripcion
+			}) }}">{{temario.descripcion}}</a>
+		</div>
+		
+	{% endfor %}
+</div>
+
+{% endblock %}
+
+

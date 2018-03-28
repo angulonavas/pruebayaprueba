@@ -1,0 +1,63 @@
+{% extends 'Contenido/raiz.html.twig' %}
+
+{% block bloqueB %}
+
+	<div>
+		<div>Cabecera de factura</div>
+		<div>Gracias por confiar en nosotros.</div>
+		<div>Alumno: Pepe García</div>
+		<div>Fecha factura: 12/03/2018</div>
+	</div>
+
+	<table>
+		{% 
+			set conceptos = [
+				{
+					'id': 2,
+					'descripcion': 'Seccion S1 de Temario T3 de Asignatura A2', 
+					'precio': '20€',
+				}, 
+				{
+					'id': 3,
+					'descripcion': 'Servicio S112',
+					'precio': '12€',
+				}, 
+				{
+					'id': 4,
+					'descripcion': 'Temario T3 de Asignatura A1', 
+					'precio': '20€',
+				}, 
+			] 
+		%}
+
+
+		<tr>
+			<th>Descripción</th>
+			<th>Precio</th>
+		</tr>
+
+		{% for concepto in conceptos %}
+			<tr>
+				<td>{{concepto.descripcion}}</td>
+				<td>{{concepto.precio}}</td>
+			</tr>
+		{% endfor %}
+
+		<tr>
+			<td>IVA (21%)</td>
+			<td>2,34€</td>
+		</tr>
+
+		<tr>
+			<td>Total</td>
+			<td>12,75€</td>
+		</tr>
+	</table>
+
+	<div>
+		<a href="{{ path('catalogo_abonar') }}">Imprmir</a>
+	</div>
+
+{% endblock %}
+
+

@@ -1,0 +1,28 @@
+
+{% extends 'Aula/aula_asignatura.html.twig' %}
+
+{% block cuerpo_aula %}
+	<div>Cabecera de temario</div>
+	<div>Descripción del temario</div>
+
+	{# 
+		Los métodos serán jquery para ocultar y mostrar bloques 
+		Sólo se podrá activar un modo u otro si el usuario está matriculado en todo el temario
+	#}
+	<div>
+		<button>Guiado</button>
+	</div>
+
+	<div>
+		<button>Libre</button>
+	</div>
+	
+	{% block seccion %}
+		<div>
+			{% include('Aula/indice_secciones.html.twig') %}
+		</div>
+	{% endblock %}
+
+{% endblock %}
+
+

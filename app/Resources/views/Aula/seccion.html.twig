@@ -1,0 +1,68 @@
+
+{% extends 'Aula/acceso_secciones.html.twig' %}
+
+{% set progreso = {
+		porcentaje: 75,
+		paso: 23
+	} 
+%}
+
+{% block seccion %}
+	<div>título de sección</div>
+
+	<div class="progress">
+    	<div class="progress-bar progress-bar-success progress-bar-striped active" role="progressbar" 
+    		aria-valuenow="{{progreso.porcentaje}}" aria-valuemin="0" aria-valuemax="100" 
+            style="width:{{progreso.porcentaje ~ '%'}}">
+            {{progreso.porcentaje ~ '%'}}
+		</div>
+	</div>
+
+    <div>{{ 'Paso [' ~ progreso.paso ~ ']'}}</div>	
+
+    {% block cuerpo_seccion %}
+    {% endblock %}
+
+    {% include('Aula/consultas.html.twig') %}
+
+
+    {# Aquí lo referente al display #}
+    <div id="display">
+		<div>
+			<a href="{{ path('contenido_cargar_seccion', {
+				'asignatura': 'Asignatura A1',
+				'temario': 'temario T1',
+				'seccion': 'Sección S1'
+			}) }}">Primera sección</a>
+		</div>
+		<div>
+			<a href="{{ path('contenido_cargar_seccion', {
+				'asignatura': 'Asignatura A1',
+				'temario': 'temario T1',
+				'seccion': 'Sección S1'
+			}) }}">Sección anterior</a>
+		</div>
+		<div>
+			<a href="{{ path('contenido_guardar_guia', {
+				'asignatura': 'Asignatura A1',
+				'temario': 'temario T1',
+				'seccion': 'Sección S1'
+			}) }}">Guardar</a>
+		</div>
+
+		<div>
+			<a href="{{ path('contenido_cargar_seccion', {
+				'asignatura': 'Asignatura A1',
+				'temario': 'temario T1',
+				'seccion': 'Sección S1'
+			}) }}">Sección posterior</a>
+		</div>
+	</div>
+
+	<div id="consultas">
+
+	</div>
+
+{% endblock %}
+
+

@@ -1,3 +1,26 @@
-<div>bloques para acceder a asignaturas aquí</div>
+		{% 
+			set asignaturas = [
+				{
+					'id': 2,
+					'descripcion': 'Asignatura A1', 
+				}, 
+				{
+					'id': 3,
+					'descripcion': 'Asignatura A2',
+				}, 
+				{
+					'id': 4,
+					'descripcion': 'Asignatura A3', 
+				}, 
+			] 
+		%}
+
+<div>
+	{% for asignatura in asignaturas %}
+		<div>{{asignatura.descripcion}}</div>
+		<a href="{{ path('contenido_asignatura', {'asignatura': asignatura.descripcion}) }}">Información</a>
+		<a href="{{ path('contenido_cargar_temarios', {'asignatura': asignatura.descripcion}) }}">Aula</a>
+	{% endfor %}
+</div>
 
 

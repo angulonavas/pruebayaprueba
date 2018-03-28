@@ -1,0 +1,17 @@
+{% extends 'Contenido/raiz.html.twig' %}
+
+{% block bloqueB %}
+	<div>Cabecera de asignatura</div>
+
+	<div>Descripción de la asignatura</div>
+
+	<div>
+		{% include('Asignatura/menu_asignatura.html.twig') %}
+	</div>
+
+	{% block cuerpo_asignatura %}
+	{% endblock %}
+
+{% endblock %}
+
+

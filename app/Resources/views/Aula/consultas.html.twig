@@ -1,0 +1,69 @@
+    {% set consultor = {
+            'num_consultas': 3,
+            'num_respuestas': 1,
+            'consultas': [
+                {
+                    'fecha': '21/02/2018 a las 13:46', 
+                    'descripcion': 'Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.', 
+                    'usuario': 'Pepito Pérez'
+                },
+                {
+                    'fecha': '22/04/2018 a las 22:17', 
+                    'descripcion': 'Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.', 
+                    'usuario': 'Pepito Pérez',
+                    'respuesta': {
+                        'fecha': '21/02/2018 a las 13:46', 
+                        'descripcion': 'Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.', 
+                        'usuario': 'Alberto F. Angulo'
+                    }
+                },
+                {
+                    'fecha': '11/12/2018 a las 17:33', 
+                    'descripcion': 'Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.',
+                    'usuario': 'Ana López'
+                },
+            ]
+         }
+
+     %}
+
+<div>
+	{{consultor.num_consultas}} Consultas al profesor ({{consultor.num_respuestas}} Respuestas)
+</div>
+
+{% for consulta in consultor.consultas %}
+	<div>Consulta:</div>
+	<div>{{consulta.fecha}}</div>
+	<div>{{consulta.descripcion}}</div>
+	<div>{{consulta.usuario}}</div>
+
+	{% if consulta.respuesta is defined %}
+		<div>
+			<div>Respuesta:</div>
+			<div>{{consulta.respuesta.fecha}}</div>
+			<div>{{consulta.respuesta.descripcion}}</div>
+			<div>{{consulta.respuesta.usuario}}</div>
+		</div>
+	{% endif %}
+{% endfor %}
+
+<a href="{{ path('contenido_cargar_consultas', {
+					'asignatura': 'Asignatura A1',
+					'temario': 'temario T1',
+					'seccion': 'Sección S1',
+					'id': 10
+				}) 
+			}}">Cargar más consultas</a>
+
+<form action="{{ path('contenido_enviar_consulta', {
+					'asignatura': 'Asignatura A1',
+					'temario': 'temario T1',
+					'seccion': 'Sección S1'
+				}) 
+			}}">
+	<div>
+		<input type="textarea" placeholder="Consultar..." />
+		<button type="submit">Enviar</button>
+		<div>Usuario</div>
+	</div>
+</form>

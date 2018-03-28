@@ -37,5 +37,10 @@ monolog:
         #    type: chromephp
         #    level: info
 
-#swiftmailer:
-#    delivery_addresses: ['me@example.com']
+# configuración de email para servidor de correo de pruebas
+# durante el desarrollo, cualquier email que se envie se hará a angulo.navas@gmail.com
+swiftmailer:
+    transport: gmail
+    username:  '%mailer_user%'
+    password:  '%mailer_password%'
+    delivery_addresses: ['angulo.navas@gmail.com']

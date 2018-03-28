@@ -3,16 +3,14 @@
 	{% include('Contenido/menu_principal.html.twig') %}
 </div>
 
-{% set rol = 'ROL_ANONIMO' %}
-{% if rol == 'ROL_ANONIMO' %}
-	<div>iniciar usuario</div>
+{% if not is_granted('ROLE_ALUMNO') %}
+	<div><a href="{{ path('usuario_autentificar') }}">Acceso al sistema</a></div>
 {% else %}
 	<div>
-		{% set usuario = 'Nacho Angulo Garibo' %}
-		{{usuario}}
+		{{app.user.nombre ~ ' ' ~ app.user.apellidos ~ ' (@' ~ app.user.username ~ ')'}}
 		<ul>
-			<li>perfil</li>
-			<li>cerrar sesión</li>
+			<li><a href="{{ path('usuario_perfil', {'username': app.user.username}) }}">perfil</a></li>
+			<li><a href="{{ path('logout') }}">cerrar sesión</a></li>
 		</ul>
 	</div>
 {% endif %}

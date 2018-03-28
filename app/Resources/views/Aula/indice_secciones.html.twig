@@ -1,3 +1,34 @@
-<div>lista de secciones matriculadas</div>
+		{% 
+			set secciones = [
+				{
+					'id': 1,
+					'descripcion': 'Seccion S1', 
+				}, 
+				{
+					'id': 2,
+					'descripcion': 'Seccion S2', 
+				}, 
+				{
+					'id': 3,
+					'descripcion': 'Seccion S3', 
+				}, 
+				{
+					'id': 4,
+					'descripcion': 'Seccion S4', 
+				}, 
+
+			] 
+		%}
+					
+			{% for seccion in secciones %}
+
+				<div>
+					<a href="{{ path('contenido_cargar_seccion', {
+						'asignatura': 'Asignatura A1',
+						'temario': 'temario T1',
+						'seccion': seccion.descripcion
+					}) }}">{{seccion.descripcion}}</a>
+				</div>
+			{% endfor %}
 
 

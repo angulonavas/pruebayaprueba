@@ -1,0 +1,24 @@
+{% extends 'Contenido/raiz.html.twig' %}
+
+{% block bloqueB %}
+    
+    {% if not recuperacion %}
+	    <div>
+    		No se ha podido recuperar tu entorno. Por favor, revisa tu email de recuperación de claves
+    	</div>
+    {% else %}
+
+		<div>Hola {{usuario.nombre}}, aquí puedes actualizar tu clave:</div>
+
+		<div>
+			{{ form_start(form) }}
+			{{ form_widget(form) }}
+			{{ form_end(form) }}
+		</div>
+
+	{% endif %}
+
+{% endblock %}
+   
+{% block javascripts %}
+{% endblock %}

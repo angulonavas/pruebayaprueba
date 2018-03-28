@@ -1,0 +1,37 @@
+<ul>
+	<li><a href="{{ path('contenido_videos_categoria', {
+		'asignatura': 'Asignatura A1',
+		'categoria': 'Categoría C1'
+	}) }}">Videos</a></li>
+	<li><a href="{{ path('contenido_documentos_asignatura', {
+		'asignatura': 'Asignatura A1'
+	}) }}">Documentos</a></li>
+
+	<li>Temarios
+		<ul>
+			<li><a href="{{ path('contenido_indice_temario', {
+					'asignatura': 'Asignatura A1', 
+					'temario': 'Temario T1'}) 
+				}}">Temario T1</a>
+			</li>
+			<li><a href="{{ path('contenido_indice_temario', {
+					'asignatura': 'Asignatura A1', 
+					'temario': 'Temario T2'}) 
+				}}">Temario T2</a>
+			</li>
+			<li><a href="{{ path('contenido_indice_temario', {
+					'asignatura': 'Asignatura A1', 
+					'temario': 'Temario T3'}) 
+				}}">Temario T3</a>
+			</li>
+		</ul>
+	</li>
+
+	<li>Foros
+		<ul>
+			<li><a href="http://forocoches.es">Foro F1</a></li>
+			<li><a href="http://forocoches.es">Foro F2</a></li>
+			<li><a href="http://forocoches.es">Foro F3</a></li>
+		</ul>
+	</li>	
+</ul>

@@ -1,10 +1,25 @@
 {% extends 'Contenido/raiz.html.twig' %}
 
 {% block bloqueB %}
-    
-    <div>
-    	Bloque olvido
-    </div>
+
+	{% if email %}
+		<div>
+			El email ha sido enviado con éxito.
+		</div>    
+
+	{% else %}
+
+	    <div>
+	    	Indica tu email y te enviaremos un mensaje con un enlace para que puedas recuperar tus credenciales
+	    </div>
+
+		<form action="{{ path('usuario_olvido') }}" method="post">
+		    <label for="username">Email:</label>
+		    <input type="text" id="email" name="email" placeholder="tu email" />
+		    <button type="submit">Enviar</button>
+		</form>    
+
+	{% endif %}
 
 {% endblock %}
    

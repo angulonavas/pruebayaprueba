@@ -1,0 +1,24 @@
+{% extends 'Contenido/raiz.html.twig' %}
+
+{% block bloqueB %}
+
+	{% if activacion %}
+		<div>
+			Enhorabuena! Se ha podido activar tu usuario
+		</div>    
+	{% else %}
+		<div>
+			Lo sentimos, parece que ha habido un problema con tu activación.
+			Vuelve a hacer clic en el enlace que te enviamos por email.
+		</div>
+	{% endif %}
+
+	<div>
+		<a href="{{ path('contenido_raiz') }}">Aceptar</a>
+
+
+{% endblock %}
+   
+{% block javascripts %}
+{% endblock %}
+

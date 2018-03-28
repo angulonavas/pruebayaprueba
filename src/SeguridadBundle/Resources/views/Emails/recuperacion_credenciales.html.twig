@@ -1,0 +1,15 @@
+{# app/Resources/views/Emails/registration.html.twig #}
+
+<h3>Recuperación de credenciales</h3>
+
+Hola {{usuario.nombre}}! A continuación te indicamos tu nombre de usuario y dónde puedes cambiar tu clave de acceso.
+
+<h3>Usuario: {{usuario.username}}</h3>
+<h3>Cambia tus claves: <a href="{{ url('usuario_recuperar', {
+		'username': usuario.username,
+		'codigo': usuario.codigo
+	}) }}">Aquí</a></h3>
+
+Saludos!
+
+<img src="{{ absolute_url(asset('apple-touch-icon.png')) }}">

@@ -1,0 +1,38 @@
+{% extends 'Asignatura/info_asignatura.html.twig' %}
+
+		{% 
+			set videos = [
+				{
+					'id': 2,
+					'descripcion': 'Lorem ipsum dolor sit amet, consectetur adipisicing elit', 
+					'url': 'ZystMG-NmGY?showinfo=0&modestbranding=1',
+				}, 
+				{
+					'id': 3,
+					'descripcion': 'Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod
+						tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam',
+					'url': 'ZystMG-NmGY?showinfo=0&modestbranding=1',
+				}, 
+				{
+					'id': 4,
+					'descripcion': 'Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod
+						tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam,
+						quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo', 
+					'url': 'ZystMG-NmGY?showinfo=0&modestbranding=1',
+				}, 
+			] 
+		%}
+
+{% block cuerpo_asignatura %}
+	<div>Matriz de videos:</div>
+	{% for video in videos %}
+	    <div>
+	        <iframe width="300" height="150" src="https://www.youtube.com/embed/{{video.url}}" frameborder="0" allow="autoplay; encrypted-media" allowfullscreen></iframe>
+	    </div>
+	    <div>
+	    	<p>{{video.descripcion}}</p>
+	    </div>
+    {% endfor %}
+{% endblock %}
+
+
