@@ -1,6 +1,46 @@
 
 {% extends 'Aula/acceso_secciones.html.twig' %}
 
+{% block breadcrumbs %}
+
+    <div>
+        {# Definiendo los nodos del breadcrums #}
+        {% set nodos = [
+                {
+                    'url': 'contenido_raiz',
+                    'descripcion': '#', 
+                }, 
+                {
+                    'url': 'contenido_raiz',
+                    'descripcion': 'Aula', 
+                }, 
+                {
+                    'url': 'contenido_cargar_temarios',
+                    'descripcion': asignatura.titulo, 
+                    'parametros': {
+                    	'asignatura': asignatura.titulo
+                	}
+                },
+                {
+                    'url': 'contenido_cargar_secciones',
+                    'descripcion': asignatura.temario.titulo, 
+                    'parametros': {
+                    	'asignatura': asignatura.titulo,
+                    	'temario': asignatura.temario.titulo
+                	}
+                },
+                {
+                    'url': 'contenido_cargar_seccion',
+                    'descripcion': asignatura.temario.seccion, 
+                }, 
+
+            ] 
+        %}            
+        {% include('Contenido/breadcrums.html.twig') %}
+    </div>
+
+{% endblock %}
+
 {% set progreso = {
 		porcentaje: 75,
 		paso: 23

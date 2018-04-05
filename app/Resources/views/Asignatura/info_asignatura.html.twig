@@ -1,9 +1,28 @@
 {% extends 'Contenido/raiz.html.twig' %}
 
-{% block bloqueB %}
-	<div>Cabecera de asignatura</div>
+{% block breadcrumbs %}
+    <div>
+        {# Definiendo los nodos del breadcrums #}
+        {% set nodos = [
+                {
+                    'url': 'contenido_raiz',
+                    'descripcion': '#', 
+                }, 
+                {
+                    'url': 'contenido_asignatura',
+                    'descripcion': asignatura.titulo, 
+                }, 
+            ] 
+        %}            
+        {% include('Contenido/breadcrums.html.twig') %}
+    </div>
 
-	<div>Descripción de la asignatura</div>
+{% endblock %}
+
+{% block bloqueB %}
+	<div>Cabecera de {{asignatura.titulo}}</div>
+
+	<div>{{asignatura.descripcion}}</div>
 
 	<div>
 		{% include('Asignatura/menu_asignatura.html.twig') %}

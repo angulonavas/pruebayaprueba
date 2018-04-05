@@ -1,7 +1,12 @@
 {% extends 'Contenido/base.html.twig' %}
 
+{% block stylesheets %}
+    {{ parent() }}
+    <link rel="stylesheet" href="{{ asset('anuncios/css/estilos.css') }}" type="text/css">
+{% endblock %}
+
 {% block body %}
-    
+
     <div>
         {% include('Contenido/cabecera.html.twig') %}
     </div>
@@ -32,13 +37,25 @@
     </div>
 
     <div id="bloqueB">
-        bloqueB:
-        <div>
-            {% include('Contenido/breadcrums.html.twig') %}
-        </div>
+
+        {% block breadcrumbs %}
+            
+            <div>
+                {# Definiendo los nodos del breadcrums #}
+                {% set nodos = [
+                        {
+                            'url': 'contenido_raiz',
+                            'descripcion': '#', 
+                        }, 
+                    ] 
+                %}            
+                {% include('Contenido/breadcrums.html.twig') %}
+            </div>
+
+        {% endblock %}        
 
         {% block bloqueB %}
-            <br>
+            Cuerpo del bloqueB:<br>
         {% endblock %}
     </div>
 
@@ -48,7 +65,47 @@
 
     <div>aceptar cookies</div>
 
-{% endblock %}
-    
-{% block javascripts %}
+    {% block javascripts %}
+        {{ parent() }}
+        
+        {# 
+            A continuación todos los scripts para el tablón de anuncios.
+            Debido a que no se puede hacer heredable anuncios.html.twig, sólo se puede poner aquí
+            si que quiere que los scripts vayan siempre al final del documento. Si no nos importa
+            que los scripts vayan dentro del documento se puede poner el código de abajo dentro de
+            la plantilla anuncios.html.twig
+        #}
+        <script src="{{ asset('anuncios/js/jquery-3.3.1.js') }}"></script>
+        <script type="text/javascript">
+            var $jQuery_3_3_1 = jQuery.noConflict();
+            window.jQuery = $jQuery_3_3_1;
+        </script>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js" 
+            crossorigin="anonymous"></script>
+        <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+        <script src="{{ asset('/anuncios/js/jquery.innerfade.js') }}"></script>
+        <script type='text/javascript'>
+            $jQuery_3_3_1(document).ready(
+                function(){
+                    $jQuery_3_3_1('#news').innerfade({
+                        animationtype: 'slide',
+                        speed: 500,
+                        timeout: 2000,
+                        type: 'random',
+                    });
+
+                    $jQuery_3_3_1('ul#portfolio').innerfade({
+                        animationtype: 'fade',
+                        speed: 1000,
+                        timeout: 4000,
+                        type: 'sequence',
+                    });
+
+                }
+            );
+        </script>
+        {# fin del código script para control del tablón de anuncios #}
+
+    {% endblock %}
+
 {% endblock %}

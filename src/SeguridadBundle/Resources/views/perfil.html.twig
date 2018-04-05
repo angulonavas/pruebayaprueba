@@ -1,5 +1,33 @@
 {% extends 'Contenido/raiz.html.twig' %}
 
+{% block breadcrumbs %}
+
+    <div>
+        {# Definiendo los nodos del breadcrums #}
+        {% set nodos = [
+                {
+                    'url': 'contenido_raiz',
+                    'descripcion': '#', 
+                }, 
+                {
+                    'url': 'usuario_perfil',
+                    'descripcion': 'Perfil', 
+                    'parametros': {
+                    	'username': app.user.username
+                	}
+                }, 
+                {
+                    'url': 'usuario_perfil',
+                    'descripcion': usuario.nombre ~ ' ' ~ usuario.apellidos, 
+                }, 
+
+            ] 
+        %}            
+        {% include('Contenido/breadcrums.html.twig') %}
+    </div>
+
+{% endblock %}
+
 {% block bloqueB %}	
 	<div>Perfil de usuario</div>
 

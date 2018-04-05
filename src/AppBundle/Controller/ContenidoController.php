@@ -55,7 +55,7 @@ class ContenidoController extends Controller {
     }
 
     /**
-     * @Route("/legal", name="contenido_legal")
+     * @Route("/aviso_legal", name="contenido_legal")
      */
     public function aviso_legalAction(Request $request) {
         // replace this example code with whatever you need

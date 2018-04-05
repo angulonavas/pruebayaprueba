@@ -221,33 +221,40 @@ class UsuarioController extends Controller {
      */
     public function perfilAction(Request $request, UserPasswordEncoderInterface $encoder, $username) {
         
-        $repository = $this->getDoctrine()->getRepository(Usuario::class);
-        $usuario = $repository->findOneByUsername($username);
+        $user = $this->getUser();        
+        
+        if ($user->getUsername() == $username) {
 
-        $form = $this->createForm(RecuperacionType::class, $usuario);
-        $form->handleRequest($request);
+            $repository = $this->getDoctrine()->getRepository(Usuario::class);
+            $usuario = $repository->findOneByUsername($username);
 
-        $actualizado = false;
+            $form = $this->createForm(RecuperacionType::class, $usuario);
+            $form->handleRequest($request);
 
-        if ($form->isSubmitted() && $form->isValid()) {
-            $usuario = $form->getData();
+            $actualizado = false;
 
-            // Codificando el password
-            $encoded = $encoder->encodePassword($usuario, $usuario->getPassword());
-            $usuario->setPassword($encoded);
+            if ($form->isSubmitted() && $form->isValid()) {
+                $usuario = $form->getData();
 
-            $manager = $this->getDoctrine()->getManager();
-            $manager->persist($usuario);
-            $manager->flush();
+                // Codificando el password
+                $encoded = $encoder->encodePassword($usuario, $usuario->getPassword());
+                $usuario->setPassword($encoded);
 
-            $actualizado = true;
+                $manager = $this->getDoctrine()->getManager();
+                $manager->persist($usuario);
+                $manager->flush();
+
+                $actualizado = true;
+            }
+
+            return $this->render('@Seguridad/perfil.html.twig', [
+                'actualizado' => $actualizado,
+                'usuario' => $usuario,
+                'form' => $form->createView(),
+            ]);
+        } else {
+            return $this->render('@Seguridad/acceso_denegado.html.twig', []);
         }
-
-        return $this->render('@Seguridad/perfil.html.twig', [
-            'actualizado' => $actualizado,
-            'usuario' => $usuario,
-            'form' => $form->createView(),
-        ]);
     }
 
 }

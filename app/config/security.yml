@@ -50,3 +50,17 @@ security:
         SeguridadBundle\Entity\Usuario: 
             algorithm: bcrypt
             cost: 15
+
+    # Control de acceso a las urls según el rol del usuario que se conecta.
+    # Por defecto, cualquier usuario (ROL_ANONIMO) tiene acceso al sistema.
+    access_control:
+        - { path: ^/admin, roles: ROLE_PROFESOR }
+        - { path: ^/aula, roles: ROLE_ALUMNO }
+        - { path: ^/perfil, roles: ROLE_ALUMNO }
+        - { path: ^/pedido, roles: ROLE_ALUMNO }
+        - { path: ^/factura, roles: ROLE_ALUMNO }
+
+    # jerarquia de roles: ROLE_ADMIN -> ROLE_PROFESOR -> ROLE_ALUMNO -> ROLE_ANONIMO
+    role_hierarchy:
+        ROLE_PROFESOR: ROLE_ALUMNO
+        ROLE_ADMIN: ROLE_PROFESOR

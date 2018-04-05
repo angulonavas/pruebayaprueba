@@ -95,8 +95,7 @@ class CatalogoController extends Controller {
     /**
      * @Route("/pedido", name="catalogo_pedido")
      */
-    public function cargar_pedidoAction(Request $request) {
-        // replace this example code with whatever you need
+    public function cargar_pedidoAction(Request $request) {        
         return $this->render('Catalogo/pedido.html.twig', []);
     }
 
@@ -123,9 +122,16 @@ class CatalogoController extends Controller {
     /**
      * @Route("/factura/{username}/{codigo}", name="catalogo_factura")
      */
-    public function recepcionar_pagoAction(Request $request) {
-        // replace this example code with whatever you need
-        return $this->render('Catalogo/factura.html.twig', []);
+    public function recepcionar_pagoAction(Request $request, $username) {
+        
+        $user = $this->getUser();        
+        
+        if ($user->getUsername() == $username) {       
+            return $this->render('Catalogo/factura.html.twig', []);
+
+        } else {
+            return $this->render('@Seguridad/acceso_denegado.html.twig', []);
+        }
     }
 
     

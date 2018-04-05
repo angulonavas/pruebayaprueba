@@ -53,6 +53,34 @@
 			] 
 		%}
 
+{% block breadcrumbs %}
+
+    <div>
+        {# Definiendo los nodos del breadcrums #}
+        {% set nodos = [
+                {
+                    'url': 'contenido_raiz',
+                    'descripcion': '#', 
+                }, 
+                {
+                    'url': 'contenido_asignatura',
+                    'descripcion': asignatura.titulo, 
+                    'parametros': {
+                    	'asignatura': asignatura.titulo
+                	}
+                }, 
+                {
+                    'url': 'contenido_indice_temario',
+                    'descripcion': asignatura.temario
+                }, 
+
+            ] 
+        %}            
+        {% include('Contenido/breadcrums.html.twig') %}
+    </div>
+
+{% endblock %}
+
 {% block cuerpo_asignatura %}
     <div>Título del temario</div>
 

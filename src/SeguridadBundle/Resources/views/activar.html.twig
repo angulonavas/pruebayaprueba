@@ -1,5 +1,25 @@
 {% extends 'Contenido/raiz.html.twig' %}
 
+{% block breadcrumbs %}
+
+    <div>
+        {# Definiendo los nodos del breadcrums #}
+        {% set nodos = [
+                {
+                    'url': 'contenido_raiz',
+                    'descripcion': '#', 
+                }, 
+                {
+                    'url': 'usuario_activar_registro',
+                    'descripcion': 'Catalogo', 
+                }, 
+            ] 
+        %}            
+        {% include('Contenido/breadcrums.html.twig') %}
+    </div>
+
+{% endblock %}
+
 {% block bloqueB %}
 
 	{% if activacion %}
@@ -18,7 +38,3 @@
 
 
 {% endblock %}
-   
-{% block javascripts %}
-{% endblock %}
-

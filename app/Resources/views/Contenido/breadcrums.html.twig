@@ -1,2 +1,10 @@
-<div>bloque Breadcrums</div>
+{% for nodo in nodos %}
+	{% if not loop.last %}
+		{% set parametros = (nodo.parametros is defined) ? nodo.parametros : {} %}
+		<a href="{{path(nodo.url, parametros)}}">{{ nodo.descripcion }}</a>
+		/
+	{% else %}
+		{{ nodo.descripcion }}
+	{% endif %}
+{% endfor %}
 

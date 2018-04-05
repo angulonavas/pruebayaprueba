@@ -1,7 +1,304 @@
 {% extends 'Contenido/raiz.html.twig' %}
 
+{% block stylesheets %}
+	{{ parent() }}
+	<link rel="stylesheet" href="calendario/css/frontierCalendar/jquery-frontier-cal-1.3.2.css" type="text/css">
+	<link rel="stylesheet" href="calendario/css/jquery-ui/smoothness/jquery-ui-1.8.1.custom.css" type="text/css">
+{% endblock %}
+
+{% block breadcrumbs %}
+    <div>
+        {# Definiendo los nodos del breadcrums #}
+        {% set nodos = [
+                {
+                    'url': 'contenido_raiz',
+                    'descripcion': '#', 
+                }, 
+                {
+                    'url': 'calendario_cargar',
+                    'descripcion': 'Calendario', 
+                }, 
+            ] 
+        %}            
+        {% include('Contenido/breadcrums.html.twig') %}
+    </div>
+
+{% endblock %}
+
 {% block bloqueB %}
+
+            {% set nodos = [
+                    {
+                        'url': 'contenido_raiz',
+                        'descripcion': '2#', 
+                    }, 
+                ] 
+            %} 
 	<div>Contenido de calendario aquí</div>
+    <div>
+       	<div id="example" style="margin: auto; width:80%;"><br>
+			
+			{# Panel de control del calendario. #}
+			<div id="toolbar" class="ui-widget-header ui-corner-all" 
+				style="padding:3px; vertical-align: middle; white-space:nowrap; overflow: hidden;">
+					<button id="BtnPreviousMonth">Previous Month</button>
+					<button id="BtnNextMonth">Next Month</button>
+					&nbsp;&nbsp;&nbsp;
+					Date: <input type="text" id="dateSelect" size="20"/>
+			</div><br>
+
+			{# 
+				Matriz del calendario
+			
+				You can use pixel widths or percentages. Calendar will auto resize all sub elements.
+				Height will be calculated by aspect ratio. Basically all day cells will be as tall
+				as they are wide.
+			#}
+			<div id="mycal" style="padding:3px; margin: auto;"></div>
+
+			<!-- Add event modal form -->
+			<div id="display-event-form" title="View Agenda Item"></div>		
+
+			<p>&nbsp;</p>
+
+		</div><!-- end example tab -->
+    </div>
+
+{% endblock %}	
+
+{% block javascripts %}
+	{{ parent() }}
+	<script type="text/javascript" src="calendario/js/jquery-core/jquery-1.4.2-ie-fix.min.js"></script>
+	<script type="text/javascript">
+		var $jQuery_1_4_2_ie_fix = jQuery.noConflict();
+		window.jQuery = $jQuery_1_4_2_ie_fix;
+	</script>
+	
+	<script type="text/javascript" src="calendario/js/jquery-ui/smoothness/jquery-ui-1.8.1.custom.min.js"></script>
+	<script type="text/javascript" src="calendario/js/lib/jshashtable-2.1.js"></script>
+	<script type="text/javascript" src="calendario/js/frontierCalendar/jquery-frontier-cal-1.3.2.js"></script>
+
+	<script type="text/javascript">
+		console.log($jQuery_1_4_2_ie_fix().jquery);
+
+		$jQuery_1_4_2_ie_fix(document).ready(function(){	
+
+			var clickDate = "";
+			var clickAgendaItem = "";
+			
+			/**
+			 * Initializes calendar with current year & month
+			 * specifies the callbacks for day click & agenda item click events
+			 * then returns instance of plugin object
+			 */
+			var jfcalplugin = $jQuery_1_4_2_ie_fix("#mycal").jFrontierCal({
+				date: new Date(),
+				agendaClickCallback: myAgendaClickHandler,
+				agendaMouseoverCallback: myAgendaMouseoverHandler,
+				dragAndDropEnabled: false
+			}).data("plugin");
+
+			/**
+			 * Make the day cells roughly 3/4th as tall as they are wide. this makes our calendar wider than it is tall. 
+			 */
+			jfcalplugin.setAspectRatio("#mycal",0.75);
+
+			/**
+			 * Called when user clicks and agenda item
+			 * use reference to plugin object to edit agenda item
+			 */
+			function myAgendaClickHandler(eventObj){
+				// Get ID of the agenda item from the event object
+				var agendaId = eventObj.data.agendaId;		
+				// pull agenda item from calendar
+				var agendaItem = jfcalplugin.getAgendaItemById("#mycal",agendaId);
+				clickAgendaItem = agendaItem;
+				$jQuery_1_4_2_ie_fix("#display-event-form").dialog('open');
+			};
+				
+			/**
+			 * Called when a user mouses over an agenda item	
+			 */
+			function myAgendaMouseoverHandler(eventObj){
+				var agendaId = eventObj.data.agendaId;
+				var agendaItem = jfcalplugin.getAgendaItemById("#mycal",agendaId);
+				//alert("You moused over agenda item " + agendaItem.title + " at location (X=" + eventObj.pageX + ", Y=" + eventObj.pageY + ")");
+			};		
+
+			/**
+			 * Initialize jquery ui datepicker. set date format to yyyy-mm-dd for easy parsing
+			 */
+			$jQuery_1_4_2_ie_fix("#dateSelect").datepicker({
+				showOtherMonths: true,
+				selectOtherMonths: true,
+				changeMonth: true,
+				changeYear: true,
+				showButtonPanel: true,
+				dateFormat: 'yy-mm-dd'
+			});
+			
+			/**
+			 * Set datepicker to current date
+			 */
+			$jQuery_1_4_2_ie_fix("#dateSelect").datepicker('setDate', new Date());
+
+			/**
+			 * Initialize previous month button
+			 */
+			$jQuery_1_4_2_ie_fix("#BtnPreviousMonth").button();
+			$jQuery_1_4_2_ie_fix("#BtnPreviousMonth").click(function() {
+				jfcalplugin.showPreviousMonth("#mycal");
+				// update the jqeury datepicker value
+				var calDate = jfcalplugin.getCurrentDate("#mycal"); // returns Date object
+				var cyear = calDate.getFullYear();
+				// Date month 0-based (0=January)
+				var cmonth = calDate.getMonth();
+				var cday = calDate.getDate();
+				// jquery datepicker month starts at 1 (1=January) so we add 1
+				$jQuery_1_4_2_ie_fix("#dateSelect").datepicker("setDate",cyear+"-"+(cmonth+1)+"-"+cday);
+				return false;
+			});
+			/**
+			 * Initialize next month button
+			 */
+			$jQuery_1_4_2_ie_fix("#BtnNextMonth").button();
+			$jQuery_1_4_2_ie_fix("#BtnNextMonth").click(function() {
+				jfcalplugin.showNextMonth("#mycal");
+				// update the jqeury datepicker value
+				var calDate = jfcalplugin.getCurrentDate("#mycal"); // returns Date object
+				var cyear = calDate.getFullYear();
+				// Date month 0-based (0=January)
+				var cmonth = calDate.getMonth();
+				var cday = calDate.getDate();
+				// jquery datepicker month starts at 1 (1=January) so we add 1
+				$jQuery_1_4_2_ie_fix("#dateSelect").datepicker("setDate",cyear+"-"+(cmonth+1)+"-"+cday);		
+				return false;
+			});
+			
+			
+			/**
+			 * Initialize display event form.
+			 */
+			$jQuery_1_4_2_ie_fix("#display-event-form").dialog({
+				autoOpen: false,
+				height: 400,
+				width: 400,
+				modal: true,
+				buttons: {		
+					Cerrar: function() {
+						$jQuery_1_4_2_ie_fix(this).dialog('close');
+					}
+				},
+				open: function(event, ui){
+					if(clickAgendaItem != null){
+						var title = clickAgendaItem.title;
+						var startDate = clickAgendaItem.startDate;
+						var endDate = clickAgendaItem.endDate;
+						var allDay = clickAgendaItem.allDay;
+						var data = clickAgendaItem.data;
+						// in our example add agenda modal form we put some fake data in the agenda data. we can retrieve it here.
+						$jQuery_1_4_2_ie_fix("#display-event-form").append(
+							"<br><b>" + title+ "</b><br><br>"		
+						);				
+						if(allDay){
+							$jQuery_1_4_2_ie_fix("#display-event-form").append(
+								"(All day event)<br><br>"				
+							);				
+						}else{
+							$jQuery_1_4_2_ie_fix("#display-event-form").append(
+								"<b>Starts:</b> " + startDate + "<br>" +
+								"<b>Ends:</b> " + endDate + "<br><br>"				
+							);				
+						}
+						for (var propertyName in data) {
+							$jQuery_1_4_2_ie_fix("#display-event-form").append("<b>" + propertyName + ":</b> " + data[propertyName] + "<br>");
+						}			
+					}		
+				},
+				close: function() {
+					// clear agenda data
+					$jQuery_1_4_2_ie_fix("#display-event-form").html("");
+				}
+			});			
+
+
+			/* *************************************************************** */
+
+			(function() {
+
+				var eventos = {
+					items:[
+						{
+							titulo: 'este es primer evento',
+							fecha_ini: new Date('2018-03-30'),
+							fecha_fin:new Date('2018-04-13'),
+							todo_elDia: false,
+							mas_info: {
+								fname: "Santa",
+								lname: "Claus",
+								leadReindeer: "Rudolph",
+								myDate: new Date(),
+								myNum: 42				
+							},
+							colores: {
+								backgroundColor: '#000',
+								foregroundColor: '#fff'	
+							}
+						},
+						{
+							titulo: 'ahora otro evento',
+							fecha_ini: new Date('2018-02-07'),
+							fecha_fin:new Date('2018-03-09'),
+							todo_elDia: false,
+							mas_info: {
+								fname: "López",
+								lname: "Español",
+								leadReindeer: "Juan",
+								myDate: new Date(),
+								myNum: 42				
+							},
+							colores: {
+								backgroundColor: '#fc0',
+								foregroundColor: '#0a0'	
+							}
+						},				
+						{
+							titulo: 'Fallas de Valencia',
+							fecha_ini: new Date('2018-03-01'),
+							fecha_fin:new Date('2018-03-12'),
+							todo_elDia: false,
+							mas_info: {
+								fname: "López",
+								lname: "Español",
+								leadReindeer: "Juan",
+								myDate: new Date(),
+								myNum: 42				
+							},
+							colores: {
+								backgroundColor: '#f00',
+								foregroundColor: '#fff'	
+							}
+						}				
+
+					]
+				}
+
+				for(i=0; i<Object.keys(eventos.items).length; i++) {
+					jfcalplugin.addAgendaItem(
+						"#mycal",
+						eventos.items[i].titulo,
+						eventos.items[i].fecha_ini,
+						eventos.items[i].fecha_fin,
+						eventos.items[i].todo_elDia,
+						eventos.items[i].mas_info,
+						eventos.items[i].colores,
+					);
+				}
+			})();
+		});
+
+	</script>
+
 {% endblock %}
 
 

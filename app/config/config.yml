@@ -36,6 +36,8 @@ framework:
 twig:
     debug: '%kernel.debug%'
     strict_variables: '%kernel.debug%'
+    globals:
+        acceso_aulas: '@AppBundle\Service\AlumnadoService'
 
 # Doctrine Configuration
 doctrine:

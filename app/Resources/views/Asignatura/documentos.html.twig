@@ -1,5 +1,33 @@
 {% extends 'Asignatura/info_asignatura.html.twig' %}
 
+{% block breadcrumbs %}
+
+    <div>
+        {# Definiendo los nodos del breadcrums #}
+        {% set nodos = [
+                {
+                    'url': 'contenido_raiz',
+                    'descripcion': '#', 
+                }, 
+                {
+                    'url': 'contenido_asignatura',
+                    'descripcion': asignatura.titulo, 
+                    'parametros': {
+                    	'asignatura': asignatura.titulo
+                	}
+                }, 
+                {
+                    'url': 'contenido_documentos_asignatura',
+                    'descripcion': 'Documentos'
+                }, 
+
+            ] 
+        %}            
+        {% include('Contenido/breadcrums.html.twig') %}
+    </div>
+
+{% endblock %}
+
 		{% 
 			set documentos = [
 				{
@@ -51,14 +79,16 @@
 	    	{% endfor %}
 	    </table>
 
-	    <div>
-	    	<form action="{{ path('contenido_subir_documento', {'asignatura': 'Asignatura A1'}) }}"  method="get">
-				<input type="text" placeholder="Descripción" />
-				<input type="text" placeholder="Url" />
-				<button>Examinar</button>
-				<button type="submit">Subir</button>
-			</form>
-	    </div>
+		{% if is_granted('ROLE_ALUMNO') %}
+		    <div>
+		    	<form action="{{ path('contenido_subir_documento', {'asignatura': 'Asignatura A1'}) }}"  method="get">
+					<input type="text" placeholder="Descripción" />
+					<input type="text" placeholder="Url" />
+					<button>Examinar</button>
+					<button type="submit">Subir</button>
+				</form>
+		    </div>
+		{% endif %}
 {% endblock %}
 
 

@@ -1,0 +1,9 @@
+.letra {font-size: 50px;}
+
+#news-div {
+height:50px; /* Altura del contenedor de los anuncios de texto */
+background:#FFFEB8; /* Color de fondo de los anuncios de texto */
+border:1px solid #ccc;
+}
+#news li {list-style-type:none;}
+#portfolio li {list-style-type:none;}

@@ -433,7 +433,8 @@ class Usuario implements AdvancedUserInterface {
 
     public function getRoles()
     {
-        return array('ROLE_ALUMNO');
+        return array($this->rol);
+        //return array('ROLE_ALUMNO');
     }
 
     public function eraseCredentials() 

@@ -1,7 +1,26 @@
 {% extends 'Contenido/raiz.html.twig' %}
 
+{% block breadcrumbs %}
+    <div>
+        {# Definiendo los nodos del breadcrums #}
+        {% set nodos = [
+                {
+                    'url': 'contenido_raiz',
+                    'descripcion': '#', 
+                }, 
+                {
+                    'url': 'contenido_nosotros',
+                    'descripcion': 'Quienes somos', 
+                }, 
+            ] 
+        %}            
+        {% include('Contenido/breadcrums.html.twig') %}
+    </div>
+
+{% endblock %}
+
 {% block bloqueB %}
-	<div>Acerca de nosotros</div>
+	<div>Contenido acerca de nosotros... </div>
 {% endblock %}
 
 

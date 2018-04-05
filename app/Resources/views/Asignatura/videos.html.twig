@@ -1,31 +1,36 @@
 {% extends 'Asignatura/info_asignatura.html.twig' %}
 
-		{% 
-			set videos = [
-				{
-					'id': 2,
-					'descripcion': 'Lorem ipsum dolor sit amet, consectetur adipisicing elit', 
-					'url': 'ZystMG-NmGY?showinfo=0&modestbranding=1',
-				}, 
-				{
-					'id': 3,
-					'descripcion': 'Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod
-						tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam',
-					'url': 'ZystMG-NmGY?showinfo=0&modestbranding=1',
-				}, 
-				{
-					'id': 4,
-					'descripcion': 'Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod
-						tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam,
-						quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo', 
-					'url': 'ZystMG-NmGY?showinfo=0&modestbranding=1',
-				}, 
-			] 
-		%}
+{% block breadcrumbs %}
+
+    <div>
+        {# Definiendo los nodos del breadcrums #}
+        {% set nodos = [
+                {
+                    'url': 'contenido_raiz',
+                    'descripcion': '#', 
+                }, 
+                {
+                    'url': 'contenido_asignatura',
+                    'descripcion': asignatura.titulo, 
+                    'parametros': {
+                    	'asignatura': asignatura.titulo
+                	}
+                }, 
+                {
+                    'url': 'contenido_videos_categoria',
+                    'descripcion': 'Videos de ' ~ asignatura.categoria, 
+                }, 
+
+            ] 
+        %}            
+        {% include('Contenido/breadcrums.html.twig') %}
+    </div>
+
+{% endblock %}
 
 {% block cuerpo_asignatura %}
 	<div>Matriz de videos:</div>
-	{% for video in videos %}
+	{% for video in asignatura.videos %}
 	    <div>
 	        <iframe width="300" height="150" src="https://www.youtube.com/embed/{{video.url}}" frameborder="0" allow="autoplay; encrypted-media" allowfullscreen></iframe>
 	    </div>

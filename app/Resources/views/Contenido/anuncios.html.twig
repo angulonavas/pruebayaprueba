@@ -1,6 +1,39 @@
-<div>tablón de anuncios aquí</div>
+{#
+{% block stylesheets_anuncios %}
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+    <link rel="stylesheet" href="{{ asset('anuncios/css/estilos.css') }}" type="text/css">
+{% endblock %}
+#}
+		
 
+		{% 
+			set anuncios = [
+				{
+					'id': 32,
+					'descripcion': 'Lorem ipsum dolor sit amet, consectetur adipisicing elit', 
+				}, 
+				{
+					'id': 33,
+					'descripcion': 'non	proident, sunt in culpa qui officia deserunt mollit anim id est laborum.',
+				}, 
+				{
+					'id': 42,
+					'descripcion': 'quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo
+						consequat. Duis aute irure dolor in reprehenderit in voluptate velit ess', 
+				}, 
+			] 
+		%}
+
+
+<div id="news-div">
+<ul id="news">
+	{% for anuncio in anuncios %}
+		<li>{{anuncio.descripcion}}</li>
+	{% endfor %}
+</ul>
+</div>
+
+{# Icono y enlace al calendario #}
 <div>
 	<a href="{{path('calendario_cargar')}}">Calendario</a>
 </div>
-

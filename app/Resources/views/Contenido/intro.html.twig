@@ -1,9 +1,21 @@
 {% extends 'Contenido/base.html.twig' %}
 
-{% block body %}
-	<div>Animación de la intro</div>   
-	<a href="{{ path('contenido_raiz') }}">Portal</a>
+{% block stylesheets %}
+    {{parent()}}
+    <link rel="stylesheet" href="intro/css/animate.css" type="text/css">
+    <link rel="stylesheet" href="intro/css/estilos.css" type="text/css">		
 {% endblock %}
-    
-{% block javascripts %}
+
+{% set frase = 'Esta es la frase de la introducción' %}
+
+{% block body %}
+	<div>
+    	<h1 class="text-warning letra animated zoomIn">{{frase}}</h1>
+    	<a href="{{ path('contenido_raiz') }}"><img src="{{ asset('images/icono.png') }}"></a>
+	</div>	
+
+	{% block javascripts %}
+    	{{parent()}}
+	{% endblock %}	
+	
 {% endblock %}

@@ -1,5 +1,30 @@
 {% extends 'Catalogo/catalogo.html.twig' %}
 
+{% block breadcrumbs %}
+
+    <div>
+        {# Definiendo los nodos del breadcrums #}
+        {% set nodos = [
+                {
+                    'url': 'contenido_raiz',
+                    'descripcion': '#', 
+                }, 
+                {
+                    'url': 'catalogo_cargar',
+                    'descripcion': 'Catalogo', 
+                }, 
+                {
+                    'url': 'catalogo_temarios',
+                    'descripcion': 'Asignaturas', 
+                }, 
+
+            ] 
+        %}            
+        {% include('Contenido/breadcrums.html.twig') %}
+    </div>
+
+{% endblock %}
+
 {% block cuerpo_catalogo %}
 	<div>Catálogo de asignaturas</div>
 	<table>

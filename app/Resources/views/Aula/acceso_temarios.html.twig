@@ -1,6 +1,31 @@
 
 {% extends 'Aula/aula_asignatura.html.twig' %}
 
+{% block breadcrumbs %}
+
+    <div>
+        {# Definiendo los nodos del breadcrums #}
+        {% set nodos = [
+                {
+                    'url': 'contenido_raiz',
+                    'descripcion': '#', 
+                }, 
+                {
+                    'url': 'contenido_raiz',
+                    'descripcion': 'Aula', 
+                }, 
+                {
+                    'url': 'contenido_cargar_temarios',
+                    'descripcion': asignatura.titulo, 
+                }
+
+            ] 
+        %}            
+        {% include('Contenido/breadcrums.html.twig') %}
+    </div>
+
+{% endblock %}
+
 {% block cuerpo_aula %}
 	<div>Lista de temarios para acceder</div>
 	
@@ -22,7 +47,7 @@
 
 		<div>
 			<a href="{{ path('contenido_cargar_secciones', {
-				'asignatura': 'Asignatura A1',
+				'asignatura': asignatura.titulo,
 				'temario': temario.descripcion
 			}) }}">{{temario.descripcion}}</a>
 		</div>
