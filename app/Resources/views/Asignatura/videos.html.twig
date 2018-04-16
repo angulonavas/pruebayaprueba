@@ -18,7 +18,7 @@
                 }, 
                 {
                     'url': 'contenido_videos_categoria',
-                    'descripcion': 'Videos de ' ~ asignatura.categoria, 
+                    'descripcion': 'Videos de ' ~ categoria.descripcion, 
                 }, 
 
             ] 
@@ -30,7 +30,7 @@
 
 {% block cuerpo_asignatura %}
 	<div>Matriz de videos:</div>
-	{% for video in asignatura.videos %}
+	{% for video in categoria.getVideos() %}
 	    <div>
 	        <iframe width="300" height="150" src="https://www.youtube.com/embed/{{video.url}}" frameborder="0" allow="autoplay; encrypted-media" allowfullscreen></iframe>
 	    </div>

@@ -24,9 +24,9 @@ class Respuesta
     /**
      * @var string
      *
-     * @ORM\Column(name="descricion", type="string", length=512)
+     * @ORM\Column(name="descripcion", type="string", length=512)
      */
-    private $descricion;
+    private $descripcion;
 
     /**
      * @var \DateTime
@@ -59,27 +59,27 @@ class Respuesta
     }
 
     /**
-     * Set descricion
+     * Set descripcion
      *
-     * @param string $descricion
+     * @param string $descripcion
      *
      * @return Respuesta
      */
-    public function setDescricion($descricion)
+    public function setDescripcion($descripcion)
     {
-        $this->descricion = $descricion;
+        $this->descripcion = $descripcion;
 
         return $this;
     }
 
     /**
-     * Get descricion
+     * Get descripcion
      *
      * @return string
      */
-    public function getDescricion()
+    public function getDescripcion()
     {
-        return $this->descricion;
+        return $this->descripcion;
     }
 
     /**

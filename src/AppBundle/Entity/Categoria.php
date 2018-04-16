@@ -105,5 +105,14 @@ class Categoria
     { 
         return $this->asignatura; 
     }    
+
+    /**
+     * Get videos: transforma un ArrayCollection en un array y le da la vuelta.
+     * Después devuelve un array
+     * @return Array
+     */
+    public function getVideos() {
+        return array_reverse($this->videos->toArray());
+    }     
 }
 

@@ -26,7 +26,7 @@ class ContenidoController extends Controller {
     /**
      * @Route("/", name="contenido_raiz")
      */
-    public function cargar_raizAction() {        
+    public function cargar_raizAction() {  
         return $this->render('Contenido/raiz.html.twig', []);
     }  
 

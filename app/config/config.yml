@@ -18,7 +18,7 @@ framework:
         strict_requirements: ~
     form: ~
     csrf_protection: ~
-    validation: { enable_annotations: true }
+    validation: { enabled: true, enable_annotations: true }
     #serializer: { enable_annotations: true }
     default_locale: '%locale%'
     trusted_hosts: ~
@@ -36,8 +36,12 @@ framework:
 twig:
     debug: '%kernel.debug%'
     strict_variables: '%kernel.debug%'
+    
+    # definición de aquellos servicios y parámetros que queremos acceder desde twig
     globals:
-        acceso_aulas: '@AppBundle\Service\AlumnadoService'
+        iva_base: '%iva_base%'
+        twig_service: '@AppBundle\Service\TwigService'
+        acceso_asignaturas: '@AppBundle\Service\AccesoAsignaturas'
 
 # Doctrine Configuration
 doctrine:

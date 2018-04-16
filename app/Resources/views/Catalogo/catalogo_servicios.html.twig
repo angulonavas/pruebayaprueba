@@ -25,36 +25,27 @@
 
 {% endblock %}
 
+{% block descripcion_catalogo %}
+	<div>Descripción del catálogo de servicios</div>
+{% endblock %}
+
+{% block buscador %}
+
+	<div>
+		<form action="{{ path('catalogo_servicios') }}" method="post">
+        	<input type="text" id="frase" name="frase" placeholder="Busca servicios" />
+	    	<button type="submit">Buscar</button>
+		</form>
+	</div>
+
+{% endblock %}
+
 {% block cuerpo_catalogo %}
 
-	<div>Catálogo de servicios</div>
-
 	<table>
-		{% 
-			set servicios = [
-				{
-					'id': 32,
-					'descripcion': 'Servicio S1', 
-					'precio': '20€',
-					'matriculado': true,
-				}, 
-				{
-					'id': 33,
-					'descripcion': 'Servicio S112',
-					'precio': '12€',
-					'matriculado': false,
-				}, 
-				{
-					'id': 42,
-					'descripcion': 'Servicio S4', 
-					'precio': '20€',
-					'matriculado': false,
-				}, 
-			] 
-		%}
-
 
 		<tr>
+			<th>Inicio</th>
 			<th>Descripción</th>
 			<th>Precio</th>
 			<th>Matrícula</th>
@@ -62,8 +53,9 @@
 
 		{% for servicio in servicios %}
 			<tr>
-				<td>{{servicio.descripcion}}</td>
-				<td>{{servicio.precio}}</td>
+				<td>{{servicio.fechaIni | date('m/d/Y')}}</td>
+				<td>{{servicio.titulo}}</td>
+				<td>{{servicio.precio ~ '€'}}</td>
 				<td>
 					{% if servicio.matriculado %}
 						Matriculado
@@ -71,6 +63,11 @@
 						<a href="{{ path('catalogo_incluir_servicio', {'servicio': servicio.id}) }}">Matricularse</a>
 					{% endif %}
 				</td>
+			</tr>
+
+			<tr>
+				<td>&nbsp;</td>
+				<td>{{servicio.descripcion}}</td>
 			</tr>
 		{% endfor %}
 

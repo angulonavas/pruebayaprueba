@@ -33,4 +33,13 @@ services:
     SeguridadBundle\Controller\:
         resource: '../../src/SeguridadBundle/Controller'
         public: true
+
         tags: ['controller.service_arguments']
+
+    # definición de las nuevas extensiones, las definidas por el desarrollador
+    app.twig_runtime:
+        class: AppBundle\Twig\AppRuntime
+        public: false
+        tags:
+            - { name: twig.runtime }
+            

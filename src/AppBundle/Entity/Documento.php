@@ -4,11 +4,18 @@ namespace AppBundle\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
 
+use Symfony\Component\Validator\Constraints as Assert;
+use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
+
 /**
  * Documento
  *
  * @ORM\Table(name="documento")
  * @ORM\Entity(repositoryClass="AppBundle\Repository\DocumentoRepository")
+ * @UniqueEntity(
+ *     fields="attachment",
+ *     message="Lo sentimos, ya existe un fichero con ese nombre" 
+ * ) 
  */
 class Documento
 {
@@ -24,7 +31,13 @@ class Documento
     /**
      * @var string
      *
-     * @ORM\Column(name="nombre_fichero", type="string", length=16, unique=true)
+     * @ORM\Column(name="nombre_fichero", type="string", length=32, unique=true)
+     * @Assert\Length(
+     *      min = 4,
+     *      max = 32,
+     *      minMessage = "Nombre de fichero incorrecto",
+     *      maxMessage = "El nombre del fichero sólo puede tener {{ limit }} caracteres"
+     * )
      */
     private $nombreFichero;
 
@@ -32,6 +45,12 @@ class Documento
      * @var string
      *
      * @ORM\Column(name="descripcion", type="string", length=64)
+     * @Assert\Length(
+     *      min = 4,
+     *      max = 64,
+     *      minMessage = "Descripción debe ser mayor de {{ limit }} caracteres",
+     *      maxMessage = "La descripción sólo puede tener {{ limit }} caracteres"
+     * )
      */
     private $descripcion;
 
@@ -52,7 +71,7 @@ class Documento
     /**
      * @var string
      *
-     * @ORM\Column(name="tipo", type="string", length=8)
+     * @ORM\Column(name="tipo", type="string", length=16)
      */
     private $tipo;
 
@@ -67,6 +86,9 @@ class Documento
      * @ORM\JoinColumn(name="id_usuario", referencedColumnName="id")
      */
     private $usuario; 
+
+    protected $attachment;
+
 
 
     /**
@@ -246,5 +268,15 @@ class Documento
     { 
         return $this->usuario; 
     }     
+
+    // Get el fichero en sí. Necesario para el formulario
+    public function getAttachment() {
+        return $this->attachment;
+    }    
+
+    public function setAttachment($attachment) {
+        $this->attachment = $attachment;
+        return $this;
+    }
 }
 

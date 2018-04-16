@@ -44,6 +44,13 @@ class Temario
     private $precio;
 
     /**
+     * @var float
+     *
+     * @ORM\Column(name="iva", type="float")
+     */
+    private $iva = 11;
+
+    /**
      * @var bool
      *
      * @ORM\Column(name="publicado", type="boolean")
@@ -65,6 +72,13 @@ class Temario
      * @ORM\OneToMany(targetEntity="Seccion", mappedBy="temario")
      */
     private $secciones;
+
+    // Los parámetros a continuación no forman parte de la entidad:
+    private $isSecciones = false;
+
+    private $matriculado;
+
+    private $primera_seccion;
 
 
     public function __construct()
@@ -146,6 +160,30 @@ class Temario
     }
 
     /**
+     * Set iva
+     *
+     * @param float $iva
+     *
+     * @return Temario
+     */
+    public function setIva($iva)
+    {
+        $this->iva = $iva;
+
+        return $this;
+    }
+
+    /**
+     * Get iva
+     *
+     * @return float
+     */
+    public function getIva()
+    {
+        return $this->iva;
+    }
+
+    /**
      * Get precio
      *
      * @return float
@@ -201,6 +239,72 @@ class Temario
     public function getAsignatura() 
     { 
         return $this->asignatura; 
+    }
+
+    /**
+     * Get matriculado
+     * @return booleano
+     */
+    public function getMatriculado() {
+        return $this->matriculado;
+    }
+
+    /**
+     * Set matriculado
+     * @param boolean $matriculado
+     * @return boolean
+     */
+    public function setMatriculado($matriculado) {
+        $this->matriculado = $matriculado;
+        return $this;
+    }
+
+    /**
+     * Get secciones: si no está formateado, primero llama para formatear el array de secciones.
+     * Después devuelve un array
+     * @return Array
+     */
+    public function getSecciones() {
+        return ($this->isSecciones) ? $this->secciones : $this->setSecciones();
+    }    
+
+    /**
+     * Set secciones: ordena el arraycollection y lo transforma en un array.
+     * Después devuelve un array
+     * @return Array
+     */
+    public function setSecciones() {
+
+        $vector_aux = [];
+        $this->secciones = $this->secciones->toArray();
+
+        foreach($this->secciones as $i => $seccion) { 
+            $vector_aux[$i] = $seccion->getOrden(); 
+        }
+
+        array_multisort($vector_aux, $this->secciones);
+        $this->isSecciones = true;
+        $this->primera_seccion = (count($this->secciones)) ? $this->secciones[0] : null;
+
+        return $this->secciones;
+    }    
+
+    public function getPrimera_seccion() {
+        if (!$this->primera_seccion) $this->setSecciones();
+        return $this->primera_seccion;
+    }
+
+    public function setPrimera_seccion() {
+        return $this->getSecciones()[0];
+    }
+
+    public function liberaSecciones() {
+        $this->secciones = null;
+        $this->isSecciones = true;
+    }
+
+    public function setSeccion($seccion) {
+        $this->secciones[] = $seccion;   
     }
 }
 

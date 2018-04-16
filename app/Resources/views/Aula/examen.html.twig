@@ -1,84 +1,85 @@
 {% extends 'Aula/seccion.html.twig' %}
 
-{% set preguntas = [
-            {	
-            	'id':33, 
-            	'descripcion':'Esta es la primera pregunta', 
-                'opciones':
-                    [
-                    	{
-                    		'id': 45, 
-                    		'descripcion': 'Aquí la primera opción'
-                    	},
-                    
-                    	{
-                    		'id': 345, 
-                    		'descripcion': 'Aquí la segunda opción'
-                    	},
-                    	{
-                    		'id': 145, 
-                    		'descripcion': 'Aquí la opción final'
-                    	},
-                	]
-            },
-            {
-            	'id': 37, 
-            	'descripcion': 'Esta es la segunta',
-                'opciones': 
-                	[
-                    	{
-                    		'id': 435, 
-                    		'descripcion': 'Aquí la 2primera opción '
-                    	},
-                    	{
-                    		'id': 1545, 
-                    		'descripcion': 'Aquí la 2opción final'
-                    	},
-                	]
-            },
-            {
-            	'id': 833, 
-            	'descripcion': 'Aquí la otra',
-                'opciones': [
-                    {
-                    	'id': 45, 
-                    	'descripcion': 'Aquí la 3primera opción'
-                    },
-                    {
-                    	'id': 345, 
-                    	'descripcion': 'Aquí la 3segunda opción'
-                    },
-                    {
-                    	'id': 145, 
-                    	'descripcion': 'Aquí la 3opción final'
-                    },
-                ]
-            },
-        ]
-%}
+{% block stylesheets %}
+    {{ parent() }}
+    <link rel="stylesheet" href="{{ asset('examenes/css/estilos.css') }}" type="text/css">
+{% endblock %}
 
 {% block cuerpo_seccion %}
 
-	{% for pregunta in preguntas %}
-		<div>{{pregunta.descripcion}}</div>
-		{% for opcion in pregunta.opciones %}
-			<div>
-				<input type="checkbox" name="{{pregunta.id}}" value="{{opcion.id}}">
-				{{opcion.descripcion}}
-				<br>
-			</div>
+    <div id="preguntas">
+        {% for pregunta in preguntas %}
+    		<ul>{{pregunta.descripcion}}
+                <div id="mensaje_error" class="oculto">ERROR</div>
+                {% for opcion in pregunta.getOpciones() %}
+                    <li>
+                        <input type="checkbox" name="{{ 'pregunta_' ~ pregunta.id}}">
+                        <input type="hidden" value="{{opcion.cierta}}">
+				        {{opcion.descripcion}}
+                    </li>
+				{% endfor %}
+            </ul>
 		{% endfor %}		
-	{% endfor %}
+	</div>
 
 	<div>
 		<div>
-			<a href="{{ path('contenido_evaluar_examen', {
-				'asignatura': 'Asigna A1',
-				'temario': 'Temario T1',
-				'seccion': 'Sección S1'
-			}) }}"button>Validar</a>
+            <button id="validar">Validar</button>
 		</div>
-		<div>7,5</div>
+		<div id="nota">7,5</div>
 		<div>Cuestiones incorrectas:</div>
 	</div>
+{% endblock %}
+
+
+{% block javascripts %}
+    {{parent()}}
+
+    <script type='text/javascript'>
+    $jQuery_3_3_1(document).ready(
+        function(){
+
+            //Al hacer click en un item de uno de los listados, todos sus hermanos pasan a quedar a false
+            // el 'checked' de prop sólo funciona con el elemento DOM input, no con su padre 'li'
+            $('div#preguntas ul li').bind('click', function() {
+                $(this).siblings().children('input[type=checkbox]').prop('checked', false);
+            });
+
+            $('button#validar').bind('click', function() {
+
+                var total = $('div#preguntas ul').length, aciertos = 0, fallos = 0, num_opciones = 0;
+                
+                $('div#preguntas ul').each(function(){
+                    
+                    var acierto = false, intento = false;
+                    num_opciones = $(this).children('li').length;
+
+                    $(this).children('li').each(function(){
+                        if ($(this).children('input[type=checkbox]').is(':checked')) {
+                            intento = true;
+                            if ($(this).children('input[type=hidden]').val()) acierto = true;
+                        }
+                    });
+
+                    // Si se acertó la pregunta se incrementa el acierto y se oculta mensaje de error
+                    // si se fálló se muestra se incrementa el fallo y se muestra mensaje de error
+                    if (acierto) {
+                        aciertos++;
+                        $(this).children('div').attr('class', 'oculto');
+                    
+                    } else if (intento) {
+                        fallos++;
+                        $(this).children('div').attr('class', 'visible');
+                    }
+                    
+               });
+
+                alert(total+' '+aciertos+' '+fallos+' '+num_opciones);
+                var nota = '8,15';
+                $('div#nota').text(nota);
+            }); 
+        }
+    );
+    </script>
+
 {% endblock %}

@@ -21,10 +21,19 @@ class AccesoAulas {
         $this->user = $ts->getToken()->getUser();
     }
 
+    // Devuelve true si el usuario está matriculado en al menos una sección de un temario de la asignatura dada.
+    private function hay_secciones_asignatura($asignatura) {
+
+        foreach ($asignatura->getTemarios() as $temario) {
+            $acceso = $this->hay_secciones($temario);
+            if ($acceso) break;
+        }
+        return $acceso;        
+    }
+
     // Devuelve true si el usuario está matriculado en al menos un temario de la asignatura dada.
     private function hay_temarios($asignatura) {
 
-        $asignatura = $this->em->getRepository(Asignatura::class)->findOneBy(array('titulo' => $asignatura));
         $usuario = $this->user;
 
         $repositorio = $this->em->getRepository(Matricula_Temarios::class);
@@ -41,18 +50,7 @@ class AccesoAulas {
     }
 
     // devuelve true si el usuario está matriculado en dicho temario
-    private function existe_temario($asignatura, $temario) {
-
-        // primero se busca la asignatura que coincida con el título de asignatura
-        $asignatura = $this->em->getRepository(Asignatura::class)->findOneBy(array(
-            'titulo' => $asignatura
-        ));
-        
-        // segundo: se busca el temario de la asignatura anterior que coincida con el título del temario
-        $temario = $this->em->getRepository(Temario::class)->findOneBy(array(
-            'titulo' => $temario,
-            'asignatura' => $asignatura
-        ));
+    private function existe_temario($temario) {
 
         // tercero: se busca las posibles matrículas del usuario en el temario encontrado anteriormente
         $matriculas = $this->em->getRepository(Matricula_Temarios::class)->findBy(array(
@@ -68,7 +66,6 @@ class AccesoAulas {
     // Devuelve true si el usuario está matriculado en al menos una sección del temario de la asignatura dada.
     private function hay_secciones($temario) {
 
-        $temario = $this->em->getRepository(Temario::class)->findOneBy(array('titulo' => $temario));
         $usuario = $this->user;
 
         $repositorio = $this->em->getRepository(Matricula_Secciones::class);
@@ -85,24 +82,7 @@ class AccesoAulas {
     }    
 
     // devuelve true si el usuario está matriculado en dicha seccion
-    private function existe_seccion($asignatura, $temario, $seccion) {
-
-        // primero se busca la asignatura que coincida con el título de asignatura
-        $asignatura = $this->em->getRepository(Asignatura::class)->findOneBy(array(
-            'titulo' => $asignatura
-        ));
-
-        // segundo: se busca el temario de la asignatura anterior que coincida con el título del temario
-        $temario = $this->em->getRepository(Temario::class)->findOneBy(array(
-            'titulo' => $temario,
-            'asignatura' => $asignatura
-        ));
-
-        // tercero: se busca la sección del temario anterior cuyo título coincida con el de la sección
-        $seccion = $this->em->getRepository(Seccion::class)->findOneBy(array(
-            'titulo' => $seccion,
-            'temario' => $temario
-        ));
+    private function existe_seccion($seccion) {
 
         // cuarto: se busca las posibles matrículas del usuario en la sección encontrada anteriormente
         $matriculas = $this->em->getRepository(Matricula_Secciones::class)->findBy(array(
@@ -117,27 +97,35 @@ class AccesoAulas {
 
     /* 
         hay tres tipos de intento de acceso:
-        1.- acceso a los temarios de una asignatura dada: 
-            - implica comprobar si el usuario está al menos matricualdo en un temario de dicha asignatura: hay_temarios($asignatura)
+        1.- acceso a los temarios de una asignatura dada: implica dos acciones:
+            1.1.- comprobar si el usuario está al menos matricualdo en un temario de dicha asignatura: hay_temarios($asignatura)
+            1.1.- o bien comprobar si el usuario está matriculado en al menos una sección de temario de dicha asignatura:   
+                hay_secciones($asignatura)
         2.- acceso a un temario de una asignatura dada: implica dos acciones: 
             2.1.- comprobar si el usuario está matriculado en dicho temario: existe_temario($temario)
             2.2.- o bien comprobar si el usuario está matriculado en al menos una sección de dicho temario: hay_secciones($temario)
-        3.- acceso a una sección del temario de una asignatura dada: 
-            - implica comprobar si el usuario está matriculado en dicha sección: existe_seccion($seccion)
+        3.- acceso a una sección del temario de una asignatura dada: implica dos acciones:
+            3.1.- comprobar si el usuario está matriculado en el temario: existe_temario($temario)
+            3.2.- o bien si el usuario está matriculado en dicha sección: existe_seccion($seccion)
     */
     public function acceso($asignatura, $temario = null, $seccion = null) {
 
         $acceso = false;
         // primer tipo de intento de acceso:
-        if (!$temario && !$seccion) $acceso = $this->hay_temarios($asignatura);
+        if (!$temario && !$seccion){
+            $acceso = $this->hay_temarios($asignatura);
+            if (!$acceso) $acceso = $this->hay_secciones_asignatura($asignatura);
 
         // segundo tipo de intento de acceso:
-        elseif (!$seccion) {
-            $acceso = $this->existe_temario($asignatura, $temario);
+        } elseif (!$seccion) {
+            $acceso = $this->existe_temario($temario);
             if (!$acceso) $acceso = $this->hay_secciones($temario);
         
         // tercer tipo de intento de acceso:
-        } else $acceso = $this->existe_seccion($asignatura, $temario, $seccion);
+        } else {
+            $acceso = $this->existe_temario($temario);
+            if (!$acceso) $acceso = $this->existe_seccion($seccion);  
+        } 
 
         return $acceso;
     }

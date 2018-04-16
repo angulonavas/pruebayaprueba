@@ -28,30 +28,16 @@
 
 {% endblock %}
 
-		{% 
-			set documentos = [
-				{
-					'autor': '@pepe',
-					'descripcion': 'Lorem ipsum dolor sit amet, consectetur adipisicing elit', 
-					'tipo': 'PDF',
-				}, 
-				{
-					'autor': '@pepe',
-					'descripcion': 'Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod
-						tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam',
-					'tipo': 'WORD',
-				}, 
-				{
-					'autor': '@pepe',
-					'descripcion': 'Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod
-						tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam,
-						quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo', 
-					'tipo': 'PDF',
-				}, 
-			] 
-		%}
-
 {% block cuerpo_asignatura %}
+	
+	{% if mensaje %}
+		<div>{{mensaje}}</div>
+	{% endif %}
+
+{% for error in errores %}
+    <li>{{ error.message }}</li>
+{% endfor %}	
+
 	<div>Documentación aportada:</div>
   		<table>
         	<tr>
@@ -60,34 +46,24 @@
         		<th>Autor</th>
         	</tr>
 
-			{% for documento in documentos %}
-
-				{% set icono = 'icono.png' %}
-				{% if documento.tipo == 'PDF' %}
-					{% set icono = 'icono.png' %}
-				{% elseif documento.tipo == 'WORD' %}
-					{% set icono = 'icono.png' %}
-				{% else %}
-					{% set icono = 'icono.png' %}
-				{% endif %}
-
+			{% for documento in asignatura.getDocumentos() %}
 		    	<tr>
-		    		<td><img src="{{ asset(icono) }}"></td>
-		    		<td><a href="" target="_blank">{{documento.descripcion}}</a></td>
-		    		<td>{{documento.autor}}</td>
+		    		<td><img src="{{ asset('/images/iconos/' ~ documento.tipo) }}" width="30" height="30"></td>
+		    		<td><a href="{{ asset('/documentos/' ~ asignatura.titulo ~ '/' ~ documento.nombreFichero) }}" target="_blank">
+		    				{{documento.descripcion}}</a>
+		    		</td>
+		    		<td>{{documento.usuario.username}}</td>
 		    	</tr>
 	    	{% endfor %}
 	    </table>
 
 		{% if is_granted('ROLE_ALUMNO') %}
-		    <div>
-		    	<form action="{{ path('contenido_subir_documento', {'asignatura': 'Asignatura A1'}) }}"  method="get">
-					<input type="text" placeholder="Descripción" />
-					<input type="text" placeholder="Url" />
-					<button>Examinar</button>
-					<button type="submit">Subir</button>
-				</form>
-		    </div>
+			<div>
+				{{ form_start(form) }}
+				{{ form_widget(form) }}
+				{{ form_end(form) }}
+			</div>	   
+
 		{% endif %}
 {% endblock %}
 

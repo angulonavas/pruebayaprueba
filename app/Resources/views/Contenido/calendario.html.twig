@@ -27,42 +27,34 @@
 
 {% block bloqueB %}
 
-            {% set nodos = [
-                    {
-                        'url': 'contenido_raiz',
-                        'descripcion': '2#', 
-                    }, 
-                ] 
-            %} 
-	<div>Contenido de calendario aquí</div>
-    <div>
-       	<div id="example" style="margin: auto; width:80%;"><br>
-			
-			{# Panel de control del calendario. #}
-			<div id="toolbar" class="ui-widget-header ui-corner-all" 
-				style="padding:3px; vertical-align: middle; white-space:nowrap; overflow: hidden;">
-					<button id="BtnPreviousMonth">Previous Month</button>
-					<button id="BtnNextMonth">Next Month</button>
-					&nbsp;&nbsp;&nbsp;
-					Date: <input type="text" id="dateSelect" size="20"/>
-			</div><br>
+	<div>Nuestro calendario de eventos aquí</div>
 
-			{# 
-				Matriz del calendario
-			
-				You can use pixel widths or percentages. Calendar will auto resize all sub elements.
-				Height will be calculated by aspect ratio. Basically all day cells will be as tall
-				as they are wide.
-			#}
-			<div id="mycal" style="padding:3px; margin: auto;"></div>
+   	<div id="example" style="margin: auto; width:80%;">
+		
+		{# Panel de control del calendario. #}
+		<div id="toolbar" class="ui-widget-header ui-corner-all" 
+			style="padding:3px; vertical-align: middle; white-space:nowrap; overflow: hidden;">
+				<button id="BtnPreviousMonth">Previous Month</button>
+				<button id="BtnNextMonth">Next Month</button>
+				&nbsp;&nbsp;&nbsp;
+				Date: <input type="text" id="dateSelect" size="20"/>
+		</div>
 
-			<!-- Add event modal form -->
-			<div id="display-event-form" title="View Agenda Item"></div>		
+		{# 
+			Matriz del calendario
+		
+			You can use pixel widths or percentages. Calendar will auto resize all sub elements.
+			Height will be calculated by aspect ratio. Basically all day cells will be as tall
+			as they are wide.
+		#}
+		<div id="mycal" style="padding:3px; margin: auto;"></div>
 
-			<p>&nbsp;</p>
+		{# Aquí la definición del cuadro de diálogo que muestra el evento al hacer clic en él #}
+		<div id="display-event-form" title="View Agenda Item"></div>		
 
-		</div><!-- end example tab -->
-    </div>
+		<p>&nbsp;</p>
+
+	</div>
 
 {% endblock %}	
 
@@ -158,6 +150,7 @@
 				$jQuery_1_4_2_ie_fix("#dateSelect").datepicker("setDate",cyear+"-"+(cmonth+1)+"-"+cday);
 				return false;
 			});
+
 			/**
 			 * Initialize next month button
 			 */
@@ -174,7 +167,6 @@
 				$jQuery_1_4_2_ie_fix("#dateSelect").datepicker("setDate",cyear+"-"+(cmonth+1)+"-"+cday);		
 				return false;
 			});
-			
 			
 			/**
 			 * Initialize display event form.
@@ -221,77 +213,40 @@
 				}
 			});			
 
-
-			/* *************************************************************** */
-
+			/* 
+			 * Cargando el calendario con los eventos 
+			 */
 			(function() {
+			
+				var eventos = {{ eventos | raw }};
 
-				var eventos = {
-					items:[
-						{
-							titulo: 'este es primer evento',
-							fecha_ini: new Date('2018-03-30'),
-							fecha_fin:new Date('2018-04-13'),
+				for(i=0; i<Object.keys(eventos).length; i++) {
+
+					// Creando la estructura del evento de calendario con la info de cada evento
+					var evento = {
+							titulo: eventos[i].titulo,
+							fecha_ini: new Date(eventos[i].fecha_ini),
+							fecha_fin:new Date(eventos[i].fecha_fin),
 							todo_elDia: false,
 							mas_info: {
-								fname: "Santa",
-								lname: "Claus",
-								leadReindeer: "Rudolph",
-								myDate: new Date(),
-								myNum: 42				
+								Precio: eventos[i].precio,
+								Descripción:eventos[i].descripcion
 							},
 							colores: {
 								backgroundColor: '#000',
 								foregroundColor: '#fff'	
 							}
-						},
-						{
-							titulo: 'ahora otro evento',
-							fecha_ini: new Date('2018-02-07'),
-							fecha_fin:new Date('2018-03-09'),
-							todo_elDia: false,
-							mas_info: {
-								fname: "López",
-								lname: "Español",
-								leadReindeer: "Juan",
-								myDate: new Date(),
-								myNum: 42				
-							},
-							colores: {
-								backgroundColor: '#fc0',
-								foregroundColor: '#0a0'	
-							}
-						},				
-						{
-							titulo: 'Fallas de Valencia',
-							fecha_ini: new Date('2018-03-01'),
-							fecha_fin:new Date('2018-03-12'),
-							todo_elDia: false,
-							mas_info: {
-								fname: "López",
-								lname: "Español",
-								leadReindeer: "Juan",
-								myDate: new Date(),
-								myNum: 42				
-							},
-							colores: {
-								backgroundColor: '#f00',
-								foregroundColor: '#fff'	
-							}
-						}				
+						}
 
-					]
-				}
-
-				for(i=0; i<Object.keys(eventos.items).length; i++) {
+					// Añadiendo el evento al calendario
 					jfcalplugin.addAgendaItem(
 						"#mycal",
-						eventos.items[i].titulo,
-						eventos.items[i].fecha_ini,
-						eventos.items[i].fecha_fin,
-						eventos.items[i].todo_elDia,
-						eventos.items[i].mas_info,
-						eventos.items[i].colores,
+						evento.titulo,
+						evento.fecha_ini,
+						evento.fecha_fin,
+						evento.todo_elDia,
+						evento.mas_info,
+						evento.colores,
 					);
 				}
 			})();

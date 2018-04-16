@@ -13,6 +13,10 @@ use Symfony\Component\Security\Core\Encoder\UserPasswordEncoderInterface;
 use Symfony\Component\Security\Core\Encoder\EncoderFactoryInterface;
 use Symfony\Component\Security\Http\Authentication\AuthenticationUtils;
 
+use AppBundle\Entity\Matricula_Temarios;
+use AppBundle\Entity\Matricula_Secciones;
+use AppBundle\Entity\Matricula_Servicios;
+
 class UsuarioController extends Controller {
     
     private function emailConfirmacion($usuario, $mailer) {
@@ -228,6 +232,12 @@ class UsuarioController extends Controller {
             $repository = $this->getDoctrine()->getRepository(Usuario::class);
             $usuario = $repository->findOneByUsername($username);
 
+            // Buscando aquellos items en los que el usuario está matriculado, para mostrarlos en el perfil
+            $em = $this->getDoctrine()->getManager();
+            $matriculas_temarios = $em->getRepository(Matricula_Temarios::class)->findByUsuario($this->getUser()); 
+            $matriculas_secciones = $em->getRepository(Matricula_Secciones::class)->findByUsuario($this->getUser()); 
+            $matriculas_servicios = $em->getRepository(Matricula_Servicios::class)->findByUsuario($this->getUser()); 
+
             $form = $this->createForm(RecuperacionType::class, $usuario);
             $form->handleRequest($request);
 
@@ -251,7 +261,11 @@ class UsuarioController extends Controller {
                 'actualizado' => $actualizado,
                 'usuario' => $usuario,
                 'form' => $form->createView(),
+                'matriculas_temarios' => $matriculas_temarios,
+                'matriculas_secciones' => $matriculas_secciones,
+                'matriculas_servicios' => $matriculas_servicios,
             ]);
+
         } else {
             return $this->render('@Seguridad/acceso_denegado.html.twig', []);
         }

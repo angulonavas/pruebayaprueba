@@ -167,5 +167,13 @@ class Factura
     {
         return $this->total;
     }
+
+    public function getconceptos() {
+        return $this->conceptos;
+    }
+    
+    public function setConceptos($conceptos) {
+        $this->conceptos = $conceptos;
+    }
 }
 

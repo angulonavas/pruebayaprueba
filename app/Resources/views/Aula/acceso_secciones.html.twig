@@ -23,10 +23,10 @@
                 },
                 {
                     'url': 'contenido_cargar_secciones',
-                    'descripcion': asignatura.temario.titulo, 
+                    'descripcion': temario.titulo, 
                     'parametros': {
                     	'asignatura': asignatura.titulo,
-                    	'temario': asignatura.temario.titulo
+                    	'temario': temario.titulo
                 	}
                 }
 
@@ -41,18 +41,18 @@
 	<div>Cabecera de temario</div>
 	<div>Descripción del temario</div>
 
-	{# 
-		Los métodos serán jquery para ocultar y mostrar bloques 
-		Sólo se podrá activar un modo u otro si el usuario está matriculado en todo el temario
-	#}
-	<div>
-		<button>Guiado</button>
-	</div>
+    {# 
+        Los métodos serán jquery para ocultar y mostrar bloques 
+        Sólo se podrá activar un modo u otro si el usuario está matriculado en todo el temario
+    #}
 
-	<div>
-		<button>Libre</button>
-	</div>
-	
+    {% if temario.matriculado %}
+        {% if guiado is not defined %}
+            {% set guiado = true %}
+        {% endif %}
+        Estudio guiado: <input type="checkbox" id="guiado" checked >
+    {% endif %}
+
 	{% block seccion %}
 		<div>
 			{% include('Aula/indice_secciones.html.twig') %}
@@ -61,4 +61,20 @@
 
 {% endblock %}
 
+{% block javascripts %}
+    {{parent()}}
+
+    <script type='text/javascript'>
+    $jQuery_3_3_1(document).ready(
+        function(){
+            $('input#guiado').bind('change', function() { 
+                $("div#progreso").toggle(this.checked);
+                $("div#paso").toggle(this.checked);
+                $("div#display").toggle(this.checked);
+            }); 
+        }
+    );
+    </script>
+
+{% endblock %}
 

@@ -1,37 +1,37 @@
 <ul>
-	<li><a href="{{ path('contenido_videos_categoria', {
-		'asignatura': 'Asignatura A1',
-		'categoria': 'Categoría C1'
-	}) }}">Videos</a></li>
+	<li>Vídeos
+		<ul>
+			{% for categoria in asignatura.getCategorias() %}
+				<li><a href="{{ path('contenido_videos_categoria', {
+						'asignatura': asignatura.titulo,
+						'categoria': categoria.descripcion}) 
+					}}">{{categoria.descripcion}}</a>
+				</li>
+			{% endfor %}
+		</ul>
+	</li>
+
 	<li><a href="{{ path('contenido_documentos_asignatura', {
-		'asignatura': 'Asignatura A3'
+		'asignatura': asignatura.titulo
 	}) }}">Documentos</a></li>
 
 	<li>Temarios
 		<ul>
-			<li><a href="{{ path('contenido_indice_temario', {
-					'asignatura': 'Asignatura A1', 
-					'temario': 'Temario T1'}) 
-				}}">Temario T1</a>
-			</li>
-			<li><a href="{{ path('contenido_indice_temario', {
-					'asignatura': 'Asignatura A1', 
-					'temario': 'Temario T2'}) 
-				}}">Temario T2</a>
-			</li>
-			<li><a href="{{ path('contenido_indice_temario', {
-					'asignatura': 'Asignatura A1', 
-					'temario': 'Temario T3'}) 
-				}}">Temario T3</a>
-			</li>
+			{% for temario in asignatura.getTemarios %}
+				<li><a href="{{ path('contenido_indice_temario', {
+						'asignatura': asignatura.titulo, 
+						'temario': temario.titulo}) 
+					}}">{{temario.titulo}}</a>
+				</li>
+			{% endfor %}
 		</ul>
 	</li>
 
 	<li>Foros
 		<ul>
-			<li><a href="http://forocoches.es">Foro F1</a></li>
-			<li><a href="http://forocoches.es">Foro F2</a></li>
-			<li><a href="http://forocoches.es">Foro F3</a></li>
+			{% for foro in asignatura.getForos %}
+				<li><a href="{{foro.url}}" target="_blank">{{foro.descripcion}}</a></li>
+			{% endfor %}
 		</ul>
 	</li>	
 </ul>

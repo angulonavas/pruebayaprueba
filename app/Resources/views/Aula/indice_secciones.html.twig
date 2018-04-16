@@ -1,34 +1,15 @@
-		{% 
-			set secciones = [
-				{
-					'id': 1,
-					'descripcion': 'Seccion S1', 
-				}, 
-				{
-					'id': 2,
-					'descripcion': 'Seccion S2', 
-				}, 
-				{
-					'id': 3,
-					'descripcion': 'Seccion S3', 
-				}, 
-				{
-					'id': 4,
-					'descripcion': 'Seccion S4', 
-				}, 
+{% for seccion in temario.getSecciones() %}
 
-			] 
-		%}
-					
-			{% for seccion in secciones %}
+	{% if seccion.matriculado %}
+		<div>
+			<a href="{{ path('contenido_cargar_seccion', {
+				'asignatura': asignatura.titulo,
+				'temario': temario.titulo,
+				'seccion': seccion.titulo,
+			}) }}">{{seccion.titulo}}</a>
+		</div>		
+	{% endif %}
 
-				<div>
-					<a href="{{ path('contenido_cargar_seccion', {
-						'asignatura': 'Asignatura A1',
-						'temario': 'temario T1',
-						'seccion': seccion.descripcion
-					}) }}">{{seccion.descripcion}}</a>
-				</div>
-			{% endfor %}
+{% endfor %}
 
 

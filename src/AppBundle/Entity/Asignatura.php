@@ -65,12 +65,10 @@ class Asignatura
      */
     private $documentos;
 
-                /**
+    /**
      * @ORM\OneToMany(targetEntity="Foro_Asignatura", mappedBy="asignatura")
      */
     private $foros_asignatura;
-
-
 
     public function __construct()
     {
@@ -185,5 +183,41 @@ class Asignatura
     {
         return $this->disenyo;
     }
+
+    /**
+     * Get temarios: transforma un ArrayCollection en un array y le da la vuelta.
+     * Después devuelve un array
+     * @return Array
+     */
+    public function getTemarios() {
+        return array_reverse($this->temarios->toArray());
+    }
+
+    /**
+     * Get categorías: transforma un ArrayCollection en un array y le da la vuelta.
+     * Después devuelve un array
+     * @return Array
+     */
+    public function getCategorias() {
+        return array_reverse($this->categorias->toArray());
+    }
+
+    /**
+     * Get documentos: transforma un ArrayCollection en un array y le da la vuelta.
+     * Después devuelve un array
+     * @return Array
+     */
+    public function getDocumentos() {
+        return array_reverse($this->documentos->toArray());
+    }  
+
+    /**
+     * Get foros: transforma un ArrayCollection en un array y le da la vuelta.
+     * Después devuelve un array
+     * @return Array
+     */
+    public function getForos() {
+        return array_reverse($this->foros_asignatura->toArray());
+    }    
 }
 

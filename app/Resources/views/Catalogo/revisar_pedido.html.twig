@@ -1,0 +1,65 @@
+{% extends 'Contenido/raiz.html.twig' %}
+
+{% block breadcrumbs %}
+
+    <div>
+        {# Definiendo los nodos del breadcrums #}
+        {% set nodos = [
+                {
+                    'url': 'contenido_raiz',
+                    'descripcion': '#', 
+                }, 
+                {
+                    'url': 'catalogo_pedido',
+                    'descripcion': 'Pedido', 
+                }, 
+            ] 
+        %}            
+        {% include('Contenido/breadcrums.html.twig') %}
+    </div>
+
+{% endblock %}
+
+{% block bloqueB %}
+	<div>[2/3] Revisa tus datos y los de tu matrícula</div>
+
+	<div>{{ app.user.nombre ~ app.user.apellidos }}</div>
+	<div>{{ '(' ~ app.user.username ~ ') ' ~ app.user.email }}</div>
+
+	<table>
+
+		<tr>
+			<th>Descripción</th>
+			<th>Precio</th>
+		</tr>
+
+		{% set total = 0 %}
+		{% for concepto in conceptos %}
+			<tr>
+				<td>{{ (concepto | nombre_clase) ~ ': ' ~ concepto.titulo  }}</td>
+				<td>{{concepto.precio ~ '€'}}</td>
+			</tr>
+			{% set total = total + concepto.precio %}
+		{% endfor %}
+		
+		<tr><td colspan="2">iva incluido</td></tr>
+
+		<tr>
+			<td>Total</td>
+			<td>{{total ~ '€'}}</td>
+		</tr>
+
+	</table>
+
+	<div>
+		<form name="frm" action="https://sis-i.redsys.es:25443/sis/realizarPago" method="POST">
+			<input type="hidden" name="Ds_SignatureVersion" value="{{ token_seguridad.version }}"/>
+			<input type="hidden" name="Ds_MerchantParameters" value="{{ token_seguridad.parametros }}"/>
+			<input type="hidden" name="Ds_Signature" value="{{ token_seguridad.firma }}"/>
+			<button type="submit">Abonar matrícula</button>
+		</form>		
+	</div>
+
+{% endblock %}
+
+

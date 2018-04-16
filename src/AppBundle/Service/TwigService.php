@@ -5,7 +5,7 @@ namespace AppBundle\Service;
 use SeguridadBundle\Entity\Usuario; 
 use Doctrine\ORM\EntityManagerInterface;
 
-class AlumnadoService {
+class TwigService {
 
     private $em;
 
@@ -26,5 +26,12 @@ class AlumnadoService {
         $count = $qb->getQuery()->getSingleScalarResult();        
 
         return $count;
+    }
+
+    public function getNum_conceptos($request) {
+
+        $session = $request->getSession();
+
+        return count($session->get('conceptos'));
     }
 }

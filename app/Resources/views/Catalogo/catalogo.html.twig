@@ -26,16 +26,15 @@
 	<div>
 		{% include('Catalogo/menu_catalogo.html.twig') %}
 	</div>
-	<div>
-		<form action="{{ path('catalogo_buscar_secciones', {'frase':'q1'}) }}" method="get">
-        	<input type="text" id="search" name="frase" placeholder="Busca secciones" />
-	    	<button type="submit">Buscar</button>
-		</form>		
-	</div>
 
-	<div>
-		Descripción del catálgo
-	</div>
+    {% block descripcion_catalogo %}
+        <div>
+            Descripción del catálgo
+        </div>        
+    {% endblock %}
+
+    {% block buscador %}
+    {% endblock %}
 
 	{% block cuerpo_catalogo %}
 		Cuerpo del catálogo

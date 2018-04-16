@@ -65,6 +65,13 @@ class Seccion
     private $precio;
 
     /**
+     * @var float
+     *
+     * @ORM\Column(name="iva", type="float")
+     */
+    private $iva = 11;
+
+    /**
      * @var string
      *
      * @ORM\Column(name="plantilla", type="string", length=32, unique=true)
@@ -99,6 +106,18 @@ class Seccion
      */
     private $preguntas_examen;
 
+   /**
+     * @ORM\OneToMany(targetEntity="Consulta", mappedBy="seccion")
+     */
+    private $consulta;
+    private $isConsulta;
+
+    // Si el usuario está o no matriculado en la sección
+    private $matriculado;
+
+
+
+
     public function __construct()
     {
         $this->matriculas_secciones = new ArrayCollection();
@@ -113,30 +132,6 @@ class Seccion
     public function getId()
     {
         return $this->id;
-    }
-
-    /**
-     * Set codigo
-     *
-     * @param string $codigo
-     *
-     * @return Seccion
-     */
-    public function setCodigo($codigo)
-    {
-        $this->codigo = $codigo;
-
-        return $this;
-    }
-
-    /**
-     * Get codigo
-     *
-     * @return string
-     */
-    public function getCodigo()
-    {
-        return $this->codigo;
     }
 
     /**
@@ -185,6 +180,30 @@ class Seccion
     public function getDescripcion()
     {
         return $this->descripcion;
+    }
+
+    /**
+     * Set orden
+     *
+     * @param string $orden
+     *
+     * @return Seccion
+     */
+    public function setOrden($orden)
+    {
+        $this->orden = $orden;
+
+        return $this;
+    }
+
+    /**
+     * Get orden
+     *
+     * @return string
+     */
+    public function getOrden()
+    {
+        return $this->orden;
     }
 
     /**
@@ -260,6 +279,30 @@ class Seccion
     }
 
     /**
+     * Set iva
+     *
+     * @param float $iva
+     *
+     * @return Seccion
+     */
+    public function setIva($iva)
+    {
+        $this->iva = $iva;
+
+        return $this;
+    }
+
+    /**
+     * Get iva
+     *
+     * @return float
+     */
+    public function getIva()
+    {
+        return $this->iva;
+    }
+
+    /**
      * Set plantilla
      *
      * @param string $plantilla
@@ -316,7 +359,7 @@ class Seccion
      */ 
     public function setAnterior($anterior) 
     { 
-        $this->anterior = $anterior; 
+        $this->anterior = $anterior;        
 
         return $this; 
     } 
@@ -328,7 +371,7 @@ class Seccion
      */ 
     public function getAnterior() 
     { 
-        return $this->anterior; 
+        return ($this->anterior) ? $this->anterior : $this; 
     } 
 
    /** 
@@ -352,8 +395,69 @@ class Seccion
      */ 
     public function getPosterior() 
     { 
-        return $this->posterior; 
+        return ($this->posterior) ? $this->posterior : $this; 
     } 
 
+        /** 
+     * Get asignatura 
+     * 
+     * @return Asignatura 
+     */ 
+    public function getAsignatura() 
+    { 
+        return $this->asignatura; 
+    }
+
+    /**
+     * Get matriculado
+     * @return booleano
+     */
+    public function getMatriculado() {
+        return $this->matriculado;
+    }
+
+    /**
+     * Set matriculado
+     * @param boolean $matriculado
+     * @return boolean
+     */
+    public function setMatriculado($matriculado) {
+        $this->matriculado = $matriculado;
+        return $this;
+    }
+
+       /**
+     * Get consultas: si no está formateado, primero llama para formatear el array de consultas.
+     * Después devuelve el array formateado
+     * @return Array
+     */
+    public function getConsultas() {
+        if (!$this->isConsultas) $this->setConsultas();
+        return $this->consultas;
+    } 
+
+    /**
+     * Get consultas: transforma un ArrayCollection en un array y le da la vuelta.
+     * Después devuelve un array
+     * @return Array
+     */
+    public function setConsultas() {
+        
+        // 1.- Se define vector auxiliar y se transforma arraycollectionen array
+        $vector_aux = [];
+        $this->consultas = $this->consultas->toArray();
+
+        // 2.- Por cada item del array rellenaremos el vector auxiliar con el campo que se desea ordenar
+        foreach($this->consultas as $i => $consulta) { 
+            $vector_aux[$i] = $consulta->getFecha(); 
+        }
+
+        // 3.- Ordenamos definitivamente el vector en base a la ordenación del vector auxiliar
+        array_multisort($vector_aux, $this->consultas);
+
+        // 4.- Se indica que ya se ha ejecutado la ordenación y cada vez que se llame a getConsultas no será
+        // preciso volver a ejectuar todo el trabajo
+        $this->isSecciones = true;
+    }  
 }
 

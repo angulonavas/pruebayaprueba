@@ -23,59 +23,53 @@
 {% block bloqueB %}
 
 	<div>
-		<div>Cabecera de factura</div>
-		<div>Gracias por confiar en nosotros.</div>
-		<div>Alumno: Pepe García</div>
-		<div>Fecha factura: 12/03/2018</div>
+		<div>[3/3] ¡Enhorabuena! Estás matriculado!</div>
+		<div>Ya puedes tener acceso al aultario cuando quieras</div>
+
+		<div>{{ 'Número de factura: ' ~ factura.codigo }}</div>
+		<div>{{ app.user.nombre ~ app.user.apellidos }}</div>
+		<div>{{ '(' ~ app.user.username ~ ') ' ~ app.user.email }}</div>
+		<div>Fecha factura: {{ factura.fecha | fecha_normal }}</div>
 	</div>
 
 	<table>
-		{% 
-			set conceptos = [
-				{
-					'id': 2,
-					'descripcion': 'Seccion S1 de Temario T3 de Asignatura A2', 
-					'precio': '20€',
-				}, 
-				{
-					'id': 3,
-					'descripcion': 'Servicio S112',
-					'precio': '12€',
-				}, 
-				{
-					'id': 4,
-					'descripcion': 'Temario T3 de Asignatura A1', 
-					'precio': '20€',
-				}, 
-			] 
-		%}
-
 
 		<tr>
 			<th>Descripción</th>
+			<th>Impuestos</th>
 			<th>Precio</th>
 		</tr>
 
-		{% for concepto in conceptos %}
+		{% for concepto in factura.getConceptos() %}
 			<tr>
-				<td>{{concepto.descripcion}}</td>
-				<td>{{concepto.precio}}</td>
+				<td>{{ concepto.descripcion }}</td>
+				<td>{{concepto.iva ~ '%'}}</td>
+				<td>{{concepto.precio ~ '€'}}</td>
 			</tr>
 		{% endfor %}
+		
+		<tr>
+			<td>Base imponible:</td>
+			<td>&nbsp;</td>
+			<td>{{factura.total - factura.iva ~ '€'}}</td>
+		<tr>
 
 		<tr>
-			<td>IVA (21%)</td>
-			<td>2,34€</td>
+			<td>Impuestos:</td>
+			<td>&nbsp;</td>
+			<td>{{factura.iva ~ '€'}}</td>
 		</tr>
 
 		<tr>
-			<td>Total</td>
-			<td>12,75€</td>
+			<td>Importe total:</td>
+			<td>&nbsp;</td>
+			<td>{{factura.total ~ '€'}}</td>
 		</tr>
+
 	</table>
 
 	<div>
-		<a href="{{ path('catalogo_abonar') }}">Imprmir</a>
+		<button onclick="window.print()">Imprimir</button>
 	</div>
 
 {% endblock %}

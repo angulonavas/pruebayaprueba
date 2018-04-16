@@ -31,22 +31,23 @@
 	{{consultor.num_consultas}} Consultas al profesor ({{consultor.num_respuestas}} Respuestas)
 </div>
 
-{% for consulta in consultor.consultas %}
+{% for consulta in consultas %}
 	<div>Consulta:</div>
-	<div>{{consulta.fecha}}</div>
+	<div>{{consulta.fecha | date('d/m/Y H:i')}}</div>
 	<div>{{consulta.descripcion}}</div>
-	<div>{{consulta.usuario}}</div>
+	<div>{{consulta.usuario.username}}</div>
 
-	{% if consulta.respuesta is defined %}
+	{% if consulta.respuesta is not null %}
 		<div>
 			<div>Respuesta:</div>
-			<div>{{consulta.respuesta.fecha}}</div>
+			<div>{{consulta.respuesta.fecha | date('d/m/Y H:i')}}</div>
 			<div>{{consulta.respuesta.descripcion}}</div>
-			<div>{{consulta.respuesta.usuario}}</div>
+			<div>{{consulta.respuesta.usuario.username}}</div>
 		</div>
 	{% endif %}
 {% endfor %}
 
+{#
 <a href="{{ path('contenido_cargar_consultas', {
 					'asignatura': 'Asignatura A1',
 					'temario': 'temario T1',
@@ -54,16 +55,14 @@
 					'id': 10
 				}) 
 			}}">Cargar más consultas</a>
+#}
 
-<form action="{{ path('contenido_enviar_consulta', {
-					'asignatura': 'Asignatura A1',
-					'temario': 'temario T1',
-					'seccion': 'Sección S1'
-				}) 
-			}}">
+{% if is_granted('ROLE_ALUMNO') %}
+
 	<div>
-		<input type="textarea" placeholder="Consultar..." />
-		<button type="submit">Enviar</button>
-		<div>Usuario</div>
-	</div>
-</form>
+		{{ form_start(form_consulta) }}
+		{{ form_widget(form_consulta) }}
+		{{ form_end(form_consulta) }}
+	</div>	   
+
+{% endif %}

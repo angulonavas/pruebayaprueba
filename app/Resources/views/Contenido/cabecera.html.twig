@@ -15,5 +15,5 @@
 	</div>
 {% endif %}
 
-<div><a href="{{ path('catalogo_pedido')}}">matrículas(0)</a></div>
+<div><a href="{{ path('catalogo_pedido')}}">{{ 'matrículas(' ~ twig_service.getNum_conceptos(app.request) ~ ')' }}</a></div>
 

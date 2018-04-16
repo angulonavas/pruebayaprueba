@@ -1,25 +1,8 @@
-		{% 
-			set asignaturas = [
-				{
-					'id': 2,
-					'descripcion': 'Asignatura A1', 
-				}, 
-				{
-					'id': 3,
-					'descripcion': 'Asignatura A2',
-				}, 
-				{
-					'id': 4,
-					'descripcion': 'Asignatura A3', 
-				}, 
-			] 
-		%}
-
 <div>
-	{% for asignatura in asignaturas %}
-		<div>{{asignatura.descripcion}}</div>
-		<a href="{{ path('contenido_asignatura', {'asignatura': asignatura.descripcion}) }}">Información</a>
-		<a href="{{ path('contenido_cargar_temarios', {'asignatura': asignatura.descripcion}) }}">Aula</a>
+	{% for asignatura in acceso_asignaturas.get_asignaturas %}
+		<div>{{asignatura.titulo}}</div>
+		<a href="{{ path('contenido_asignatura', {'asignatura': asignatura.titulo}) }}">Información</a>
+		<a href="{{ path('contenido_cargar_temarios', {'asignatura': asignatura.titulo}) }}">Aula</a>
 	{% endfor %}
 </div>
 

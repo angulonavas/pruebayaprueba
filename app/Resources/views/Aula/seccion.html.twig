@@ -23,15 +23,15 @@
                 },
                 {
                     'url': 'contenido_cargar_secciones',
-                    'descripcion': asignatura.temario.titulo, 
+                    'descripcion': temario.titulo, 
                     'parametros': {
                     	'asignatura': asignatura.titulo,
-                    	'temario': asignatura.temario.titulo
+                    	'temario': temario.titulo
                 	}
                 },
                 {
                     'url': 'contenido_cargar_seccion',
-                    'descripcion': asignatura.temario.seccion, 
+                    'descripcion': seccion.titulo, 
                 }, 
 
             ] 
@@ -41,24 +41,21 @@
 
 {% endblock %}
 
-{% set progreso = {
-		porcentaje: 75,
-		paso: 23
-	} 
-%}
+{% set progreso = (seccion.orden * 100) / temario.getSecciones() | length %}
 
 {% block seccion %}
+
 	<div>título de sección</div>
 
-	<div class="progress">
+	<div id="progreso" class="progress">
     	<div class="progress-bar progress-bar-success progress-bar-striped active" role="progressbar" 
-    		aria-valuenow="{{progreso.porcentaje}}" aria-valuemin="0" aria-valuemax="100" 
-            style="width:{{progreso.porcentaje ~ '%'}}">
-            {{progreso.porcentaje ~ '%'}}
+    		aria-valuenow="{{progreso}}" aria-valuemin="0" aria-valuemax="100" 
+            style="width:{{progreso ~ '%'}}">
+            {{progreso ~ '%'}}
 		</div>
 	</div>
 
-    <div>{{ 'Paso [' ~ progreso.paso ~ ']'}}</div>	
+    <div id="paso">{{ 'Paso [' ~ seccion.orden ~ '] de ' ~ temario.getSecciones() | length }}</div>
 
     {% block cuerpo_seccion %}
     {% endblock %}
@@ -70,39 +67,35 @@
     <div id="display">
 		<div>
 			<a href="{{ path('contenido_cargar_seccion', {
-				'asignatura': 'Asignatura A1',
-				'temario': 'temario T1',
-				'seccion': 'Sección S1'
+                'asignatura': asignatura.titulo,
+                'temario': temario.titulo,
+                'seccion': temario.getPrimera_seccion().titulo
 			}) }}">Primera sección</a>
 		</div>
 		<div>
 			<a href="{{ path('contenido_cargar_seccion', {
-				'asignatura': 'Asignatura A1',
-				'temario': 'temario T1',
-				'seccion': 'Sección S1'
+                'asignatura': asignatura.titulo,
+                'temario': temario.titulo,
+                'seccion': seccion.getAnterior().titulo
 			}) }}">Sección anterior</a>
 		</div>
 		<div>
 			<a href="{{ path('contenido_guardar_guia', {
-				'asignatura': 'Asignatura A1',
-				'temario': 'temario T1',
-				'seccion': 'Sección S1'
+				'asignatura': asignatura.titulo,
+				'temario': temario.titulo,
+				'seccion': seccion.titulo
 			}) }}">Guardar</a>
 		</div>
 
 		<div>
 			<a href="{{ path('contenido_cargar_seccion', {
-				'asignatura': 'Asignatura A1',
-				'temario': 'temario T1',
-				'seccion': 'Sección S1'
+                'asignatura': asignatura.titulo,
+                'temario': temario.titulo,
+                'seccion': seccion.getPosterior().titulo
 			}) }}">Sección posterior</a>
 		</div>
 	</div>
 
-	<div id="consultas">
-
-	</div>
+	<div id="consultas"></div>
 
 {% endblock %}
-
-

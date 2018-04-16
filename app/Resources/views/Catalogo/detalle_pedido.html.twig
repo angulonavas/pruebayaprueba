@@ -21,29 +21,9 @@
 {% endblock %}
 
 {% block bloqueB %}
-	<div>Cabecera de pedido</div>
+	<div>[1/3] Aquí tienes el detalle de tu pedido</div>
 
 	<table>
-		{% 
-			set conceptos = [
-				{
-					'id': 2,
-					'descripcion': 'Seccion S1 de Temario T3 de Asignatura A2', 
-					'precio': '20€',
-				}, 
-				{
-					'id': 3,
-					'descripcion': 'Servicio S112',
-					'precio': '12€',
-				}, 
-				{
-					'id': 4,
-					'descripcion': 'Temario T3 de Asignatura A1', 
-					'precio': '20€',
-				}, 
-			] 
-		%}
-
 
 		<tr>
 			<th>Descripción</th>
@@ -51,29 +31,35 @@
 			<th>&nbsp;</th>
 		</tr>
 
+		{% set total = 0 %}
 		{% for concepto in conceptos %}
 			<tr>
-				<td>{{concepto.descripcion}}</td>
-				<td>{{concepto.precio}}</td>
-				<td><a href="{{ path('catalogo_eliminar_concepto', {'concepto': concepto.id}) }}">Eliminar</a></td>
+				<td>{{ (concepto | nombre_clase) ~ ': ' ~ concepto.titulo  }}</td>
+				<td>{{concepto.precio ~ '€'}}</td>
+				<td><a href="{{ path('catalogo_eliminar_concepto', {
+					'tipo_concepto': (concepto | nombre_clase),
+					'id_concepto': concepto.id
+					}) }}">Eliminar</a>
+				</td>
 			</tr>
+			{% set total = total + concepto.precio %}
 		{% endfor %}
-
-		<tr>
-			<td>IVA (21%)</td>
-			<td>2,34€</td>
-			<td>&nbsp;</td>
-		</tr>
+		
+		<tr><td colspan="2">iva incluido</td></tr>
 
 		<tr>
 			<td>Total</td>
-			<td>12,75€</td>
+			<td>{{total ~ '€'}}</td>
 			<td>&nbsp;</td>
 		</tr>
+
 	</table>
 
 	<div>
-		<a href="{{ path('catalogo_abonar') }}">Abonar matrícula</a>
+		<form name="frm" action="{{ path('catalogo_revisar_pedido')}}" method="post">
+			<input type="hidden" name="importe" value="{{ total }}" />
+			<button type="submit">Inicia el proceso de matriculación</button>
+		</form>		
 	</div>
 
 {% endblock %}

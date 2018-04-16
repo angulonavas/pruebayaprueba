@@ -28,32 +28,23 @@
 
 {% block cuerpo_aula %}
 	<div>Lista de temarios para acceder</div>
-	
-		{% 
-			set temarios = [
-				{
-					'id': 2,
-					'descripcion': 'Temario T1', 
-				}, 
-				{
-					'id': 3,
-					'descripcion': 'Temario T2',
-				}, 
-			] 
-		%}
 
-<div>
-	{% for temario in temarios %}
+	<div>
+		{% for temario in asignatura.getTemarios() %}
 
-		<div>
-			<a href="{{ path('contenido_cargar_secciones', {
-				'asignatura': asignatura.titulo,
-				'temario': temario.descripcion
-			}) }}">{{temario.descripcion}}</a>
-		</div>
-		
-	{% endfor %}
-</div>
+			{% if temario.matriculado %}
+				
+				<div>
+					<a href="{{ path('contenido_cargar_secciones', {
+						'asignatura': asignatura.titulo,
+						'temario': temario.titulo
+					}) }}">{{temario.titulo}}</a>
+				</div>
+
+			{% endif %}
+			
+		{% endfor %}
+	</div>
 
 {% endblock %}
 

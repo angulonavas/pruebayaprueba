@@ -25,6 +25,17 @@
 
 {% endblock %}
 
+{% block buscador %}
+
+	<div>
+		<form action="{{ path('catalogo_buscar_secciones') }}" method="post">
+        	<input type="text" id="frase" name="frase" placeholder="Busca secciones" />
+	    	<button type="submit">Buscar</button>
+		</form>
+	</div>
+
+{% endblock %}
+
 {% block cuerpo_catalogo %}
 	<div>Catálogo de asignaturas</div>
 	<table>
@@ -33,68 +44,14 @@
 			<th>Precio</th>
 			<th>Matrícula</th>
 		</tr>
-		{% 
-			set asignaturas = [
-				{
-					'descripcion': 'Asignatura A1', 
-					'temarios': [
-						{
-							'id': 13,
-							'titulo': 'Temario T1',
-							'precio': '200€',
-							'matriculado': true,
-							'secciones': []
-						}, 
-						{
-							'id': 14,
-							'titulo': 'Temario T2',
-							'precio': '100€',
-							'matriculado': false,
-							'secciones': [
-								{
-									'id': 144,
-									'descripcion': 'Sección S1',
-									'precio': '10€',
-									'matriculado': true,
-								},
-								{
-									'id': 124,
-									'descripcion': 'Sección S2',
-									'precio': '20€',
-									'matriculado': true,
-								},
-								{
-									'id': 148,
-									'descripcion': 'Sección S3',
-									'precio': '30€',
-									'matriculado': false,
-								},
-							]
-						}						
-					]
-				},
-				{
-					'descripcion': 'Asignatura A2',
-					'temarios': [
-						{
-							'id': 15,
-							'titulo': 'Temario T1',
-							'precio': '300€',
-							'matriculado': false,
-							'secciones': []
-						},
-					]
-				}
-			] 
-		%}
 
 		{% for asignatura in asignaturas %}
 			
-			<tr><td colspan="3">{{asignatura.descripcion}}</td></tr>
+			<tr><td colspan="3">{{asignatura.titulo}}</td></tr>
 
 			{% for temario in asignatura.temarios %}
 				<tr>
-					<td><a href="{{ path('catalogo_secciones', {'temario': temario.id}) }}">{{temario.titulo}}</a></td>
+					<td><a href="{{ path('catalogo_secciones', {'temario_titulo': temario.titulo}) }}">{{temario.titulo}}</a></td>
 					<td>{{temario.precio}}</td>
 					<td>
 						{% if temario.matriculado %}
@@ -107,13 +64,16 @@
 
 				{% for seccion in temario.secciones %}
 					<tr>
-						<td>{{seccion.descripcion}}</td>
-						<td>{{seccion.precio}}</td>
+						<td>{{seccion.titulo}}</td>
+						<td>{{seccion.precio ~ '€'}}</td>
 						<td>
 							{% if seccion.matriculado %}
 								Matriculado
 							{% else %}
-								<a href="{{ path('catalogo_incluir_seccion', {'seccion': seccion.id}) }}">Matricularse</a>
+								<a href="{{ path('catalogo_incluir_seccion', {
+									'temario_titulo': temario.titulo,
+									'seccion': seccion.id}) 
+								}}">Matricularse</a>
 							{% endif %}
 						</td>
 					</tr>					

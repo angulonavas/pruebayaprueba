@@ -65,6 +65,13 @@ class Servicio
     private $precio;
 
     /**
+     * @var float
+     *
+     * @ORM\Column(name="iva", type="float")
+     */
+    private $iva = 11;
+
+    /**
      * @var bool
      *
      * @ORM\Column(name="publicado", type="boolean")
@@ -75,6 +82,9 @@ class Servicio
      * @ORM\OneToMany(targetEntity="Matricula_Servicios", mappedBy="servicio")
      */
     private $matriculas_servicios;
+
+    // No pertenece a la BBDD. Sirve para comprobar si el usuario está o no matriculado de este servicio
+    private $matriculado;
 
 
 
@@ -238,6 +248,30 @@ class Servicio
     }
 
     /**
+     * Set iva
+     *
+     * @param float $iva
+     *
+     * @return Servicio
+     */
+    public function setIva($iva)
+    {
+        $this->iva = $iva;
+
+        return $this;
+    }
+
+    /**
+     * Get iva
+     *
+     * @return float
+     */
+    public function getIva()
+    {
+        return $this->iva;
+    }
+
+    /**
      * Set publicado
      *
      * @param boolean $publicado
@@ -260,5 +294,23 @@ class Servicio
     {
         return $this->publicado;
     }
+
+   /**
+     * Get matriculado
+     * @return booleano
+     */
+    public function getMatriculado() {
+        return $this->matriculado;
+    }
+
+    /**
+     * Set matriculado
+     * @param boolean $matriculado
+     * @return boolean
+     */
+    public function setMatriculado($matriculado) {
+        $this->matriculado = $matriculado;
+        return $this;
+    }    
 }
 

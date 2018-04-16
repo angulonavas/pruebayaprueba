@@ -49,5 +49,18 @@
 		{{ form_widget(form) }}
 		{{ form_end(form) }}
 	</div>
+
+    <div>Te has matriculado en...</div>
+    {% for matricula in matriculas_temarios %}
+        <div>{{ matricula.getTemario().getTitulo() }}</div>
+    {% endfor %}
+
+    {% for matricula in matriculas_secciones %}
+        <div>{{ matricula.getSeccion().getTitulo() ~ ' de temario ' ~  matricula.getSeccion().getTemario().getTitulo() }}</div>
+    {% endfor %}
+
+    {% for matricula in matriculas_servicios %}
+        <div>{{ matricula.getServicio().getTitulo() }}</div>
+    {% endfor %}
 	
 {% endblock %}
