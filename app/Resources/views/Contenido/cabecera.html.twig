@@ -1,19 +1,21 @@
-<div>logo</div>
-<div>
-	{% include('Contenido/menu_principal.html.twig') %}
-</div>
-
-{% if not is_granted('ROLE_ALUMNO') %}
-	<div><a href="{{ path('usuario_autentificar') }}">Acceso al sistema</a></div>
-{% else %}
-	<div>
-		{{app.user.nombre ~ ' ' ~ app.user.apellidos ~ ' (@' ~ app.user.username ~ ')'}}
-		<ul>
-			<li><a href="{{ path('usuario_perfil', {'username': app.user.username}) }}">perfil</a></li>
-			<li><a href="{{ path('logout') }}">cerrar sesión</a></li>
-		</ul>
+<div class="row">
+	<div class="col-8">
+		{% include('Contenido/menu_principal.html.twig') %}
 	</div>
-{% endif %}
 
-<div><a href="{{ path('catalogo_pedido')}}">{{ 'matrículas(' ~ twig_service.getNum_conceptos(app.request) ~ ')' }}</a></div>
+	{% if not is_granted('ROLE_ALUMNO') %}
+		<div class="col-2"><a href="{{ path('usuario_autentificar') }}">Acceso al sistema</a></div>
+	{% else %}
+		<div class="col-2">
+			{{app.user.nombre ~ ' ' ~ app.user.apellidos ~ ' (@' ~ app.user.username ~ ')'}}
+			<ul>
+				<li><a href="{{ path('usuario_perfil', {'username': app.user.username}) }}">perfil</a></li>
+				<li><a href="{{ path('logout') }}">cerrar sesión</a></li>
+			</ul>
+		</div>
+	{% endif %}
 
+	<div class="col-2">
+		<a href="{{ path('catalogo_pedido')}}">{{ 'matrículas(' ~ twig_service.getNum_conceptos(app.request) ~ ')' }}</a>
+	</div>
+</div>

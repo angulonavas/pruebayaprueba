@@ -7,60 +7,66 @@
 
 {% block body %}
 
-    <div>
+    <div class="bloque container-fluid">
         {% include('Contenido/cabecera.html.twig') %}
     </div>
 
-    <div id="bloqueA">
-        bloqueA:
+    <div class="row">
+        <div id="bloqueA" class="col-2">
 
-        {% set indice_secciones = false %}
-        {% if indice_secciones %}
-            <div>
-                {% include('Aula/indice_secciones.html.twig') %}
-            </div>        
-        {% endif %}
-
-        <div>
-            {% include('Contenido/anuncios.html.twig') %}
-        </div>
-
-        <div>
-            {% include('Contenido/acceso_asignaturas.html.twig') %}
-        </div>
-
-        <div>
-            {% if false %}
-                {% include('Aula/indice_secciones.html.twig') %}
+            {% set indice_secciones = false %}
+            {% if indice_secciones %}
+                <div>
+                    {% include('Aula/indice_secciones.html.twig') %}
+                </div>        
             {% endif %}
-        </div>
-    </div>
 
-    <div id="bloqueB">
-
-        {% block breadcrumbs %}
-            
             <div>
-                {# Definiendo los nodos del breadcrums #}
-                {% set nodos = [
-                        {
-                            'url': 'contenido_raiz',
-                            'descripcion': '#', 
-                        }, 
-                    ] 
-                %}            
-                {% include('Contenido/breadcrums.html.twig') %}
+                {% include('Contenido/anuncios.html.twig') %}
             </div>
 
-        {% endblock %}        
+            <div>
+                {% include('Contenido/acceso_asignaturas.html.twig') %}
+            </div>
 
-        {% block bloqueB %}
-            Cuerpo del bloqueB:<br>
-        {% endblock %}
+            <div>
+                {% if false %}
+                    {% include('Aula/indice_secciones.html.twig') %}
+                {% endif %}
+            </div>
+        </div>
+
+        <div id="bloqueB" class="col-8">
+
+            {% block breadcrumbs %}
+                
+                <div>
+                    {# Definiendo los nodos del breadcrums #}
+                    {% set nodos = [
+                            {
+                                'url': 'contenido_raiz',
+                                'descripcion': '#', 
+                            }, 
+                        ] 
+                    %}            
+                    {% include('Contenido/breadcrums.html.twig') %}
+                </div>
+
+            {% endblock %}        
+
+            {% block bloqueB %}
+                <div>
+                    {% include('Contenido/acceso_asignaturas.html.twig') %}
+                </div>
+
+            {% endblock %}
+        </div>
     </div>
 
-    <div>
-        {% include('Contenido/pie.html.twig') %}
+    <div class="row">
+        <div class="col">
+            {% include('Contenido/pie.html.twig') %}
+        </div>
     </div>
 
     <div>aceptar cookies</div>
