@@ -31,6 +31,9 @@ framework:
     assets: ~
     php_errors:
         log: true
+    templating:
+        engines: ['twig']        
+    translator: { fallbacks: ["%locale%"] }        
 
 # Twig Configuration
 twig:
@@ -72,3 +75,11 @@ swiftmailer:
     username: '%mailer_user%'
     password: '%mailer_password%'
     spool: { type: memory }
+
+# config/packages/sonata.yaml
+sonata_block:
+    default_contexts: [cms]
+    blocks:
+        # enable the SonataAdminBundle block
+        sonata.admin.block.admin_list:
+            contexts: [admin_area]            

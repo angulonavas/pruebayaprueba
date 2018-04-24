@@ -18,6 +18,15 @@ class AppKernel extends Kernel
             new Sensio\Bundle\FrameworkExtraBundle\SensioFrameworkExtraBundle(),
             new AppBundle\AppBundle(),
             new SeguridadBundle\SeguridadBundle(),
+
+            // These are the other bundles the SonataAdminBundle relies on
+            new Sonata\DoctrineORMAdminBundle\SonataDoctrineORMAdminBundle(),            
+            new Sonata\CoreBundle\SonataCoreBundle(),
+            new Sonata\BlockBundle\SonataBlockBundle(),
+            new Knp\Bundle\MenuBundle\KnpMenuBundle(),
+
+            // And finally
+            new Sonata\AdminBundle\SonataAdminBundle(),            
         ];
 
         if (in_array($this->getEnvironment(), ['dev', 'test'], true)) {
