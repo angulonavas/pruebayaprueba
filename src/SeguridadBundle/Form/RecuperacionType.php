@@ -19,10 +19,25 @@ class RecuperacionType extends AbstractType {
                 'invalid_message' => 'La confirmación de la clave no coincide. Por favor, vuelve a introducirlas',
                 'options' => array('attr' => array('class' => 'password-field', 'minlength' => 4, 'maxlength' => 8)),
                 'required' => true,
-                'first_options'  => array('label' => 'Clave'),
-                'second_options' => array('label' => 'Confirmar clave'),
+                'first_options'  => array(
+                    'label' => 'Clave', 
+                    'attr' => array(
+                        'class' => 'form-control',
+                        'placeholder' => 'Clave'
+                    )
+                ),
+                'second_options' => array(
+                    'label' => 'Confirmar clave', 
+                    'attr' => array(
+                        'class' => 'form-control',
+                        'placeholder' => 'Confirmar clave'                        
+                    )
+                ),
             ))
-            ->add('recuperar', SubmitType::class, array('label' => 'Confirmar'))            
+            ->add('recuperar', SubmitType::class, array(
+                'label' => 'Confirmar',
+                'attr' => array('class' => 'btn btn-primary')
+            ))
         ;
     }
 }

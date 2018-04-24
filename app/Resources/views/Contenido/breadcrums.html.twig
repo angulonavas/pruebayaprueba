@@ -1,10 +1,17 @@
-{% for nodo in nodos %}
-	{% if not loop.last %}
-		{% set parametros = (nodo.parametros is defined) ? nodo.parametros : {} %}
-		<a href="{{path(nodo.url, parametros)}}">{{ nodo.descripcion }}</a>
-		/
-	{% else %}
-		{{ nodo.descripcion }}
-	{% endif %}
-{% endfor %}
+<nav aria-label="breadcrumb">
+	<ol class="breadcrumb">
 
+		{% for nodo in nodos %}
+			{% if not loop.last %}
+				{% set parametros = (nodo.parametros is defined) ? nodo.parametros : {} %}
+				<li class="breadcrumb-item">
+					<a href="{{path(nodo.url, parametros)}}">{{ nodo.descripcion }}</a>
+				</li>		
+			{% else %}
+				<li class="breadcrumb-item active" aria-current="page">
+					{{ nodo.descripcion }}
+				</li>
+			{% endif %}
+		{% endfor %}
+  	</ol>
+</nav>

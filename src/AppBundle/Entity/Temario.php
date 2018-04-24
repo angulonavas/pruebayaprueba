@@ -58,6 +58,13 @@ class Temario
     private $publicado;
 
     /**
+     * @var int
+     *
+     * @ORM\Column(name="orden", type="integer", options={"default" : 0})
+     */
+    private $orden;
+
+    /**
      * @ORM\ManyToOne(targetEntity="Asignatura", inversedBy="temarios")
      * @ORM\JoinColumn(name="id_asignatura", referencedColumnName="id")
      */
@@ -73,18 +80,14 @@ class Temario
      */
     private $secciones;
 
-    // Los parámetros a continuación no forman parte de la entidad:
-    private $isSecciones = false;
-
+    // si el usuario actual está o no matriculado de la presente temario
     private $matriculado;
 
-    private $primera_seccion;
 
 
     public function __construct()
     {
         $this->matriculas_temarios = new ArrayCollection();
-        $this->secciones = new ArrayCollection();
     }
 
     /**
@@ -217,6 +220,30 @@ class Temario
         return $this->publicado;
     }
 
+    /**
+     * Set orden
+     *
+     * @param integer $orden
+     *
+     * @return Temario
+     */
+    public function setOrden($orden)
+    {
+        $this->orden = $orden;
+
+        return $this;
+    }
+
+    /**
+     * Get orden
+     *
+     * @return int
+     */
+    public function getOrden()
+    {
+        return $this->orden;
+    }
+
     /** 
      * Set asignatura
      * 
@@ -259,48 +286,18 @@ class Temario
         return $this;
     }
 
-    /**
-     * Get secciones: si no está formateado, primero llama para formatear el array de secciones.
-     * Después devuelve un array
-     * @return Array
-     */
+    // devuelve las secciones asignadas
     public function getSecciones() {
-        return ($this->isSecciones) ? $this->secciones : $this->setSecciones();
-    }    
-
-    /**
-     * Set secciones: ordena el arraycollection y lo transforma en un array.
-     * Después devuelve un array
-     * @return Array
-     */
-    public function setSecciones() {
-
-        $vector_aux = [];
-        $this->secciones = $this->secciones->toArray();
-
-        foreach($this->secciones as $i => $seccion) { 
-            $vector_aux[$i] = $seccion->getOrden(); 
-        }
-
-        array_multisort($vector_aux, $this->secciones);
-        $this->isSecciones = true;
-        $this->primera_seccion = (count($this->secciones)) ? $this->secciones[0] : null;
-
         return $this->secciones;
     }    
 
-    public function getPrimera_seccion() {
-        if (!$this->primera_seccion) $this->setSecciones();
-        return $this->primera_seccion;
-    }
-
-    public function setPrimera_seccion() {
-        return $this->getSecciones()[0];
+    // asigna las secciones al temario
+    public function setSecciones($secciones) {
+        $this->secciones = $secciones;
     }
 
     public function liberaSecciones() {
         $this->secciones = null;
-        $this->isSecciones = true;
     }
 
     public function setSeccion($seccion) {

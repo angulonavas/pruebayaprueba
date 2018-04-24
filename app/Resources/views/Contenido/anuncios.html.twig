@@ -7,7 +7,7 @@
 		
 
 		{% 
-			set anuncios = [
+			set anuncios2 = [
 				{
 					'id': 32,
 					'descripcion': 'Lorem ipsum dolor sit amet, consectetur adipisicing elit', 
@@ -26,11 +26,11 @@
 
 
 <div id="news-div">
-<ul id="news">
-	{% for anuncio in anuncios %}
-		<li>{{anuncio.descripcion}}</li>
-	{% endfor %}
-</ul>
+	<ul id="news">
+		{% for anuncio in acceso_anuncios.get_anuncios %}
+			<li class="p-2"><span>{{anuncio.descripcion}}</span></li>
+		{% endfor %}
+	</ul>
 </div>
 
 {# Icono y enlace al calendario #}

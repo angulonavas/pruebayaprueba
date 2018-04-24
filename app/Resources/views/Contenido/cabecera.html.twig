@@ -1,21 +1,72 @@
-<div class="row">
-	<div class="col-8">
-		{% include('Contenido/menu_principal.html.twig') %}
-	</div>
+<nav class="navbar navbar-expand-lg navbar-light bg-light">
 
-	{% if not is_granted('ROLE_ALUMNO') %}
-		<div class="col-2"><a href="{{ path('usuario_autentificar') }}">Acceso al sistema</a></div>
-	{% else %}
-		<div class="col-2">
-			{{app.user.nombre ~ ' ' ~ app.user.apellidos ~ ' (@' ~ app.user.username ~ ')'}}
-			<ul>
-				<li><a href="{{ path('usuario_perfil', {'username': app.user.username}) }}">perfil</a></li>
-				<li><a href="{{ path('logout') }}">cerrar sesión</a></li>
-			</ul>
+	<a class="navbar-brand" href="{{ path('contenido_raiz') }}">
+		<img src="/images/icono.png" width="20" height="20" alt="">&nbsp;Pruebayaprueba
+	</a>
+	
+	<button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+    	<span class="navbar-toggler-icon"></span>
+  	</button>
+
+  	<div class="collapse navbar-collapse" id="navbarSupportedContent">
+    	<ul class="navbar-nav mr-auto">
+      		<li class="nav-item active">
+      			<a href="{{ path('contenido_nosotros') }}" class="nav-link">Sobre nosotros</a>
+      		</li>
+			<li class="nav-item active">
+				<a href="{{ path('contenido_colabora') }}" class="nav-link">Colabora con nosotros</a>
+			</li>
+			<li class="nav-item active">
+				<a href="{{ path('contenido_actividad') }}" class="nav-link">¿Qué hacemos?</a>
+			</li>
+			<li class="nav-item active">
+				<a href="{{ path('catalogo_cargar') }}" class="nav-link">Catálogo</a>
+			</li>
+			<li class="nav-item active dropdown">
+			    <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" 
+			    	role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" class="nav-link">En Red</a>
+				<ul class="dropdown-menu" aria-labelledby="navbarDropdown">			    	
+					<li class="dropdown-item">
+						<a href="https://www.facebook.com/search/top/?q=albert%20prueba%20aprueba" target="_blank">Facebook</a>
+					</li>
+					<li class="dropdown-item">
+						<a href="https://www.facebook.com/search/top/?q=albert%20prueba%20aprueba" target="_blank">Twitter</a>
+					</li>
+					<li class="dropdown-item">
+						<a href="https://www.facebook.com/search/top/?q=albert%20prueba%20aprueba" target="_blank">Blog</a>
+					</li>
+				</ul>
+			</li>
+		</ul>
+		<div class="navbar-text mr-sm-4">
+			{% if not is_granted('ROLE_ALUMNO') %}
+				<div>
+					<a href="{{ path('usuario_autentificar') }}">Acceso al sistema</a>
+				</div>
+			{% else %}
+				<div class="nav-item active dropdown">
+			    	<a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" 
+			    		role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" class="nav-link">
+						{{app.user.nombre ~ ' ' ~ app.user.apellidos ~ ' (@' ~ app.user.username ~ ')'}}
+					</a>
+					<ul class="dropdown-menu" >
+						<li class="dropdown-item">
+							<a href="{{ path('usuario_perfil', {'username': app.user.username}) }}">perfil</a>
+						</li>
+						<li class="dropdown-item">
+							<a href="{{ path('logout') }}">cerrar sesión</a>
+						</li>
+					</ul>
+				</div>
+			{% endif %}
 		</div>
-	{% endif %}
+		<div class="navbar-text mr-sm-4">
+			<div>
+				<a href="{{ path('catalogo_pedido')}}" class="btn btn-success">
+					Pedido <span class="badge badge-light">{{twig_service.getNum_conceptos(app.request)}}</span>
+				</a>
+			</div>				
+		</div>
 
-	<div class="col-2">
-		<a href="{{ path('catalogo_pedido')}}">{{ 'matrículas(' ~ twig_service.getNum_conceptos(app.request) ~ ')' }}</a>
 	</div>
-</div>
+</nav>

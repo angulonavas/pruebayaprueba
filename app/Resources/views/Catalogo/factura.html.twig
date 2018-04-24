@@ -32,13 +32,14 @@
 		<div>Fecha factura: {{ factura.fecha | fecha_normal }}</div>
 	</div>
 
-	<table>
-
-		<tr>
-			<th>Descripción</th>
-			<th>Impuestos</th>
-			<th>Precio</th>
-		</tr>
+	<table class="table">
+		<thead class="thead-light">
+			<tr>
+				<th>Descripción</th>
+				<th>Impuestos</th>
+				<th>Precio</th>
+			</tr>
+		</thead>
 
 		{% for concepto in factura.getConceptos() %}
 			<tr>
@@ -69,7 +70,7 @@
 	</table>
 
 	<div>
-		<button onclick="window.print()">Imprimir</button>
+		<button onclick="window.print()" class="btn btn-primary">Imprimir</button>
 	</div>
 
 {% endblock %}

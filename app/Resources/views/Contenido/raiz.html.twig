@@ -3,40 +3,39 @@
 {% block stylesheets %}
     {{ parent() }}
     <link rel="stylesheet" href="{{ asset('anuncios/css/estilos.css') }}" type="text/css">
+    <link rel="stylesheet" type="text/css" href="//cdnjs.cloudflare.com/ajax/libs/cookieconsent2/3.0.3/cookieconsent.min.css" />
+    {#<link rel="stylesheet" href="{{ asset('images/iconos/fontawesome/web-fonts-with-css/css/fontawesome.min.css') }}">#}
+
 {% endblock %}
 
 {% block body %}
-
-    <div class="bloque container-fluid">
+    <div class="container-fluid">
         {% include('Contenido/cabecera.html.twig') %}
     </div>
 
-    <div class="row">
-        <div id="bloqueA" class="col-2">
-
-            {% set indice_secciones = false %}
-            {% if indice_secciones %}
-                <div>
-                    {% include('Aula/indice_secciones.html.twig') %}
-                </div>        
-            {% endif %}
-
-            <div>
+    <div class="container-fluid mt-2">
+        <div class="row">
+            <div class="col">
                 {% include('Contenido/anuncios.html.twig') %}
             </div>
+        </div>
+    </div>
+
+    <div class="container-fluid row ml-2">
+        <div id="bloqueA" class="col-2 bg-menu">
 
             <div>
-                {% include('Contenido/acceso_asignaturas.html.twig') %}
+                {% include('Contenido/acceso_asignaturas_indice.html.twig') %}
             </div>
 
             <div>
-                {% if false %}
+                {% if indice_secciones is defined %}
                     {% include('Aula/indice_secciones.html.twig') %}
                 {% endif %}
             </div>
         </div>
 
-        <div id="bloqueB" class="col-8">
+        <div id="bloqueB" class="col-10">
 
             {% block breadcrumbs %}
                 
@@ -69,8 +68,6 @@
         </div>
     </div>
 
-    <div>aceptar cookies</div>
-
     {% block javascripts %}
         {{ parent() }}
         
@@ -90,6 +87,10 @@
             crossorigin="anonymous"></script>
         <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
         <script src="{{ asset('/anuncios/js/jquery.innerfade.js') }}"></script>
+        <script defer src="https://use.fontawesome.com/releases/v5.0.10/js/all.js" integrity="sha384-slN8GvtUJGnv6ca26v8EzVaR9DC58QEwsIk9q1QXdCU8Yu8ck/tL/5szYlBbqmS+" crossorigin="anonymous"></script>
+    
+        <script src="//cdnjs.cloudflare.com/ajax/libs/cookieconsent2/3.0.3/cookieconsent.min.js"></script>
+        
         <script type='text/javascript'>
             $jQuery_3_3_1(document).ready(
                 function(){
@@ -107,6 +108,25 @@
                         type: 'sequence',
                     });
 
+                    window.cookieconsent.initialise({
+                        "palette": {
+                            "popup": {
+                                "background": "#000"
+                            },
+                            "button": {
+                                "background": "transparent",
+                                "text": "#f1d600",
+                                "border": "#f1d600"
+                            }
+                        },
+                        "position": "bottom-left",
+                        "content": {
+                            "message": "Hola, las leyes nos obligan a molestarte con este mensaje de aceptación de cookies. La ley te obliga a hacer clic en aceptar para que puedas disfrutar de todas las funcionalidades de la web. Por otra parte, nosotros nunca compartiremos tus datos con terceros. Aprovechamos para darte un cordial saludo.",
+                            "dismiss": "Aceptar",
+                            "link": "Leer más",
+                            "href": "http://politicadecookies.com/"
+                        }
+                    });
                 }
             );
         </script>

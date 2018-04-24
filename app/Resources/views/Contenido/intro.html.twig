@@ -6,16 +6,34 @@
     <link rel="stylesheet" href="intro/css/estilos.css" type="text/css">		
 {% endblock %}
 
-{% set frase = 'Esta es la frase de la introducción' %}
-
 {% block body %}
-	<div>
-    	<h1 class="text-warning letra animated zoomIn">{{frase}}</h1>
-    	<a href="{{ path('contenido_raiz') }}"><img src="{{ asset('images/icono.png') }}"></a>
-	</div>	
+
+    <div>
+        <table id="tabla_intro" style="height: 100px; width:100%">
+            <tr>
+                <td>
+                    <div class="text-warning text-center letra animated zoomIn">
+                        <h1><span class="align-middle">{{ frase.descripcion }}</span></h1>
+                    </div>
+                    <div class="text-center magictime tinUpIn">
+                        <a href="{{ path('contenido_raiz') }}"><img src="{{ asset('images/symfony2.png') }}"></a>
+                    </div>
+                </td>
+            </tr>
+        </table>       	
+    </div>
 
 	{% block javascripts %}
     	{{parent()}}
+
+        <script type='text/javascript'>
+            $(document).ready(
+                function(){
+                    $('table#tabla_intro').height($(window).height());
+                }
+            );
+        </script>        
+
 	{% endblock %}	
 	
 {% endblock %}

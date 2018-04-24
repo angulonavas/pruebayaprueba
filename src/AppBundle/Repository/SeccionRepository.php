@@ -10,7 +10,7 @@ namespace AppBundle\Repository;
  */
 class SeccionRepository extends \Doctrine\ORM\EntityRepository {
 
-	public function buscar($frase) {
+	public function buscarFrase($frase) {
 
         $qb = $this->createQueryBuilder('s');                 
         $qb->where(
@@ -25,4 +25,26 @@ class SeccionRepository extends \Doctrine\ORM\EntityRepository {
 
         return $secciones;
 	}	
+
+    public function buscar($id) {
+        $seccion = $this->find($id);
+        return ($seccion && $seccion->getPublicado()) ? $seccion : null;
+    }
+
+    // devuelve todas las secciones activas del temario dado
+    public function buscarTodos($temario) {
+        
+        $qb = $this->createQueryBuilder('s');
+        $qb->where($qb->expr()->andX(
+                $qb->expr()->eq('s.publicado', 'true'),
+                $qb->expr()->eq('s.temario', ':temario')
+            )
+        )
+        ->setParameter('temario', $temario)
+        ->addOrderBy('s.orden', 'ASC');
+
+        $secciones = $qb->getQuery()->getResult(); 
+
+        return $secciones;
+    }       
 }

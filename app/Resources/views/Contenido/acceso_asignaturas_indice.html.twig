@@ -1,0 +1,16 @@
+<div>
+	{% for asignatura in acceso_asignaturas.get_asignaturas %}
+		<div class="row">
+			<div class="col-3">
+				<img src="{{ asset('images/' ~ asignatura.disenyo) }}"  height="50" width="50" class="rounded-circle ml-3 mt-2">
+			</div>
+			<div class="col-9">
+				<div><h4>{{asignatura.titulo}}</h4></div>
+				<a href="{{ path('contenido_asignatura', {'asignatura': asignatura.titulo}) }}">Información</a>
+				<a href="{{ path('contenido_cargar_temarios', {'asignatura': asignatura.titulo}) }}">Aula</a>
+			</div>
+		</div>
+	{% endfor %}
+</div>
+
+

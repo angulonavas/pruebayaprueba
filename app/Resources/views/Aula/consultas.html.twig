@@ -1,68 +1,102 @@
-    {% set consultor = {
-            'num_consultas': 3,
-            'num_respuestas': 1,
-            'consultas': [
+{% extends 'Aula/aula_asignatura.html.twig' %}
+{#{% extends 'Aula/seccion.html.twig' %}#}
+
+{% block breadcrumbs %}
+
+    <div>
+        {# Definiendo los nodos del breadcrums #}
+        {% set nodos = [
                 {
-                    'fecha': '21/02/2018 a las 13:46', 
-                    'descripcion': 'Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.', 
-                    'usuario': 'Pepito Pérez'
-                },
+                    'url': 'contenido_raiz',
+                    'descripcion': '#', 
+                }, 
                 {
-                    'fecha': '22/04/2018 a las 22:17', 
-                    'descripcion': 'Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.', 
-                    'usuario': 'Pepito Pérez',
-                    'respuesta': {
-                        'fecha': '21/02/2018 a las 13:46', 
-                        'descripcion': 'Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.', 
-                        'usuario': 'Alberto F. Angulo'
+                    'url': 'contenido_raiz',
+                    'descripcion': 'Aula', 
+                }, 
+                {
+                    'url': 'contenido_cargar_temarios',
+                    'descripcion': asignatura.titulo, 
+                    'parametros': {
+                        'asignatura': asignatura.titulo
                     }
                 },
                 {
-                    'fecha': '11/12/2018 a las 17:33', 
-                    'descripcion': 'Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.',
-                    'usuario': 'Ana López'
+                    'url': 'contenido_cargar_secciones',
+                    'descripcion': temario.titulo, 
+                    'parametros': {
+                        'asignatura': asignatura.titulo,
+                        'temario': temario.titulo
+                    }
                 },
-            ]
-         }
+                {
+                    'url': 'contenido_cargar_seccion',
+                    'descripcion': seccion.titulo, 
+                    'parametros': {
+                        'asignatura': asignatura.titulo,
+                        'temario': temario.titulo,
+                        'seccion': seccion.titulo,
+                    }
+                },                
+                {
+                    'url': 'contenido_cargar_consultas',
+                    'descripcion': (consultas | length) ~ ' Consultas al profesor',
+                }, 
 
-     %}
+            ] 
+        %}            
+        {% include('Contenido/breadcrums.html.twig') %}
+    </div>
 
-<div>
-	{{consultor.num_consultas}} Consultas al profesor ({{consultor.num_respuestas}} Respuestas)
-</div>
+{% endblock %}
 
-{% for consulta in consultas %}
-	<div>Consulta:</div>
-	<div>{{consulta.fecha | date('d/m/Y H:i')}}</div>
-	<div>{{consulta.descripcion}}</div>
-	<div>{{consulta.usuario.username}}</div>
+{% block cuerpo_aula %}
+    
+    <div id="consultas" class="container-fluid btn btn-primary">
+    	{{consultas | length}} Consultas al profesor
+    </div>
 
-	{% if consulta.respuesta is not null %}
-		<div>
-			<div>Respuesta:</div>
-			<div>{{consulta.respuesta.fecha | date('d/m/Y H:i')}}</div>
-			<div>{{consulta.respuesta.descripcion}}</div>
-			<div>{{consulta.respuesta.usuario.username}}</div>
-		</div>
-	{% endif %}
-{% endfor %}
+    <div id="cuerpo_consultas">
 
-{#
-<a href="{{ path('contenido_cargar_consultas', {
-					'asignatura': 'Asignatura A1',
-					'temario': 'temario T1',
-					'seccion': 'Sección S1',
-					'id': 10
-				}) 
-			}}">Cargar más consultas</a>
-#}
+        {% for consulta in consultas %}
+            <div class="container-fluid">
+            	<span class="border-danger text-danger">Consulta</span>
+            	<span class="ml-3">{{consulta.fecha | date('d/m/Y H:i')}}</span>
+            	<div class="fondo-consulta">{{consulta.descripcion}}</div>
+            	<div class="text-info text-right">{{'@' ~ consulta.usuario.username}}</div>
 
-{% if is_granted('ROLE_ALUMNO') %}
+            	{% if consulta.respuesta is not null %}
+                    <div class="container-fluid">
+                        <span class="text-success">Respuesta</span>
+                        <span class="ml-3">{{consulta.respuesta.fecha | date('d/m/Y H:i')}}</span>
+                        <div class="fondo-consulta">{{consulta.respuesta.descripcion}}</div>
+                        <div class="text-info text-right">{{'@' ~ consulta.respuesta.usuario.username}}</div>
+            		</div>
+            	{% endif %}
+            </div>
+        {% endfor %}
+    </div>
 
-	<div>
-		{{ form_start(form_consulta) }}
-		{{ form_widget(form_consulta) }}
-		{{ form_end(form_consulta) }}
-	</div>	   
+    {#
+    <a href="{{ path('contenido_cargar_consultas', {
+    					'asignatura': 'Asignatura A1',
+    					'temario': 'temario T1',
+    					'seccion': 'Sección S1',
+    					'id': 10
+    				}) 
+    			}}">Cargar más consultas</a>
+    #}
 
-{% endif %}
+    {% if is_granted('ROLE_ALUMNO') %}
+
+        <div class="mt-3">
+            {{ form_start(form_consulta) }}
+            {{ form_errors(form_consulta) }}
+            <div class="form-group">{{ form_row(form_consulta.descripcion) }}</div>
+            <div class="form-group">{{ form_row(form_consulta.enviar) }}</div>
+            {{ form_end(form_consulta) }}
+        </div>
+
+    {% endif %}
+
+{% endblock %}

@@ -26,15 +26,28 @@
 {% endblock %}
 
 {% block descripcion_catalogo %}
-	<div>Descripción del catálogo de servicios</div>
+	<div>Descripción del catálogo de servicios. Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod
+		tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam,
+		quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo
+		consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse
+		cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non
+		proident, sunt in culpa qui officia deserunt mollit anim id est laborum.
+	</div>
 {% endblock %}
 
 {% block buscador %}
 
-	<div>
+	<div class="mt-3">
 		<form action="{{ path('catalogo_servicios') }}" method="post">
-        	<input type="text" id="frase" name="frase" placeholder="Busca servicios" />
-	    	<button type="submit">Buscar</button>
+			<div class="form-group">
+				<div class="input-group mb-3">
+					<input type="text" id="frase" name="frase" placeholder="Busca servicios" class="form-control"/>
+  					<div class="input-group-append">
+    					<span class="input-group-text" id="basic-addon2"><i class="fas fa-search"></i></span>
+    					<button type="submit" class="btn btn-primary">Buscar</button>
+  					</div>
+				</div>
+        	</div>
 		</form>
 	</div>
 
@@ -42,14 +55,15 @@
 
 {% block cuerpo_catalogo %}
 
-	<table>
-
-		<tr>
-			<th>Inicio</th>
-			<th>Descripción</th>
-			<th>Precio</th>
-			<th>Matrícula</th>
-		</tr>
+	<table class="table">
+		<thead class="thead-light">
+			<tr>
+				<th>Inicio</th>
+				<th>Descripción</th>
+				<th>Precio</th>
+				<th>Matrícula</th>
+			</tr>
+		</thead>
 
 		{% for servicio in servicios %}
 			<tr>

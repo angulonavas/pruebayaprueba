@@ -30,7 +30,8 @@ class CatalogoController extends Controller {
         $servicios = $catalogo->desplegar_servicios($frase);
 
         return $this->render('Catalogo/catalogo_servicios.html.twig', [
-            'servicios' => $servicios
+            'servicios' => $servicios,
+            'activo' => 'servicios'
         ]);
     }
 
@@ -41,12 +42,20 @@ class CatalogoController extends Controller {
      */
     public function incluir_servicio_pedidoAction(Request $request, PedidoService $pedido, CatalogoService $catalogo, $servicio) {
         
-        // llamamos al servicio PedidoService para que incluya el $servicio 
-        $em = $this->getDoctrine()->getManager();
-        $servicio = $em->getRepository(Servicio::class)->find($servicio);
-        $pedido->incluir_concepto($servicio);
+        try {
+            // llamamos al servicio PedidoService para que incluya el $servicio 
+            $em = $this->getDoctrine()->getManager();
+            $servicio = $em->getRepository(Servicio::class)->find($servicio);
+            if (!$servicio) throw new Exception("Lo sentimos, el servicio no está disponible", 1);
+            
+            $pedido->incluir_concepto($servicio);
 
-        return $this->cargar_serviciosAction($request, $catalogo);
+            return $this->cargar_serviciosAction($request, $catalogo);
+        } catch (Exception $e) {
+            return $this->render('Contenido/acceso_denegado.html.twig', [
+                'error' => $e->getMessage()
+            ]);
+        }        
     }   
 
     /**
@@ -57,7 +66,8 @@ class CatalogoController extends Controller {
         $asignaturas = $catalogo->desplegar_asignaturas();
 
         return $this->render('Catalogo/catalogo_temarios.html.twig', [
-            'asignaturas' => $asignaturas
+            'asignaturas' => $asignaturas,
+            'activo' => 'asignaturas'
         ]);
     }   
 
@@ -69,11 +79,19 @@ class CatalogoController extends Controller {
     public function incluir_temario_pedidoAction(
         Request $request, PedidoService $pedido, CatalogoService $catalogo, $temario) {
         
-        $em = $this->getDoctrine()->getManager();
-        $temario = $em->getRepository(Temario::class)->find($temario);        
-        $pedido->incluir_concepto($temario);
+        try {
+            $em = $this->getDoctrine()->getManager();
+            $temario = $em->getRepository(Temario::class)->find($temario);        
+            if (!$temario) throw new Exception("Lo sentimos, el temario no está disponible", 1);
+            
+            $pedido->incluir_concepto($temario);
 
-        return $this->cargar_temariosAction($request, $catalogo);
+            return $this->cargar_temariosAction($request, $catalogo);
+        } catch (Exception $e) {
+            return $this->render('Contenido/acceso_denegado.html.twig', [
+                'error' => $e->getMessage()
+            ]);
+        }
     }
 
     /**
@@ -84,7 +102,8 @@ class CatalogoController extends Controller {
         $asignaturas = $catalogo->desplegar_asignaturas($temario_titulo);
 
         return $this->render('Catalogo/catalogo_temarios.html.twig', [
-            'asignaturas' => $asignaturas
+            'asignaturas' => $asignaturas,
+            'activo' => 'asignaturas'
         ]);
     } 
 
@@ -97,7 +116,8 @@ class CatalogoController extends Controller {
         $asignaturas = $catalogo->desplegar_secciones($frase);
 
         return $this->render('Catalogo/catalogo_temarios.html.twig', [
-            'asignaturas' => $asignaturas
+            'asignaturas' => $asignaturas,
+            'activo' => 'asignaturas'
         ]);
     }
 
@@ -109,11 +129,19 @@ class CatalogoController extends Controller {
     public function incluir_seccion_pedidoAction(
         Request $request, PedidoService $pedido, CatalogoService $catalogo, $temario_titulo, $seccion) {
         
-        $em = $this->getDoctrine()->getManager();
-        $seccion = $em->getRepository(Seccion::class)->find($seccion);        
-        $pedido->incluir_concepto($seccion);
+        try {
+            $em = $this->getDoctrine()->getManager();
+            $seccion = $em->getRepository(Seccion::class)->find($seccion);        
+            if (!$seccion) throw new Exception("Lo sentimos, la sección no está disponible", 1);
 
-        return $this->cargar_secciones_temarioAction($request, $catalogo, $temario_titulo);
+            $pedido->incluir_concepto($seccion);
+
+            return $this->cargar_secciones_temarioAction($request, $catalogo, $temario_titulo);
+        } catch (Exception $e) {
+            return $this->render('Contenido/acceso_denegado.html.twig', [
+                'error' => $e->getMessage()
+            ]);
+        }            
     }  
 
     /**
@@ -121,14 +149,18 @@ class CatalogoController extends Controller {
      */
     public function cargar_catalogoAction(Request $request) {
         // replace this example code with whatever you need
-        return $this->render('Catalogo/catalogo.html.twig', []);
+        return $this->render('Catalogo/catalogo.html.twig', [
+            'activo' => 'servicios'
+        ]);
     }  
+
+
 
     /**
      * @Route("/pedido", name="catalogo_pedido")
      */
     public function cargar_pedidoAction(Request $request, PedidoService $pedido) {   
-        
+
         $conceptos = $pedido->get_conceptos();
 
         return $this->render('Catalogo/detalle_pedido.html.twig', [
@@ -241,20 +273,6 @@ class CatalogoController extends Controller {
             // renderizar error: no se ha podido gestionar el pago
             return $this->render('SeguridadBundle/acceso_denegado.html.twig', []);
         }
-    }
-
-    
-    // El siguiente método es el que utilizará el script de cron:
-
-    /**
-     * @Route("/catalogo/servicios/eliminar", name="catalogo_eliminar_servicios")
-     */
-    public function eliminar_servicios_catalogoAction(Request $request) {
-        echo 'q31';
-        // replace this example code with whatever you need
-        return $this->render('default/index.html.twig', [
-            'base_dir' => realpath($this->getParameter('kernel.project_dir')).DIRECTORY_SEPARATOR,
-        ]);
     }
 
 }

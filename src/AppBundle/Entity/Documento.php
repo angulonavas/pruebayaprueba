@@ -13,7 +13,7 @@ use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
  * @ORM\Table(name="documento")
  * @ORM\Entity(repositoryClass="AppBundle\Repository\DocumentoRepository")
  * @UniqueEntity(
- *     fields="attachment",
+ *     fields="fichero",
  *     message="Lo sentimos, ya existe un fichero con ese nombre" 
  * ) 
  */
@@ -31,15 +31,16 @@ class Documento
     /**
      * @var string
      *
-     * @ORM\Column(name="nombre_fichero", type="string", length=32, unique=true)
-     * @Assert\Length(
-     *      min = 4,
-     *      max = 32,
-     *      minMessage = "Nombre de fichero incorrecto",
-     *      maxMessage = "El nombre del fichero sólo puede tener {{ limit }} caracteres"
+     * @ORM\Column(type="string", unique=true)
+     * @Assert\NotBlank(message="No has adjuntado fichero")
+     * @Assert\File(
+     *      maxSize = "2M",
+     *      maxSizeMessage = "Lo sentimos, el fichero no puede ser mayor de 2MB",
+     *      mimeTypes={ "application/pdf" },
+     *      mimeTypesMessage = "El fichero debe ser de tipo PDF"
      * )
      */
-    private $nombreFichero;
+    private $fichero;
 
     /**
      * @var string
@@ -57,14 +58,14 @@ class Documento
     /**
      * @var bool
      *
-     * @ORM\Column(name="corrupto", type="boolean")
+     * @ORM\Column(name="publicado", type="boolean", options={"default" : "1"})
      */
-    private $corrupto;
+    private $publicado;
 
     /**
-     * @var string
+     * @var integer
      *
-     * @ORM\Column(name="prioridad", type="string", length=8)
+     * @ORM\Column(name="prioridad", type="integer", options={"default" : "2"})
      */
     private $prioridad;
 
@@ -87,8 +88,6 @@ class Documento
      */
     private $usuario; 
 
-    protected $attachment;
-
 
 
     /**
@@ -102,27 +101,27 @@ class Documento
     }
 
     /**
-     * Set nombreFichero
+     * Set fichero
      *
-     * @param string $nombreFichero
+     * @param string $fichero
      *
      * @return Documento
      */
-    public function setNombreFichero($nombreFichero)
+    public function setFichero($fichero)
     {
-        $this->nombreFichero = $nombreFichero;
+        $this->fichero = $fichero;
 
         return $this;
     }
 
     /**
-     * Get nombreFichero
+     * Get fichero
      *
      * @return string
      */
-    public function getNombreFichero()
+    public function getFichero()
     {
-        return $this->nombreFichero;
+        return $this->fichero;
     }
 
     /**
@@ -150,27 +149,27 @@ class Documento
     }
 
     /**
-     * Set corrupto
+     * Set publicado
      *
-     * @param boolean $corrupto
+     * @param boolean $publicado
      *
      * @return Documento
      */
-    public function setCorrupto($corrupto)
+    public function setPublicado($publicado)
     {
-        $this->corrupto = $corrupto;
+        $this->publicado = $publicado;
 
         return $this;
     }
 
     /**
-     * Get corrupto
+     * Get publicado
      *
      * @return bool
      */
-    public function getCorrupto()
+    public function getPublicado()
     {
-        return $this->corrupto;
+        return $this->publicado;
     }
 
     /**
@@ -269,14 +268,5 @@ class Documento
         return $this->usuario; 
     }     
 
-    // Get el fichero en sí. Necesario para el formulario
-    public function getAttachment() {
-        return $this->attachment;
-    }    
-
-    public function setAttachment($attachment) {
-        $this->attachment = $attachment;
-        return $this;
-    }
 }
 

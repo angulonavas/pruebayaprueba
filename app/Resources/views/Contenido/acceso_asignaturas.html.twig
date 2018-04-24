@@ -1,9 +1,21 @@
-<div>
-	{% for asignatura in acceso_asignaturas.get_asignaturas %}
-		<div>{{asignatura.titulo}}</div>
-		<a href="{{ path('contenido_asignatura', {'asignatura': asignatura.titulo}) }}">Información</a>
-		<a href="{{ path('contenido_cargar_temarios', {'asignatura': asignatura.titulo}) }}">Aula</a>
-	{% endfor %}
+<div class="card-deck">
+	
+	{% for asignatura in acceso_asignaturas.get_asignaturas %}	
+		<div class="card">
+	    <img class="card-img-top" src="{{ asset('images/' ~ asignatura.disenyo ~ '/100px260/') }}" alt="Card image cap" height="300" width="200">
+	    <div class="card-body">
+	    	<h5 class="card-title">{{asignatura.titulo}}</h5>
+	    	<p class="card-text">{{asignatura.descripcion}}</p>
+  			<a href="{{ path('contenido_asignatura', {'asignatura': asignatura.titulo}) }}">Información</a>
+			<a href="{{ path('contenido_cargar_temarios', {'asignatura': asignatura.titulo}) }}">Aula</a>
+	    </div>
+	    <div class="card-footer">
+	    	<small class="text-muted">Actualizado diariamente</small>
+	    </div>
+	  </div>
+  	{% endfor %}
+
 </div>
+
 
 

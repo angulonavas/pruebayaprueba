@@ -1,4 +1,11 @@
-<ul>
-	<li><a href="{{ path('catalogo_servicios') }}">Servicios</a></li>
-	<li><a href="{{ path('catalogo_temarios') }}">Asignaturas</a></li>
+<ul class="nav nav-pills">
+	<li class="nav-item">
+		{% set activar = (activo == 'servicios') ? 'active' : '' %}
+		<a href="{{ path('catalogo_servicios') }}" class="{{ 'nav-link ' ~ activar }}">Servicios</a>
+	</li>
+
+	<li class="nav-item">
+		{% set activar = (activo == 'asignaturas') ? 'active' : '' %}
+		<a href="{{ path('catalogo_temarios') }}" class="{{ 'nav-link ' ~ activar }}">Asignaturas</a>
+	</li>
 </ul>

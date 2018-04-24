@@ -37,6 +37,13 @@ class Asignatura
     private $descripcion;
 
     /**
+     * @var bool
+     *
+     * @ORM\Column(name="publicado", type="boolean", options={"default" : true})
+     */
+    private $publicado;
+
+    /**
      * @var string
      *
      * @ORM\Column(name="logo", type="string", length=16)
@@ -51,6 +58,13 @@ class Asignatura
     private $disenyo;
 
     /**
+     * @var int
+     *
+     * @ORM\Column(name="orden", type="integer", options={"default" : 0})
+     */
+    private $orden;    
+
+    /**
      * @ORM\OneToMany(targetEntity="Temario", mappedBy="asignatura")
      */
     private $temarios;
@@ -63,7 +77,7 @@ class Asignatura
     /**
      * @ORM\OneToMany(targetEntity="Documento", mappedBy="asignatura")
      */
-    private $documentos;
+    private $documentos;    
 
     /**
      * @ORM\OneToMany(targetEntity="Foro_Asignatura", mappedBy="asignatura")
@@ -72,9 +86,7 @@ class Asignatura
 
     public function __construct()
     {
-        $this->temarios = new ArrayCollection();
         $this->categorias = new ArrayCollection();
-        $this->documentos = new ArrayCollection();
         $this->foros_asignatura = new ArrayCollection();
     }
 
@@ -137,6 +149,30 @@ class Asignatura
     }
 
     /**
+     * Set publicado
+     *
+     * @param boolean $publicado
+     *
+     * @return Asignatura
+     */
+    public function setPublicado($publicado)
+    {
+        $this->publicado = $publicado;
+
+        return $this;
+    }
+
+    /**
+     * Get publicado
+     *
+     * @return bool
+     */
+    public function getPublicado()
+    {
+        return $this->publicado;
+    }
+
+    /**
      * Set logo
      *
      * @param string $logo
@@ -184,13 +220,38 @@ class Asignatura
         return $this->disenyo;
     }
 
-    /**
-     * Get temarios: transforma un ArrayCollection en un array y le da la vuelta.
-     * Después devuelve un array
-     * @return Array
+   /**
+     * Set orden
+     *
+     * @param integer $orden
+     *
+     * @return Asignatura
      */
+    public function setOrden($orden)
+    {
+        $this->orden = $orden;
+
+        return $this;
+    }
+
+    /**
+     * Get orden
+     *
+     * @return int
+     */
+    public function getOrden()
+    {
+        return $this->orden;
+    }    
+
+    // devuelve un array de temarios
     public function getTemarios() {
-        return array_reverse($this->temarios->toArray());
+        return $this->temarios;
+    }
+
+    // carga el vector de temarios
+    public function setTemarios($temarios) {
+        $this->temarios = $temarios;
     }
 
     /**
@@ -202,14 +263,15 @@ class Asignatura
         return array_reverse($this->categorias->toArray());
     }
 
-    /**
-     * Get documentos: transforma un ArrayCollection en un array y le da la vuelta.
-     * Después devuelve un array
-     * @return Array
-     */
+    // devuelve un array de documentos
     public function getDocumentos() {
-        return array_reverse($this->documentos->toArray());
+        return $this->documentos;
     }  
+
+    // asigna un vector de documentos
+    public function setDocumentos($documentos) {
+        $this->documentos = $documentos;
+    }
 
     /**
      * Get foros: transforma un ArrayCollection en un array y le da la vuelta.

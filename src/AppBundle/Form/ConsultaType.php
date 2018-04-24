@@ -12,8 +12,16 @@ class ConsultaType extends AbstractType {
     public function buildForm(FormBuilderInterface $builder, array $options) {
         
         $builder
-            ->add('descripcion', TextareaType::class, array('attr' => array('placeholder' => 'Consultar...')))
-            ->add('Enviar', SubmitType::class, array('label' => 'Enviar'))    
+            ->add('descripcion', TextareaType::class, array(
+            	'label' => false,
+            	'attr' => array(
+            		'class' => 'form-control',
+            		'placeholder' => 'Envía tu consulta al profesor')
+            ))
+            ->add('enviar', SubmitType::class, array(
+            	'label' => 'Enviar',
+            	'attr' => array('class' => 'btn btn-primary')
+            ))
         ;
     }
 }

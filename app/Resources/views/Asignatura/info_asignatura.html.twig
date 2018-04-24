@@ -20,13 +20,13 @@
 {% endblock %}
 
 {% block bloqueB %}
-	<div>Cabecera de {{asignatura.titulo}}</div>
-
-	<div>{{asignatura.descripcion}}</div>
+	<div class="text-success"><h3>Cabecera de {{asignatura.titulo}}</h3></div>
 
 	<div>
 		{% include('Asignatura/menu_asignatura.html.twig') %}
 	</div>
+
+    <div>{{asignatura.descripcion}}</div>
 
 	{% block cuerpo_asignatura %}
 	{% endblock %}

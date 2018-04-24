@@ -57,7 +57,7 @@ security:
         - { path: ^/admin, roles: ROLE_PROFESOR }
         - { path: ^/aula, roles: ROLE_ALUMNO }
         - { path: ^/perfil, roles: ROLE_ALUMNO }
-        - { path: ^/pedido, roles: ROLE_ALUMNO }
+        - { path: ^/pedido/revisar, roles: ROLE_ALUMNO }
         - { path: ^/factura, roles: ROLE_ALUMNO }
 
     # jerarquia de roles: ROLE_ADMIN -> ROLE_PROFESOR -> ROLE_ALUMNO -> ROLE_ANONIMO

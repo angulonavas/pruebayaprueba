@@ -29,6 +29,12 @@ class Categoria
      */
     private $descripcion;
 
+    /**
+     * @var int
+     *
+     * @ORM\Column(name="orden", type="integer", options={"default" : 0})
+     */
+    private $orden;
 
     /**
      * @ORM\ManyToOne(targetEntity="Asignatura", inversedBy="categorias")
@@ -80,6 +86,30 @@ class Categoria
     public function getDescripcion()
     {
         return $this->descripcion;
+    }
+
+    /**
+     * Set orden
+     *
+     * @param integer $orden
+     *
+     * @return Categoria
+     */
+    public function setOrden($orden)
+    {
+        $this->orden = $orden;
+
+        return $this;
+    }
+
+    /**
+     * Get orden
+     *
+     * @return int
+     */
+    public function getOrden()
+    {
+        return $this->orden;
     }
 
     /** 

@@ -8,6 +8,8 @@ use SeguridadBundle\Form\RecuperacionType;
 
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
+
+use Symfony\Component\Config\Definition\Exception\Exception;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Security\Core\Encoder\UserPasswordEncoderInterface;
 use Symfony\Component\Security\Core\Encoder\EncoderFactoryInterface;
@@ -225,9 +227,9 @@ class UsuarioController extends Controller {
      */
     public function perfilAction(Request $request, UserPasswordEncoderInterface $encoder, $username) {
         
-        $user = $this->getUser();        
-        
-        if ($user->getUsername() == $username) {
+        try {
+            $user = $this->getUser();         
+            if ($user->getUsername() != $username) throw new Exception("Acceso denegado", 1);
 
             $repository = $this->getDoctrine()->getRepository(Usuario::class);
             $usuario = $repository->findOneByUsername($username);
@@ -266,8 +268,10 @@ class UsuarioController extends Controller {
                 'matriculas_servicios' => $matriculas_servicios,
             ]);
 
-        } else {
-            return $this->render('@Seguridad/acceso_denegado.html.twig', []);
+        } catch (Exception $e) {
+            return $this->render('Contenido/acceso_denegado.html.twig', [
+                'error' => $e->getMessage()
+            ]);
         }
     }
 

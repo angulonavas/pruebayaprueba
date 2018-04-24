@@ -10,8 +10,19 @@ namespace AppBundle\Repository;
  */
 class AsignaturaRepository extends \Doctrine\ORM\EntityRepository{
 
-	function buscar($asignatura) {
+	public function buscarPorTitulo($asignatura) {
 		$asignatura = $this->findOneByTitulo($asignatura);
 		return $asignatura;
 	}
+
+    public function buscarTodo() {
+        
+        $qb = $this->createQueryBuilder('a');
+        $qb->where($qb->expr()->eq('a.publicado', 'true'))
+            ->addOrderBy('a.orden', 'ASC')
+        ;
+        $asignatura = $qb->getQuery()->getResult(); 
+
+        return $asignatura;
+    }    	
 }

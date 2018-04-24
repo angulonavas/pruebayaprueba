@@ -30,27 +30,21 @@
 
 {% block cuerpo_asignatura %}
 	
-	{% if mensaje %}
-		<div>{{mensaje}}</div>
-	{% endif %}
-
-{% for error in errores %}
-    <li>{{ error.message }}</li>
-{% endfor %}	
-
 	<div>Documentación aportada:</div>
-  		<table>
-        	<tr>
-        		<th>Tipo</th>
-        		<th>Nombre</th>
-        		<th>Autor</th>
-        	</tr>
+  		<table class="table">
+            <thead class="thead-light">
+            	<tr>
+            		<th scope="col">Tipo</th>
+            		<th scope="col">Nombre</th>
+            		<th scope="col">Autor</th>
+            	</tr>
+            </thead>
 
 			{% for documento in asignatura.getDocumentos() %}
 		    	<tr>
-		    		<td><img src="{{ asset('/images/iconos/' ~ documento.tipo) }}" width="30" height="30"></td>
-		    		<td><a href="{{ asset('/documentos/' ~ asignatura.titulo ~ '/' ~ documento.nombreFichero) }}" target="_blank">
-		    				{{documento.descripcion}}</a>
+		    		<td><img src="{{ asset('/images/iconos/' ~ documento.tipo ~ '.png') }}" width="30" height="30"></td>
+		    		<td><a href="{{ asset('/documentos/' ~ asignatura.titulo ~ '/' ~ documento.fichero ~ '.' ~ documento.tipo) }}" 
+                        target="_blank">{{documento.descripcion}}</a>
 		    		</td>
 		    		<td>{{documento.usuario.username}}</td>
 		    	</tr>
@@ -58,11 +52,19 @@
 	    </table>
 
 		{% if is_granted('ROLE_ALUMNO') %}
-			<div>
-				{{ form_start(form) }}
-				{{ form_widget(form) }}
-				{{ form_end(form) }}
-			</div>	   
+
+            {% if mensaje %}
+                <div>{{mensaje}}</div>
+            {% endif %}
+            
+            <div>
+                {{ form_start(form) }}
+                {{ form_errors(form) }}
+                <div class="form-group">{{ form_row(form.descripcion) }}</div>
+                <div class="form-group">{{ form_row(form.fichero) }}</div>
+                <div class="form-group">{{ form_row(form.enviar) }}</div>
+                {{ form_end(form) }}
+            </div>
 
 		{% endif %}
 {% endblock %}

@@ -29,15 +29,21 @@
 {% endblock %}
 
 {% block cuerpo_asignatura %}
-	<div>Matriz de videos:</div>
-	{% for video in categoria.getVideos() %}
-	    <div>
-	        <iframe width="300" height="150" src="https://www.youtube.com/embed/{{video.url}}" frameborder="0" allow="autoplay; encrypted-media" allowfullscreen></iframe>
-	    </div>
-	    <div>
-	    	<p>{{video.descripcion}}</p>
-	    </div>
-    {% endfor %}
+	
+    <div class="text-warning"><h4>Videos de la categoría {{ categoria.descripcion ~ ':' }} </h4></div>
+    
+    <div class="card-columns">
+    	{% for video in categoria.getVideos() %}
+
+            <div class="card p-3 magictime twisterInDown">
+        	    <div>
+        	        <iframe width="300" height="150" src="https://www.youtube.com/embed/{{video.url}}" frameborder="0" allow="autoplay; encrypted-media" class="card-img-top" allowfullscreen></iframe>
+        	    </div>
+        	    <div class="card-body">
+        	    	<p class="card-text">{{video.descripcion}}</p>
+        	    </div>
+            </div>
+            
+        {% endfor %}
+    </div>
 {% endblock %}
-
-

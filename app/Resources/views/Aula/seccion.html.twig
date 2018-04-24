@@ -1,5 +1,12 @@
-
 {% extends 'Aula/acceso_secciones.html.twig' %}
+
+{% if not seccion.getTeorica %}
+    {% block stylesheets %}
+        {{ parent() }}
+        <link rel="stylesheet" href="{{ asset('examenes/css/estilos.css') }}" type="text/css">
+    {% endblock %}
+{% endif %}
+
 
 {% block breadcrumbs %}
 
@@ -41,61 +48,127 @@
 
 {% endblock %}
 
-{% set progreso = (seccion.orden * 100) / temario.getSecciones() | length %}
-
 {% block seccion %}
 
 	<div>título de sección</div>
 
-	<div id="progreso" class="progress">
-    	<div class="progress-bar progress-bar-success progress-bar-striped active" role="progressbar" 
-    		aria-valuenow="{{progreso}}" aria-valuemin="0" aria-valuemax="100" 
-            style="width:{{progreso ~ '%'}}">
-            {{progreso ~ '%'}}
-		</div>
-	</div>
-
-    <div id="paso">{{ 'Paso [' ~ seccion.orden ~ '] de ' ~ temario.getSecciones() | length }}</div>
+    {# si el temario está siendo guiado mostramos el progreso #}
+    {% if guia.guiado %}
+        {% set progreso = (seccion.orden * 100) / temario.getSecciones() | length %}
+    	<div id="progreso" class="progress">
+        	<div class="progress-bar progress-bar-success progress-bar-striped active" role="progressbar" 
+        		aria-valuenow="{{progreso}}" aria-valuemin="0" aria-valuemax="100" 
+                style="width:{{progreso ~ '%'}}">
+                {{progreso ~ '%'}}
+    		</div>
+    	</div>
+        <div id="paso">{{ 'Paso [' ~ seccion.orden ~ '] de ' ~ temario.getSecciones() | length }}</div>        
+    {% endif %}
 
     {% block cuerpo_seccion %}
+        {% if seccion.getTeorica %}
+            {% include(asset('Secciones/' ~ seccion.getPlantilla ~ '.html.twig')) %}
+        {% else %}
+            {% include('Aula/examen.html.twig') %}
+        {% endif %}
     {% endblock %}
 
-    {% include('Aula/consultas.html.twig') %}
+    {# si el temario está siendo guiado mostramos el display #}
+    {% if guia.guiado %}
+        <div id="display">
 
-
-    {# Aquí lo referente al display #}
-    <div id="display">
-		<div>
-			<a href="{{ path('contenido_cargar_seccion', {
+    		<a href="{{ path('contenido_cargar_seccion', {
                 'asignatura': asignatura.titulo,
                 'temario': temario.titulo,
-                'seccion': temario.getPrimera_seccion().titulo
-			}) }}">Primera sección</a>
-		</div>
-		<div>
-			<a href="{{ path('contenido_cargar_seccion', {
+                'seccion': temario.getSecciones()[0].titulo
+    		}) }}" class="text-primary" style="font-size:2em;">
+                <i class="fas fa-step-backward"></i>
+            </a>
+
+    		<a href="{{ path('contenido_cargar_seccion', {
                 'asignatura': asignatura.titulo,
                 'temario': temario.titulo,
                 'seccion': seccion.getAnterior().titulo
-			}) }}">Sección anterior</a>
-		</div>
-		<div>
-			<a href="{{ path('contenido_guardar_guia', {
-				'asignatura': asignatura.titulo,
-				'temario': temario.titulo,
-				'seccion': seccion.titulo
-			}) }}">Guardar</a>
-		</div>
+    		}) }}" style="font-size:3em;" class="text-primary">
+                <i class="fas fa-caret-left"></i>
+            </a>
 
-		<div>
-			<a href="{{ path('contenido_cargar_seccion', {
+    		<a href="{{ path('contenido_cargar_seccion', {
                 'asignatura': asignatura.titulo,
                 'temario': temario.titulo,
                 'seccion': seccion.getPosterior().titulo
-			}) }}">Sección posterior</a>
-		</div>
-	</div>
+    		}) }}" style="font-size:3em;" class="text-primary">
+                <i class="fas fa-caret-right"></i>
+            </a>
 
-	<div id="consultas"></div>
+    	</div>
+    {% endif %}
+
+    <div class="container-fluid">
+        <a href="{{ path('contenido_cargar_consultas', {
+            'asignatura': asignatura.titulo,
+            'temario': temario.titulo,
+            'seccion': seccion.titulo
+            }) }}" class="btn btn-primary btn-block">
+            {{ num_consultas ~ ' Consultas' }}
+        </a>
+
+    </div>
+    
+    {% block consultas %}
+    {% endblock %}
 
 {% endblock %}
+
+{% if not seccion.getTeorica %}
+    {% block javascripts %}
+        {{parent()}}
+        <script type='text/javascript'>
+        $jQuery_3_3_1(document).ready(
+            function(){
+
+                //Al hacer click en un item de uno de los listados, todos sus hermanos pasan a quedar a false
+                // el 'checked' de prop sólo funciona con el elemento DOM input, no con su padre 'li'
+                $('div#preguntas ul li').bind('click', function() {
+                    $(this).siblings().children('input[type=checkbox]').prop('checked', false);
+                });
+
+                $('button#validar').bind('click', function() {
+
+                    var total = $('div#preguntas ul').length, aciertos = 0, fallos = 0, num_opciones = 0;
+                    
+                    $('div#preguntas ul').each(function(){
+                        
+                        var acierto = false, intento = false;
+                        num_opciones = $(this).children('li').length;
+
+                        $(this).children('li').each(function(){
+                            if ($(this).children('input[type=checkbox]').is(':checked')) {
+                                intento = true;
+                                if ($(this).children('input[type=hidden]').val()) acierto = true;
+                            }
+                        });
+
+                        // Si se acertó la pregunta se incrementa el acierto y se oculta mensaje de error
+                        // si se fálló se muestra se incrementa el fallo y se muestra mensaje de error
+                        if (acierto) {
+                            aciertos++;
+                            $(this).children('div').attr('class', 'oculto');
+                        
+                        } else if (intento) {
+                            fallos++;
+                            $(this).children('div').attr('class', 'visible');
+                        }
+                        
+                   });
+
+                    alert(total+' '+aciertos+' '+fallos+' '+num_opciones);
+                    var nota = '8,15';
+                    $('div#nota').text(nota);
+                }); 
+            }
+        );
+        </script>
+
+    {% endblock %}
+{% endif %}

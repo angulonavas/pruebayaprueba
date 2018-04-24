@@ -51,9 +51,9 @@ class Servicio
     private $fechaFin;
 
     /**
-     * @var string
+     * @var integer
      *
-     * @ORM\Column(name="prioridad", type="string", length=8)
+     * @ORM\Column(name="prioridad", type="integer", options={"default" : 1})
      */
     private $prioridad;
 

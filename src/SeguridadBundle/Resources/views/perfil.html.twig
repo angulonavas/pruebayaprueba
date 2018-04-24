@@ -29,7 +29,7 @@
 {% endblock %}
 
 {% block bloqueB %}	
-	<div>Perfil de usuario</div>
+	<div class="container-fluid bg-warning">Perfil de usuario</div>
 
 	{% if actualizado %}
 		<div>
@@ -37,30 +37,57 @@
 		</div>
 	{% endif %}
 
-	<div>Nombre:{{usuario.nombre ~ ' ' ~ usuario.apellidos}}</div>
-	<div>Usuario:{{usuario.username}}</div>
-	<div>Email:{{usuario.email}}</div>
-	<div>Universidad:{{usuario.universidad}}</div>
+    <div class="row">
+        <div class="col-6">
+            <div class="row">
+                <div class="col-3">
+        	       <div>Nombre:</div>
+        	       <div>Usuario:</div>
+        	       <div>Email:</div>
+        	       <div>Universidad:</div>
+                </div>
+                <div class="col-9">
+                   <div>{{usuario.nombre ~ ' ' ~ usuario.apellidos}}</div>
+                   <div>{{usuario.username}}</div>
+                   <div>{{usuario.email}}</div>
+                   <div>{{usuario.universidad}}</div>
+                </div>
+            </div>
 
-	<div>Cambio de clave:</div>
+        	<div>Cambio de clave:</div>
 
-	<div>
-		{{ form_start(form) }}
-		{{ form_widget(form) }}
-		{{ form_end(form) }}
-	</div>
+            <div>
+                {{ form_start(form) }}
+                {{ form_errors(form) }}
+                <div class="form-group">{{ form_row(form.password) }}</div>
+                <div class="form-group">{{ form_row(form.recuperar) }}</div>
+                {{ form_end(form) }}
+            </div>
 
-    <div>Te has matriculado en...</div>
-    {% for matricula in matriculas_temarios %}
-        <div>{{ matricula.getTemario().getTitulo() }}</div>
-    {% endfor %}
+{#
+        	<div>
+        		{{ form_start(form) }}
+        		{{ form_widget(form) }}
+        		{{ form_end(form) }}
+        	</div>
+#}
 
-    {% for matricula in matriculas_secciones %}
-        <div>{{ matricula.getSeccion().getTitulo() ~ ' de temario ' ~  matricula.getSeccion().getTemario().getTitulo() }}</div>
-    {% endfor %}
+        </div>
 
-    {% for matricula in matriculas_servicios %}
-        <div>{{ matricula.getServicio().getTitulo() }}</div>
-    {% endfor %}
+        <div class="col-6">
+            <div>Te has matriculado en...</div>
+            {% for matricula in matriculas_temarios %}
+                <div>{{ matricula.getTemario().getTitulo() }}</div>
+            {% endfor %}
+
+            {% for matricula in matriculas_secciones %}
+                <div>{{ matricula.getSeccion().getTitulo() ~ ' de temario ' ~  matricula.getSeccion().getTemario().getTitulo() }}</div>
+            {% endfor %}
+
+            {% for matricula in matriculas_servicios %}
+                <div>{{ matricula.getServicio().getTitulo() }}</div>
+            {% endfor %}
+        </div>
+    </div>
 	
 {% endblock %}

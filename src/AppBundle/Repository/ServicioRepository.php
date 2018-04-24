@@ -2,6 +2,8 @@
 
 namespace AppBundle\Repository;
 
+use AppBundle\Entity\Servicio;
+
 /**
  * ServicioRepository
  *
@@ -10,20 +12,49 @@ namespace AppBundle\Repository;
  */
 class ServicioRepository extends \Doctrine\ORM\EntityRepository {
 
-	public function buscar($frase) {
+	public function buscarFrase($frase) {
 
         $qb = $this->createQueryBuilder('s');                 
         $qb->where(
-        	$qb->expr()->orX(
-        		$qb->expr()->like('s.titulo', '?1'),
-        		$qb->expr()->like('s.descripcion', '?1')
+            $qb->expr()->andX(
+                $qb->expr()->eq('s.publicado', 'true'),
+                $qb->expr()->orX(
+        		  $qb->expr()->like('s.titulo', ':frase'),
+        		  $qb->expr()->like('s.descripcion', ':frase')
+                )
         	)
         )
-		->setParameter(1, '%'.$frase.'%')
-		->addOrderBy('s.prioridad', 'ASC')
-   		->addOrderBy('s.fechaIni', 'DESC');
+        ->setParameter('frase', '%'.$frase.'%')
+		  ->addOrderBy('s.prioridad', 'ASC')
+   		  ->addOrderBy('s.fechaIni', 'DESC');
         $servicios = $qb->getQuery()->getResult();
 
         return $servicios;
 	}
+
+    public function buscarTodo() {
+        
+        $qb = $this->createQueryBuilder('s');
+        $qb->where($qb->expr()->eq('s.publicado', 'true'))
+            ->addOrderBy('s.prioridad', 'ASC')
+            ->addOrderBy('s.fechaIni', 'DESC')
+        ;
+        $servicios = $qb->getQuery()->getResult(); 
+
+        return $servicios;
+    }    
+
+    public function ocultarServicios() {
+
+        $fecha = new \Datetime();
+        $qb = $this->createQueryBuilder('s');
+        $qb->update(Servicio::class, 's')
+            ->set('s.publicado', 'false')
+            ->where($qb->expr()->gt('s.fechaIni', ':fecha'))
+            ->setParameter('fecha', $fecha->format('Y-m-d H:i:s'))            
+        ;
+        
+        $qb->getQuery()->execute(); 
+    }
+
 }

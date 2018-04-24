@@ -23,15 +23,16 @@
 {% block bloqueB %}
 	<div>[2/3] Revisa tus datos y los de tu matrícula</div>
 
-	<div>{{ app.user.nombre ~ app.user.apellidos }}</div>
+	<div>{{ app.user.nombre ~ ' ' ~ app.user.apellidos }}</div>
 	<div>{{ '(' ~ app.user.username ~ ') ' ~ app.user.email }}</div>
 
-	<table>
-
-		<tr>
-			<th>Descripción</th>
-			<th>Precio</th>
-		</tr>
+	<table class="table">
+		<thead class="thead-light">
+			<tr>
+				<th>Descripción</th>
+				<th>Precio</th>
+			</tr>
+		</thead>
 
 		{% set total = 0 %}
 		{% for concepto in conceptos %}
@@ -56,7 +57,7 @@
 			<input type="hidden" name="Ds_SignatureVersion" value="{{ token_seguridad.version }}"/>
 			<input type="hidden" name="Ds_MerchantParameters" value="{{ token_seguridad.parametros }}"/>
 			<input type="hidden" name="Ds_Signature" value="{{ token_seguridad.firma }}"/>
-			<button type="submit">Abonar matrícula</button>
+			<button type="submit" class="btn btn-primary">Abonar matrícula</button>
 		</form>		
 	</div>
 

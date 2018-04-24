@@ -39,9 +39,9 @@ twig:
     
     # definición de aquellos servicios y parámetros que queremos acceder desde twig
     globals:
-        iva_base: '%iva_base%'
         twig_service: '@AppBundle\Service\TwigService'
         acceso_asignaturas: '@AppBundle\Service\AccesoAsignaturas'
+        acceso_anuncios: '@AppBundle\Service\AnunciosService'
 
 # Doctrine Configuration
 doctrine:

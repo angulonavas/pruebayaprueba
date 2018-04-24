@@ -1,8 +1,11 @@
-
 {% extends 'Aula/aula_asignatura.html.twig' %}
 
-{% block breadcrumbs %}
+{% block stylesheets %}
+    {{ parent() }}
+    <link href="{{ asset('bootstrap-toggle-master/css/bootstrap-toggle.min.css') }}" rel="stylesheet">
+{% endblock %}
 
+{% block breadcrumbs %}
     <div>
         {# Definiendo los nodos del breadcrums #}
         {% set nodos = [
@@ -34,47 +37,56 @@
         %}            
         {% include('Contenido/breadcrums.html.twig') %}
     </div>
-
 {% endblock %}
 
 {% block cuerpo_aula %}
-	<div>Cabecera de temario</div>
-	<div>Descripción del temario</div>
+	<div class="mt-3">{{'Temario ' ~ temario.titulo}}</div>
+	<div>{{ temario.descripcion }}</div>
 
-    {# 
-        Los métodos serán jquery para ocultar y mostrar bloques 
-        Sólo se podrá activar un modo u otro si el usuario está matriculado en todo el temario
-    #}
+    {% set listar_secciones = true %}
+    {% if guia is not null %}
+        <div class="container-fluid text-left p-0">
 
-    {% if temario.matriculado %}
-        {% if guiado is not defined %}
-            {% set guiado = true %}
-        {% endif %}
-        Estudio guiado: <input type="checkbox" id="guiado" checked >
+            {% if not guia.guiado %}
+                <a href="{{ path('contenido_toggle_guia', {
+                    'asignatura': asignatura.titulo,
+                    'temario': temario.titulo,
+                    }) }}" class="btn btn-secondary">No guiado
+                </a>
+
+            {% else %}
+                {% set listar_secciones = false %}
+            
+                <a href="{{ path('contenido_toggle_guia', {
+                    'asignatura': asignatura.titulo,
+                    'temario': temario.titulo,
+                    }) }}" class="btn btn-primary">Guiado
+                </a>
+
+                <a href="{{ path('contenido_cargar_seccion', {
+                    'asignatura': asignatura.titulo,
+                    'temario': temario.titulo,
+                    'seccion': temario.secciones[0].titulo,
+                    }) }}" class="btn btn-primary">Iniciar estudio 
+                </a>
+                <a href="{{ path('contenido_cargar_seccion', {
+                    'asignatura': asignatura.titulo,
+                    'temario': temario.titulo,
+                    'seccion': guia.seccion.titulo,
+                    }) }}" class="btn btn-primary">Continuar estudiando
+                </a>
+            {% endif %}
+
+        </div>
     {% endif %}
 
-	{% block seccion %}
-		<div>
-			{% include('Aula/indice_secciones.html.twig') %}
-		</div>
-	{% endblock %}
-
-{% endblock %}
-
-{% block javascripts %}
-    {{parent()}}
-
-    <script type='text/javascript'>
-    $jQuery_3_3_1(document).ready(
-        function(){
-            $('input#guiado').bind('change', function() { 
-                $("div#progreso").toggle(this.checked);
-                $("div#paso").toggle(this.checked);
-                $("div#display").toggle(this.checked);
-            }); 
-        }
-    );
-    </script>
+    {% block seccion %}
+        {% if listar_secciones %}
+            <div>
+                {% include('Aula/indice_secciones.html.twig') %}
+            </div>
+        {% endif %}
+    {% endblock %}
 
 {% endblock %}
 

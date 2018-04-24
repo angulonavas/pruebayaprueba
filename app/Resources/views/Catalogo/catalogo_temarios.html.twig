@@ -27,23 +27,33 @@
 
 {% block buscador %}
 
-	<div>
+	<div class="mt-3">
 		<form action="{{ path('catalogo_buscar_secciones') }}" method="post">
-        	<input type="text" id="frase" name="frase" placeholder="Busca secciones" />
-	    	<button type="submit">Buscar</button>
+			<div class="form-group">
+				<div class="input-group mb-3">
+					<input type="text" id="frase" name="frase" placeholder="Busca secciones" class="form-control"/>
+  					<div class="input-group-append">
+    					<span class="input-group-text" id="basic-addon2"><i class="fas fa-search"></i></span>
+    					<button type="submit" class="btn btn-primary">Buscar</button>
+  					</div>
+				</div>
+        	</div>
 		</form>
-	</div>
+	</div>	
 
 {% endblock %}
 
 {% block cuerpo_catalogo %}
 	<div>Catálogo de asignaturas</div>
-	<table>
-		<tr>
-			<th>Descripción</th>
-			<th>Precio</th>
-			<th>Matrícula</th>
-		</tr>
+	<table class="table">
+
+		<thead class="thead-light">		
+			<tr>
+				<th>Descripción</th>
+				<th>Precio</th>
+				<th>Matrícula</th>
+			</tr>
+		</thead>
 
 		{% for asignatura in asignaturas %}
 			
@@ -52,7 +62,7 @@
 			{% for temario in asignatura.temarios %}
 				<tr>
 					<td><a href="{{ path('catalogo_secciones', {'temario_titulo': temario.titulo}) }}">{{temario.titulo}}</a></td>
-					<td>{{temario.precio}}</td>
+					<td class="text-right">{{temario.precio ~ '€'}}</td>
 					<td>
 						{% if temario.matriculado %}
 							Matriculado
@@ -76,8 +86,19 @@
 								}}">Matricularse</a>
 							{% endif %}
 						</td>
-					</tr>					
+					</tr>				
+
+					<tr>
+						<td>&nbsp;</td>
+						<td>{{seccion.descripcion}}</td>
+					</tr>
+
 				{% endfor %}
+
+				<tr>
+					<td>&nbsp;</td>
+					<td>{{temario.descripcion}}</td>
+				</tr>
 
 			{% endfor %}
 

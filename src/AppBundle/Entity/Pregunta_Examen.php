@@ -48,14 +48,10 @@ class Pregunta_Examen
      * Para evitar hacer el trabajo de reordenación por un campo deseado se precisa una llave: $isOpciones
      */
     private $opciones;
-    private $isOpciones = false;
+    
 
 
-
-    public function __construct()
-    {
-        $this->opciones = new ArrayCollection();
-    }
+    public function __construct() {}
 
     /**
      * Get id
@@ -140,37 +136,20 @@ class Pregunta_Examen
     }    
 
     /**
-     * Get opciones: si no está formateado, primero llama para formatear el array de opciones.
-     * Después devuelve el array formateado
+     * devuelve la lista de opciones de la pregunta
      * @return Array
      */
     public function getOpciones() {
-        if (!$this->isOpciones) $this->setOpciones();
         return $this->opciones;
     } 
 
     /**
-     * Get opciones: transforma un ArrayCollection en un array y le da la vuelta.
+     * asigna la lista de opciones de la pregunta
      * Después devuelve un array
      * @return Array
      */
-    public function setOpciones() {
-        
-        // 1.- Se define vector auxiliar y se transforma arraycollectionen array
-        $vector_aux = [];
-        $this->opciones = $this->opciones->toArray();
-
-        // 2.- Por cada item del array rellenaremos el vector auxiliar con el campo que se desea ordenar
-        foreach($this->opciones as $i => $opcion) { 
-            $vector_aux[$i] = $opcion->getOrden(); 
-        }
-
-        // 3.- Ordenamos definitivamente el vector en base a la ordenación del vector auxiliar
-        array_multisort($vector_aux, $this->opciones);
-
-        // 4.- Se indica que ya se ha ejecutado la ordenación y cada vez que se llame a getOpciones no será
-        // preciso volver a ejectuar todo el trabajo
-        $this->isSecciones = true;
-    }         
+    public function setOpciones($opciones) {
+        $this->opciones = $opciones;
+    }
 }
 

@@ -1,1 +1,16 @@
+@CHARSET "UTF-8";
+@font-face { 
+	font-family: "OpenSans-Light"; 
+	src: url("../../fuentes/open-sans/OpenSans-Light.ttf"); }
+
+body {
+	font: 1em "OpenSans-Light", Sans;
+	font-size: 20px;
+}
 .bloque { border:1px solid; }
+.bg-menu { background-color: #f3f3f3; }
+.float_left { float: left; }
+.oculto { display:none; }
+.fondo-consulta { background-color: #d7e5f1; }
+.bg-blue-lighten-4 {background-color: #bbdefb; }
+.bg-blue-lighten-2 {background-color: #64b5f6; }

@@ -1,8 +1,11 @@
-<ul>
-	<li>Vídeos
-		<ul>
+<ul class="nav nav-pills">
+	<li class="nav-item dropdown">
+		{% set activar = (activo == 'videos') ? 'active' : '' %}
+		<a class="{{ 'nav-link dropdown-toggle ' ~ activar }}" data-toggle="dropdown" href="#" role="button" aria-haspopup="true" aria-expanded="false">Vídeos</a>
+
+		<ul class="dropdown-menu">
 			{% for categoria in asignatura.getCategorias() %}
-				<li><a href="{{ path('contenido_videos_categoria', {
+				<li class="dropdown-item"><a href="{{ path('contenido_videos_categoria', {
 						'asignatura': asignatura.titulo,
 						'categoria': categoria.descripcion}) 
 					}}">{{categoria.descripcion}}</a>
@@ -11,14 +14,20 @@
 		</ul>
 	</li>
 
-	<li><a href="{{ path('contenido_documentos_asignatura', {
+	<li class="nav-item">
+		{% set activar = (activo == 'documentos') ? 'active' : '' %}
+		<a href="{{ path('contenido_documentos_asignatura', {
 		'asignatura': asignatura.titulo
-	}) }}">Documentos</a></li>
+		}) }}" class="{{ 'nav-link ' ~ activar }}">Documentos</a>
+	</li>
 
-	<li>Temarios
-		<ul>
+	<li class="nav-item dropdown">
+		{% set activar = (activo == 'temarios') ? 'active' : '' %}
+		<a class="{{ 'nav-link dropdown-toggle ' ~ activar }}" data-toggle="dropdown" href="#" role="button" aria-haspopup="true" aria-expanded="false">Temarios</a>
+		<ul class="dropdown-menu">
 			{% for temario in asignatura.getTemarios %}
-				<li><a href="{{ path('contenido_indice_temario', {
+				<li class="dropdown-item">
+					<a href="{{ path('contenido_indice_temario', {
 						'asignatura': asignatura.titulo, 
 						'temario': temario.titulo}) 
 					}}">{{temario.titulo}}</a>
@@ -27,10 +36,12 @@
 		</ul>
 	</li>
 
-	<li>Foros
-		<ul>
+	<li class="nav-item dropdown">
+		{% set activar = (activo == 'foros') ? 'active' : '' %}
+		<a class="{{ 'nav-link dropdown-toggle ' ~ activar }}" data-toggle="dropdown" href="#" role="button" aria-haspopup="true" aria-expanded="false">Foros</a>
+		<ul class="dropdown-menu">
 			{% for foro in asignatura.getForos %}
-				<li><a href="{{foro.url}}" target="_blank">{{foro.descripcion}}</a></li>
+				<li class="dropdown-item"><a href="{{foro.url}}" target="_blank">{{foro.descripcion}}</a></li>
 			{% endfor %}
 		</ul>
 	</li>	

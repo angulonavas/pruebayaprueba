@@ -74,7 +74,7 @@ class Seccion
     /**
      * @var string
      *
-     * @ORM\Column(name="plantilla", type="string", length=32, unique=true)
+     * @ORM\Column(name="plantilla", type="string", length=8)
      */
     private $plantilla;
 

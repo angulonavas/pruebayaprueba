@@ -6,6 +6,8 @@ use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpFoundation\Request;
 
+use AppBundle\Entity\Frase;
+
 class ContenidoController extends Controller {
     
     /**
@@ -17,8 +19,18 @@ class ContenidoController extends Controller {
             Se realizarán las comprobaciones oportunas para ver si se debe mostrar la intro o no.
          */
         $intro = true;
-        if ($intro == true) return $this->render('Contenido/intro.html.twig', []);
-        else     return $this->redirectToRoute('contenido_raiz');
+        if ($intro == true) {
+
+            $em = $this->getDoctrine()->getManager();
+            $frases = $em->getRepository(Frase::class)->buscarTodo();
+            
+            //$frase = $frases[rand(0, count($frases)-1)];
+            $frase = $frases[0];
+
+            return $this->render('Contenido/intro.html.twig', [
+                'frase' => $frase
+            ]);
+        } else return $this->redirectToRoute('contenido_raiz');
 
             //return $this->render('@Seguridad/credenciales.html.twig', []);
     }

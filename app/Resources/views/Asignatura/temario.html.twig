@@ -29,41 +29,37 @@
 {% endblock %}
 
 {% block cuerpo_asignatura %}
-    <div>Título del temario</div>
 
-    <div>
-		{% if temario.matriculado %}
-			Matriculado
-		{% else %}
-			<a href="{{ path('catalogo_incluir_temario', {'temario': temario.id}) }}">Matricularse</a>
-		{% endif %}    
-	</div>
+    <div class="clearfix mt-4">
+        <h4 class="text-success float-left">{{'Temario ' ~ temario.titulo }}</h4>
 
-	<div>
-    	{{temario.descripcion}}
+    	{% if temario.matriculado %}
+    		<span class="text-info m-3">[Matriculado]</span>
+    	{% else %}
+    		<a href="{{ path('catalogo_incluir_temario', {'temario': temario.id}) }}" class="bg-secondary">Matricularse</a>
+    	{% endif %}    
     </div>
 
-    <div>
-    	Indice del temario
-    </div>
+	<div>{{temario.descripcion}}</div>
+
+    <h4 class="bg-secondary text-white mt-3">Indice del temario</h4>
 
     {% for seccion in temario.getSecciones() %}
 
-    	<div>
-    		<p>{{seccion.titulo}}</p>
-    	</div>
+    <div class="clearfix mt-4">
+        <h5 class="text-success float-left">{{'Sección ' ~ seccion.titulo }}</h5>
 
-        <div>
-			{% if seccion.matriculado %}
-				Matriculado
-			{% else %}
-				<a href="{{ path('catalogo_incluir_seccion', {'seccion': seccion.id}) }}">Matricularse</a>
-			{% endif %}
-        </div>
+        {% if seccion.matriculado %}
+            <span class="text-info m-3">[Matriculado]</span>
+        {% else %}
+            <a href="{{ path('catalogo_incluir_seccion', {
+                'temario_titulo': temario.titulo,
+                'seccion': seccion.id,
+            }) }}" class="btn btn-primary p-0 ml-2">Matricularse</a>
+        {% endif %}    
+    </div>
 
-	    <div>
-	    	{{seccion.descripcion}}
-	    </div>
+    <div>{{seccion.descripcion}}</div>
 
 	{% endfor %}
 

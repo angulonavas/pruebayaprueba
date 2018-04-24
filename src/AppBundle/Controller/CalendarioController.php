@@ -34,7 +34,7 @@ class CalendarioController extends Controller {
 
     	// buscando el servicio
 		$em = $this->getDoctrine()->getManager();
-        $servicios = $em->getRepository(Servicio::class)->findAll();
+        $servicios = $em->getRepository(Servicio::class)->buscarTodo();
 
         $vecServicios = [];
         foreach ($servicios as $i => $valor) {

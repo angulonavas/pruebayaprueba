@@ -17,7 +17,7 @@ class AccesoAsignaturas {
 
     // Devuelve lista de las asignaturas
     public function get_asignaturas() {
-        $asignaturas = $this->em->getRepository(Asignatura::class)->findAll();
+        $asignaturas = $this->em->getRepository(Asignatura::class)->buscarTodo();
         return $asignaturas;
     }
 

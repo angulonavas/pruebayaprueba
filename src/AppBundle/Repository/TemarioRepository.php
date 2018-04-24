@@ -10,8 +10,25 @@ namespace AppBundle\Repository;
  */
 class TemarioRepository extends \Doctrine\ORM\EntityRepository {
 
-	function buscar($id_temario) {
+	public function buscar($id_temario) {
 		$temario = $this->find($id_temario);
 		return $temario;
 	}	
+
+	// devuelve todos los temarios activos de la asignatura dada
+    public function buscarTodos($asignatura) {
+        
+        $qb = $this->createQueryBuilder('t');
+        $qb->where($qb->expr()->andX(
+        		$qb->expr()->eq('t.publicado', 'true'),
+        		$qb->expr()->eq('t.asignatura', ':asignatura')
+        	)
+    	)
+		->setParameter('asignatura', $asignatura)
+        ->addOrderBy('t.orden', 'ASC');
+
+        $temarios = $qb->getQuery()->getResult(); 
+
+        return $temarios;
+    } 	
 }
