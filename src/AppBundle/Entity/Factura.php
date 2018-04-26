@@ -51,6 +51,12 @@ class Factura
     private $total;
 
     /**
+     * @ORM\ManyToOne(targetEntity="SeguridadBundle\Entity\Usuario", inversedBy="facturas")
+     * @ORM\JoinColumn(name="id_usuario", referencedColumnName="id")
+     */
+    private $usuario;    
+
+    /**
      * @ORM\OneToMany(targetEntity="Concepto", mappedBy="factura")
      */
     private $conceptos;
@@ -167,6 +173,30 @@ class Factura
     {
         return $this->total;
     }
+
+    /** 
+     * Set usuario
+     * 
+     * @param Usuario $usuario
+     * 
+     * @return Factura
+     */ 
+    public function setUsuario($usuario) 
+    { 
+        $this->usuario = $usuario; 
+
+        return $this; 
+    } 
+
+    /** 
+     * Get usuario 
+     * 
+     * @return Usuario 
+     */ 
+    public function getUsuario() 
+    { 
+        return $this->usuario; 
+    }    
 
     public function getconceptos() {
         return $this->conceptos;

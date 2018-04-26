@@ -42,4 +42,107 @@ services:
         public: false
         tags:
             - { name: twig.runtime }
-            
+
+    # Sonata: UsuarioAdmin
+    admin.usuario:
+        class: SeguridadBundle\Admin\UsuarioAdmin
+        arguments: [~, SeguridadBundle\Entity\Usuario, ~]
+        tags:
+            - { name: sonata.admin, manager_type: orm, label: Usuarios }
+        public: true
+
+    # Sonata: FraseAdmin
+    admin.frase:
+        class: AppBundle\Admin\FraseAdmin
+        arguments: [~, AppBundle\Entity\Frase, ~]
+        tags:
+            - { name: sonata.admin, manager_type: orm, label: Frases }
+        public: true
+
+    # Sonata: AnuncioAdmin
+    admin.anuncio:
+        class: AppBundle\Admin\AnuncioAdmin
+        arguments: [~, AppBundle\Entity\Anuncio, ~]
+        tags:
+            - { name: sonata.admin, manager_type: orm, label: Anuncios }
+        public: true        
+
+    # Sonata: ServicioAdmin
+    admin.servicio:
+        class: AppBundle\Admin\ServicioAdmin
+        arguments: [~, AppBundle\Entity\Servicio, ~]
+        tags:
+            - { name: sonata.admin, manager_type: orm, label: Servicios }
+        public: true                
+
+    # Sonata: Foro_GeneralAdmin
+    admin.foroGeneral:
+        class: AppBundle\Admin\ForoGeneralAdmin
+        arguments: [~, AppBundle\Entity\Foro_General, ~]
+        tags:
+            - { name: sonata.admin, manager_type: orm, label: Foros Generales }
+        public: true                        
+
+    # Sonata: AsignaturaAdmin
+    admin.asignatura:
+        class: AppBundle\Admin\AsignaturaAdmin
+        arguments: [~, AppBundle\Entity\Asignatura, ~]
+        tags:
+            - { name: sonata.admin, manager_type: orm, label: Asignaturas }
+        public: true                                
+
+    # Sonata: TemarioAdmin
+    admin.temario:
+        class: AppBundle\Admin\TemarioAdmin
+        arguments: [~, AppBundle\Entity\Temario, ~]
+        tags:
+            - { name: sonata.admin, manager_type: orm, label: Temarios }
+        public: true         
+
+    # Sonata: CategoriaAdmin
+    admin.categoria:
+        class: AppBundle\Admin\CategoriaAdmin
+        arguments: [~, AppBundle\Entity\Categoria, ~]
+        tags:
+            - { name: sonata.admin, manager_type: orm, label: Categoria de videos }
+        public: true                 
+
+    # Sonata: VideoAdmin
+    admin.video:
+        class: AppBundle\Admin\VideoAdmin
+        arguments: [~, AppBundle\Entity\Video, ~]
+        tags:
+            - { name: sonata.admin, manager_type: orm, label: Videos }
+        public: true         
+
+    # Sonata: DocumentoAdmin
+    admin.documento:
+        class: AppBundle\Admin\DocumentoAdmin
+        arguments: [~, AppBundle\Entity\Documento, ~]
+        tags:
+            - { name: sonata.admin, manager_type: orm, label: Documentos }
+        public: true         
+
+    # Sonata: SeccionAdmin
+    admin.seccion:
+        class: AppBundle\Admin\SeccionAdmin
+        arguments: [~, AppBundle\Entity\Seccion, ~]
+        tags:
+            - { name: sonata.admin, manager_type: orm, label: Secciones }
+        public: true        
+
+    # Sonata: ForoAsignaturaAdmin
+    admin.foroAsignatura:
+        class: AppBundle\Admin\ForoAsignaturaAdmin
+        arguments: [~, AppBundle\Entity\Foro_Asignatura, ~]
+        tags:
+            - { name: sonata.admin, manager_type: orm, label: Foros de Asignaturas }
+        public: true        
+
+    # Sonata: FacturaAdmin
+    admin.factura:
+        class: AppBundle\Admin\FacturaAdmin
+        arguments: [~, AppBundle\Entity\Factura, ~]
+        tags:
+            - { name: sonata.admin, manager_type: orm, label: Facturas }
+        public: true         

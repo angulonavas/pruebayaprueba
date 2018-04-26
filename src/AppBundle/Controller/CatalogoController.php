@@ -222,6 +222,7 @@ class CatalogoController extends Controller {
 
             $fecha = new \DateTime();
             $factura = new Factura();
+            $factura->setUsuario($this->getUser());
             $factura->setFecha($fecha);
 
             // Creando el código de factura
