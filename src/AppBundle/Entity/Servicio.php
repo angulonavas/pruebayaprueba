@@ -312,5 +312,9 @@ class Servicio
         $this->matriculado = $matriculado;
         return $this;
     }    
+
+    public function setId($id) {
+        $this->id = $id;
+    }
 }
 

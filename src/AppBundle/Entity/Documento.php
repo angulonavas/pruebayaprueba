@@ -45,10 +45,10 @@ class Documento
     /**
      * @var string
      *
-     * @ORM\Column(name="descripcion", type="string", length=64)
+     * @ORM\Column(name="descripcion", type="string", length=32)
      * @Assert\Length(
      *      min = 4,
-     *      max = 64,
+     *      max = 32,
      *      minMessage = "Descripción debe ser mayor de {{ limit }} caracteres",
      *      maxMessage = "La descripción sólo puede tener {{ limit }} caracteres"
      * )

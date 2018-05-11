@@ -67,7 +67,10 @@
 
     {% block cuerpo_seccion %}
         {% if seccion.getTeorica %}
-            {% include(asset('Secciones/' ~ seccion.getPlantilla ~ '.html.twig')) %}
+            {% set dir_asignatura = 'asignatura' ~ seccion.getTemario().getAsignatura.getId() %}
+            {% set dir_temario = 'temario' ~ seccion.getTemario().getId() %}
+            {% include(asset('Secciones/' ~ 
+                dir_asignatura ~ '/' ~ dir_temario ~ '/seccion' ~ seccion.getId()  ~ '.html')) %}
         {% else %}
             {% include('Aula/examen.html.twig') %}
         {% endif %}

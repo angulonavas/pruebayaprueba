@@ -25,12 +25,36 @@ class DocumentoAdmin extends AbstractAdmin {
         return $instance;
     }
 
+    // crea la url hacia el documento
+    public function getUrl() {
+        // pendiente de hacer
+        return $this;
+    }
+
+    // método utilizado para mostrar el nombre de usuario en el breadcrums
+    public function toString($object) {
+        return $object->getDescripcion();
+    }    
+
+    public function createQuery($context = 'list') {
+
+        $request = $this->getRequest();
+        $id = $request->query->get('id');
+
+        $query = parent::createQuery($context);
+        $rootAlias = $query->getRootAliases()[0];
+        $query->where($query->expr()->eq($rootAlias.'.asignatura', ':asignatura'))
+            ->setParameter('asignatura', $id)
+        ; 
+        
+        return $query;
+    } 
+
     protected function configureFormFields(FormMapper $formMapper) {
         $formMapper
             ->with('Documentos de la asignatura', ['class' => 'col-md-6'])
                 ->add('descripcion', TextType::class)
                 ->add('tipo', TextType::class)
-                ->add('fichero', TextType::class)
                 ->add('publicado', CheckboxType::class, array('required' => false))
                 ->add('prioridad', ChoiceType::class, array(
                     'choices'  => array(
@@ -44,10 +68,15 @@ class DocumentoAdmin extends AbstractAdmin {
                     'class' => Asignatura::class,
                     'choice_label' => 'titulo',
                 ])
-                ->add('usuario', EntityType::class, [
-                    'class' => Usuario::class,
-                    'choice_label' => 'username',
-                ])                
+                ->add('usuario', EntityType::class, 
+                    [
+                        'class' => Usuario::class,
+                        'choice_label' => 'username'
+                    ],
+                    [
+                        'admin_code' => 'admin.usuario',
+                    ]
+                )       
             ->end();
     }
 
@@ -66,12 +95,14 @@ class DocumentoAdmin extends AbstractAdmin {
     protected function configureListFields(ListMapper $listMapper) {
         $listMapper
             ->addIdentifier('descripcion')
-            ->addIdentifier('tipo')
-            ->addIdentifier('fichero')
-            ->addIdentifier('publicado')
-            ->addIdentifier('prioridad')
-            ->addIdentifier('asignatura.titulo')
-            ->addIdentifier('usuario.username')
+            ->add('tipo')
+            ->add('Fichero', 'url', [
+                'template' => ':Admin:url_documento.html.twig'
+            ])
+            ->add('publicado')
+            ->add('prioridad')
+            ->add('asignatura.titulo')
+            ->add('usuario.username')
         ;
     }
 }

@@ -18,6 +18,11 @@ class FraseAdmin extends AbstractAdmin {
         return $instance;
     }
 
+    // método utilizado para mostrar el nombre de usuario en el breadcrums
+    public function toString($object) {
+        return 'Frase';
+    }
+
     protected function configureFormFields(FormMapper $formMapper) {
         $formMapper
             ->with('Frases para la introducción', ['class' => 'col-md-6'])

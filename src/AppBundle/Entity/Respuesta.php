@@ -41,11 +41,12 @@ class Respuesta
      */
     private $usuario; 
 
-   /**
-     * @ORM\OneToOne(targetEntity="Consulta", inversedBy="respuesta")
+    /**
+     * @ORM\ManyToOne(targetEntity="Consulta", inversedBy="respuestas")
      * @ORM\JoinColumn(name="id_consulta", referencedColumnName="id")
      */
     private $consulta;
+
 
 
     /**

@@ -1,0 +1,7 @@
+{% extends 'SonataAdminBundle:CRUD:base_list_field.html.twig' %}
+
+{% block field %}
+	<a class="btn btn-primary btn-sm" href="{{ path('admin_seguridad_usuario_edit', {'id': object.getUsuario().getId()}) }}">
+		<i class="fa fa-envelope"></i>&nbsp;Usuario
+	</a>	
+{% endblock %}

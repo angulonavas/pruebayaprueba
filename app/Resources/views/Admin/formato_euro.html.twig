@@ -1,0 +1,13 @@
+{% extends 'SonataAdminBundle:CRUD:base_list_field.html.twig' %}
+
+{% block field %}
+
+	{% if (field_description.options.campo == 'precio') %}
+		<span>{{ object.getPrecio() | formato_euro }}</span>
+	{% elseif (field_description.options.campo == 'total') %}
+		<span>{{ object.getTotal() | formato_euro }}</span>		
+	{% elseif (field_description.options.campo == 'iva') %}
+		<span>{{ object.getIva() | formato_euro }}</span>
+	{% endif %}
+
+{% endblock %}

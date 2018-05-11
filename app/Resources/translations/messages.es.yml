@@ -1,0 +1,51 @@
+Symfony is great: Symfony mola
+'hello %name%': Hola %name%
+List: lista
+#hello %name% friend: Hola amigo %name%
+
+Publicado: Publicado
+Titulo: Título
+Fecha Ini: Fecha de inicio
+Fecha Fin: Fecha de fin
+Prioridad: Prioridad
+Precio: Precio
+Iva: Iva
+Usuarios: Usuarios
+Facturas: Facturas
+Anuncios: Anuncios
+Foros Generales: Foros Generales
+Frases: Frases
+Servicios: Servicios
+Estadística: Estadística
+Psicometría: Psicometría
+Diseño: Diseño
+Documentos: Documentos
+Foros: Foros
+categories: Categorías de vídeos
+Consultas: Consultas
+Temarios: Temarios
+Codigo: Codigo
+Fecha: Fecha
+Total: Total
+Usuario Username: Usuario
+
+# Traducción de listados
+Usuario List: Usuarios
+Factura List: Facturas
+Anuncio List: Anuncios
+Foro General List: Foros Generales
+Frase List: Frases 
+Servicio List: Servicios
+Documento List: Documentos
+Foro Asignatura List: Foros Asignatura
+Categoria List: Categorías
+Consulta List: Consultas
+Temario List: Temarios
+Asignatura List: Asignaturas
+
+# Otras tradcucciones
+Action: Acciones
+Administración: Administración
+Foros generales: Foros generales
+lista_asignaturas: Admin de asignaturas
+

@@ -3,6 +3,7 @@
 namespace AppBundle\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
+use Doctrine\Common\Collections\ArrayCollection;
 
 /**
  * Consulta
@@ -55,9 +56,15 @@ class Consulta
     private $seccion;
 
     /**
-     * @ORM\OneToOne(targetEntity="Respuesta", mappedBy="consulta")
+     * @ORM\OneToMany(targetEntity="AppBundle\Entity\Respuesta", mappedBy="consulta")
      */
-    private $respuesta;    
+    private $respuestas;
+
+
+
+    public function __construct() {
+        $this->respuestas = new ArrayCollection();
+    }
 
     /**
      * Get id
@@ -190,27 +197,27 @@ class Consulta
     }    
 
     /** 
-     * Set respuesta
+     * Set respuestas
      * 
-     * @param Respuesta $respuesta
+     * @param Respuestas $respuestas
      * 
      * @return Consulta
      */ 
-    public function setRespuesta($respuesta) 
+    public function setRespuestas($respuestas) 
     { 
-        $this->respuesta = $respuesta; 
+        $this->respuestas = $respuestas; 
 
         return $this; 
     } 
 
     /** 
-     * Get respuesta 
+     * Get respuestas 
      * 
-     * @return Respuesta 
+     * @return Respuestas 
      */ 
-    public function getRespuesta() 
+    public function getRespuestas() 
     { 
-        return $this->respuesta; 
+        return $this->respuestas; 
     }    
 }
 

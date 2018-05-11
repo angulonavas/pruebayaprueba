@@ -1,0 +1,7 @@
+{% extends 'SonataAdminBundle:CRUD:base_list_field.html.twig' %}
+
+{% block field %}
+	<a class="btn btn-primary btn-sm" href="{{ admin.generateObjectUrl('verUsuarios', object) }}">
+		<i class="fa fa-envelope"></i>&nbsp;Matrículas
+	</a>	
+{% endblock %}

@@ -39,6 +39,10 @@ class ContenidoController extends Controller {
      * @Route("/", name="contenido_raiz")
      */
     public function cargar_raizAction() {  
+        $name = 'Juan';
+        $translated = $this->get('translator')->trans('hello '.$name);
+        echo $translated;
+        
         return $this->render('Contenido/raiz.html.twig', []);
     }  
 

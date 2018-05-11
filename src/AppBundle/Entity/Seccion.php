@@ -72,13 +72,6 @@ class Seccion
     private $iva = 11;
 
     /**
-     * @var string
-     *
-     * @ORM\Column(name="plantilla", type="string", length=8)
-     */
-    private $plantilla;
-
-    /**
      * @ORM\ManyToOne(targetEntity="Temario", inversedBy="secciones")
      * @ORM\JoinColumn(name="id_temario", referencedColumnName="id")
      */
@@ -300,30 +293,6 @@ class Seccion
     public function getIva()
     {
         return $this->iva;
-    }
-
-    /**
-     * Set plantilla
-     *
-     * @param string $plantilla
-     *
-     * @return Seccion
-     */
-    public function setPlantilla($plantilla)
-    {
-        $this->plantilla = $plantilla;
-
-        return $this;
-    }
-
-    /**
-     * Get plantilla
-     *
-     * @return string
-     */
-    public function getPlantilla()
-    {
-        return $this->plantilla;
     }
 
     /** 

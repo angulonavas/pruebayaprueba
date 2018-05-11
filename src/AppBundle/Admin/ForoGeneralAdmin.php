@@ -17,6 +17,11 @@ class ForoGeneralAdmin extends AbstractAdmin {
         return $instance;
     }
 
+    // método utilizado para mostrar el nombre de usuario en el breadcrums
+    public function toString($object) {
+        return $object->getDescripcion();
+    }    
+
     protected function configureFormFields(FormMapper $formMapper) {
         $formMapper
             ->with('Foros generales', ['class' => 'col-md-6'])
@@ -38,7 +43,9 @@ class ForoGeneralAdmin extends AbstractAdmin {
         $listMapper
             ->addIdentifier('orden')
             ->addIdentifier('descripcion')
-            ->addIdentifier('url')
+            ->add('url', 'url', [
+                'template' => ':Admin:url_foro.html.twig'
+            ])
         ;
     }
 }

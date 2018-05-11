@@ -1,0 +1,18 @@
+{% extends 'SonataAdminBundle:CRUD:base_edit.html.twig' %}            
+
+{% block title %}
+    {# NEXT_MAJOR: remove default filter #}
+    {#
+    {% if objectId|default(admin.id(object)) is not null %}
+        {{ "title_edit"|trans({'%name%': admin.toString(object)|truncate(15) }, 'SonataAdminBundle') }}
+    {% else %}
+        {{ "title_create"|trans({}, 'SonataAdminBundle') }}
+    {% endif %}
+    {{ "q1"|trans({}, 'SonataAdminBundle') }}  
+    #}
+    <a href="{{ path('admin_app_asignatura_list', {'id': id_admin}) }}">q2</a>
+{% endblock %}
+
+{% block navbar_title %}
+    {{ block('title') }}
+{% endblock %}

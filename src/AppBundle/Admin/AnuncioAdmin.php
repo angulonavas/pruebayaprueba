@@ -19,6 +19,11 @@ class AnuncioAdmin extends AbstractAdmin {
         return $instance;
     }
 
+    // método utilizado para mostrar el nombre de usuario en el breadcrums
+    public function toString($object) {
+        return 'Anuncio';
+    }
+
     protected function configureFormFields(FormMapper $formMapper) {
         $formMapper
             ->with('Anuncios para el tablón', ['class' => 'col-md-6'])

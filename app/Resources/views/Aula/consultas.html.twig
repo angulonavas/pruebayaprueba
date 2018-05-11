@@ -65,14 +65,14 @@
             	<div class="fondo-consulta">{{consulta.descripcion}}</div>
             	<div class="text-info text-right">{{'@' ~ consulta.usuario.username}}</div>
 
-            	{% if consulta.respuesta is not null %}
+            	{% for respuesta in consulta.respuestas %}
                     <div class="container-fluid">
                         <span class="text-success">Respuesta</span>
-                        <span class="ml-3">{{consulta.respuesta.fecha | date('d/m/Y H:i')}}</span>
-                        <div class="fondo-consulta">{{consulta.respuesta.descripcion}}</div>
-                        <div class="text-info text-right">{{'@' ~ consulta.respuesta.usuario.username}}</div>
+                        <span class="ml-3">{{respuesta.fecha | date('d/m/Y H:i')}}</span>
+                        <div class="fondo-consulta">{{respuesta.descripcion}}</div>
+                        <div class="text-info text-right">{{'@' ~ respuesta.usuario.username}}</div>
             		</div>
-            	{% endif %}
+            	{% endfor %}
             </div>
         {% endfor %}
     </div>

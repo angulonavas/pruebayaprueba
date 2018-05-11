@@ -23,4 +23,11 @@ class AppRuntime {
 
         return $fecha;
     }    
+
+    public function formato_euroFilter($cantidad) {
+
+        $cantidad = number_format($cantidad, 2, ",", ".").' €';
+
+        return $cantidad;
+    }     
 }

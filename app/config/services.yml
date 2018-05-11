@@ -43,21 +43,16 @@ services:
         tags:
             - { name: twig.runtime }
 
-    # Sonata: UsuarioAdmin
-    admin.usuario:
-        class: SeguridadBundle\Admin\UsuarioAdmin
-        arguments: [~, SeguridadBundle\Entity\Usuario, ~]
-        tags:
-            - { name: sonata.admin, manager_type: orm, label: Usuarios }
-        public: true
 
-    # Sonata: FraseAdmin
-    admin.frase:
-        class: AppBundle\Admin\FraseAdmin
-        arguments: [~, AppBundle\Entity\Frase, ~]
+    # SONATA ...................................................................
+
+    # Sonata: Menú
+    app.menu_sonata:
+        class: AppBundle\Menu\MenuSonata
+        arguments: ["@knp_menu.factory"]
         tags:
-            - { name: sonata.admin, manager_type: orm, label: Frases }
-        public: true
+            # el alias es lo que se utilizará para obtener el menú
+            - { name: knp_menu.menu_sonata, method: mainMenu, alias: mainMenuSonata }
 
     # Sonata: AnuncioAdmin
     admin.anuncio:
@@ -67,37 +62,13 @@ services:
             - { name: sonata.admin, manager_type: orm, label: Anuncios }
         public: true        
 
-    # Sonata: ServicioAdmin
-    admin.servicio:
-        class: AppBundle\Admin\ServicioAdmin
-        arguments: [~, AppBundle\Entity\Servicio, ~]
-        tags:
-            - { name: sonata.admin, manager_type: orm, label: Servicios }
-        public: true                
-
-    # Sonata: Foro_GeneralAdmin
-    admin.foroGeneral:
-        class: AppBundle\Admin\ForoGeneralAdmin
-        arguments: [~, AppBundle\Entity\Foro_General, ~]
-        tags:
-            - { name: sonata.admin, manager_type: orm, label: Foros Generales }
-        public: true                        
-
     # Sonata: AsignaturaAdmin
     admin.asignatura:
         class: AppBundle\Admin\AsignaturaAdmin
         arguments: [~, AppBundle\Entity\Asignatura, ~]
         tags:
             - { name: sonata.admin, manager_type: orm, label: Asignaturas }
-        public: true                                
-
-    # Sonata: TemarioAdmin
-    admin.temario:
-        class: AppBundle\Admin\TemarioAdmin
-        arguments: [~, AppBundle\Entity\Temario, ~]
-        tags:
-            - { name: sonata.admin, manager_type: orm, label: Temarios }
-        public: true         
+        public: true                               
 
     # Sonata: CategoriaAdmin
     admin.categoria:
@@ -105,14 +76,24 @@ services:
         arguments: [~, AppBundle\Entity\Categoria, ~]
         tags:
             - { name: sonata.admin, manager_type: orm, label: Categoria de videos }
+        calls:
+            - [ addChild, ['@admin.video']]             
         public: true                 
 
-    # Sonata: VideoAdmin
-    admin.video:
-        class: AppBundle\Admin\VideoAdmin
-        arguments: [~, AppBundle\Entity\Video, ~]
+    # Sonata: ConsultaAdmin
+    admin.consulta:
+        class: AppBundle\Admin\ConsultaAdmin
+        arguments: [~, AppBundle\Entity\Consulta, ~]
         tags:
-            - { name: sonata.admin, manager_type: orm, label: Videos }
+            - { name: sonata.admin, manager_type: orm, label: Consultas }   
+        public: true 
+
+    # Sonata: ConceptoAdmin
+    admin.concepto:
+        class: AppBundle\Admin\ConceptoAdmin
+        arguments: [~, AppBundle\Entity\Concepto, ~]
+        tags:
+            - { name: sonata.admin, manager_type: orm, label: Conceptos }   
         public: true         
 
     # Sonata: DocumentoAdmin
@@ -123,13 +104,15 @@ services:
             - { name: sonata.admin, manager_type: orm, label: Documentos }
         public: true         
 
-    # Sonata: SeccionAdmin
-    admin.seccion:
-        class: AppBundle\Admin\SeccionAdmin
-        arguments: [~, AppBundle\Entity\Seccion, ~]
+    # Sonata: FacturaAdmin
+    admin.factura:
+        class: AppBundle\Admin\FacturaAdmin
+        arguments: [~, AppBundle\Entity\Factura, ~]
         tags:
-            - { name: sonata.admin, manager_type: orm, label: Secciones }
-        public: true        
+            - { name: sonata.admin, manager_type: orm, label: Facturas }
+        calls:
+            - [ addChild, ['@admin.concepto']]             
+        public: true         
 
     # Sonata: ForoAsignaturaAdmin
     admin.foroAsignatura:
@@ -137,12 +120,126 @@ services:
         arguments: [~, AppBundle\Entity\Foro_Asignatura, ~]
         tags:
             - { name: sonata.admin, manager_type: orm, label: Foros de Asignaturas }
-        public: true        
+        public: true 
 
-    # Sonata: FacturaAdmin
-    admin.factura:
-        class: AppBundle\Admin\FacturaAdmin
-        arguments: [~, AppBundle\Entity\Factura, ~]
+    # Sonata: Foro_GeneralAdmin
+    admin.foroGeneral:
+        class: AppBundle\Admin\ForoGeneralAdmin
+        arguments: [~, AppBundle\Entity\Foro_General, ~]
         tags:
-            - { name: sonata.admin, manager_type: orm, label: Facturas }
+            - { name: sonata.admin, manager_type: orm, label: Foros Generales }
+        public: true                        
+
+   # Sonata: FraseAdmin
+    admin.frase:
+        class: AppBundle\Admin\FraseAdmin
+        arguments: [~, AppBundle\Entity\Frase, ~]
+        tags:
+            - { name: sonata.admin, manager_type: orm, label: Frases }
+        public: true
+
+    # Sonata: MatriculaSecciones
+    admin.matricula_secciones:
+        class: AppBundle\Admin\MatriculaSeccionesAdmin
+        arguments: [~, AppBundle\Entity\Matricula_Secciones, ~] 
+        tags: 
+            - { name: sonata.admin, manager_type: orm, label: Matricula de Secciones } 
+        calls:
+            - [setTemplate, [edit, 'Admin/edit.html.twig']] 
+        public: true
+
+    # Sonata: MatriculaServicios
+    admin.matricula_servicios:
+        class: AppBundle\Admin\MatriculaServiciosAdmin
+        arguments: [~, AppBundle\Entity\Matricula_Servicios, ~] 
+        tags: 
+            - { name: sonata.admin, manager_type: orm, label: Matricula de Servicios } 
+        calls:
+            - [setTemplate, [edit, 'Admin/edit.html.twig']] 
+        public: true
+
+    # Sonata: MatriculaTemarios
+    admin.matricula_temarios:
+        class: AppBundle\Admin\MatriculaTemariosAdmin
+        arguments: [~, AppBundle\Entity\Matricula_Temarios, ~] 
+        tags: 
+            - { name: sonata.admin, manager_type: orm, label: Matricula de Temarios } 
+        calls:
+            - [setTemplate, [edit, 'Admin/edit.html.twig']] 
+        public: true
+   
+    # Sonata: OpcionAdmin
+    admin.opcion:
+        class: AppBundle\Admin\OpcionAdmin
+        arguments: [~, AppBundle\Entity\Opcion_Pregunta, ~]
+        tags:
+            - { name: sonata.admin, manager_type: orm, label: Opciones de examen } 
+        public: true
+
+    # Sonata: PreguntaAdmin
+    admin.pregunta:
+        class: AppBundle\Admin\PreguntaAdmin
+        arguments: [~, AppBundle\Entity\Pregunta_Examen, ~]
+        tags:
+            - { name: sonata.admin, manager_type: orm, label: Preguntas de examen }            
+        public: true
+
+    # Sonata: RespuestaAdmin
+    admin.respuesta:
+        class: AppBundle\Admin\RespuestaAdmin
+        arguments: [~, AppBundle\Entity\Respuesta, ~]
+        tags:
+            - { name: sonata.admin, manager_type: orm, label: Respuestas }            
+        public: true
+
+    # Sonata: SeccionAdmin
+    admin.seccion:
+        class: AppBundle\Admin\SeccionAdmin
+        arguments: [~, AppBundle\Entity\Seccion, AppBundle\Controller\SeccionAdminController]
+        tags:
+            - { name: sonata.admin, manager_type: orm, label: Secciones }   
+        public: true 
+
+    # Sonata: ServicioAdmin
+    admin.servicio:
+        class: AppBundle\Admin\ServicioAdmin
+        arguments: [~, AppBundle\Entity\Servicio, AppBundle\Controller\ServicioAdminController]
+        tags:
+            - { name: sonata.admin, manager_type: orm, label: Servicios }
+        calls:
+            - [setTemplate, [edit, 'Admin/edit.html.twig']] 
+            - [ addChild, ['@admin.usuario']] 
+            - [ addChild, ['@admin.matricula_servicios']] 
+        public: true  
+
+   # Sonata: TemarioAdmin
+    admin.temario:
+        class: AppBundle\Admin\TemarioAdmin
+        arguments: [~, AppBundle\Entity\Temario, AppBundle\Controller\TemarioAdminController]
+        tags:
+            - { name: sonata.admin, manager_type: orm, label: Temarios }
+        calls:
+            - [ addChild, ['@admin.seccion']] 
+            - [ addChild, ['@admin.matricula_temarios']] 
+        public: true         
+
+    # Sonata: UsuarioAdmin
+    admin.usuario:
+        class: SeguridadBundle\Admin\UsuarioAdmin
+        arguments: [~, SeguridadBundle\Entity\Usuario, SeguridadBundle\Controller\UsuarioAdminController]
+        tags:
+            - { name: sonata.admin, manager_type: orm, label: Usuarios }
+        calls:
+            - [ addChild, ['@admin.factura']]
+            - [ addChild, ['@admin.matricula_servicios']]     
+            - [ addChild, ['@admin.matricula_temarios']] 
+            - [ addChild, ['@admin.matricula_secciones']]
+        public: true
+
+   # Sonata: VideoAdmin
+    admin.video:
+        class: AppBundle\Admin\VideoAdmin
+        arguments: [~, AppBundle\Entity\Video, ~]
+        tags:
+            - { name: sonata.admin, manager_type: orm, label: Videos }
         public: true         

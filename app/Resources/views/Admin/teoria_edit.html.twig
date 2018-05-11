@@ -1,0 +1,30 @@
+{% extends 'SonataAdminBundle:CRUD:base_edit.html.twig' %}
+
+{% block form %}
+	<h3>{{ 'Contenidos teóricos de la sección ' ~ object.titulo }}</h3>
+
+	{% if guardado %}
+		<div class="bg-success">
+			<h2>{{guardado}}</h2>
+		</div>
+	{% endif %}
+
+    <div class="row">
+        <div class="col-md-6">
+            <form action="{{ path('admin_app_temario_seccion_abrirTeoria', {
+                'id': object.getTemario().id,
+                'childId': object.id
+            }) }}" method="post" class="px-4 py-3">
+                <div class="form-group">
+                    <label for="descripción">Descripción:</label>
+                    <textarea rows="10" id="teoria" name="teoria" 
+                        placeholder="Descripción" class="form-control">{{teoria}}</textarea>
+                </div>
+                <div class="form-group">
+                    <button type="submit" class="btn btn-primary">Guardar</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+{% endblock %}
