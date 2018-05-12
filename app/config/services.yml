@@ -43,6 +43,11 @@ services:
         tags:
             - { name: twig.runtime }
 
+    AppBundle\EventListener\DocumentoUploadListener:
+        tags:
+            - { name: doctrine.event_listener, event: prePersist }
+            - { name: doctrine.event_listener, event: preUpdate }
+            - { name: doctrine.event_listener, event: postLoad }
 
     # SONATA ...................................................................
 
@@ -68,6 +73,9 @@ services:
         arguments: [~, AppBundle\Entity\Asignatura, ~]
         tags:
             - { name: sonata.admin, manager_type: orm, label: Asignaturas }
+        calls:
+            - [ addChild, ['@admin.consulta']]
+            - [ addChild, ['@admin.documento']]
         public: true                               
 
     # Sonata: CategoriaAdmin
@@ -86,6 +94,8 @@ services:
         arguments: [~, AppBundle\Entity\Consulta, ~]
         tags:
             - { name: sonata.admin, manager_type: orm, label: Consultas }   
+        calls:
+            - [ addChild, ['@admin.respuesta']]            
         public: true 
 
     # Sonata: ConceptoAdmin

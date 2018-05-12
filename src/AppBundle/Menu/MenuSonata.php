@@ -33,7 +33,7 @@ class MenuSonata implements ContainerAwareInterface {
             ]);        
             
             $menu[$asignatura->getTitulo()]->addChild('Documentos', [
-                'route' => 'admin_app_documento_list',
+                'route' => 'admin_app_asignatura_documento_list',
                 'routeParameters' => array('id' => $asignatura->getId())
             ]);
 
@@ -48,7 +48,7 @@ class MenuSonata implements ContainerAwareInterface {
             ]);
 
             $menu[$asignatura->getTitulo()]->addChild('Consultas', [
-                'route' => 'admin_app_consulta_list',
+                'route' => 'admin_app_asignatura_consulta_list',
                 'routeParameters' => array('id' => $asignatura->getId())
             ]);
 

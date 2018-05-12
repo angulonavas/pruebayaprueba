@@ -43,8 +43,7 @@
 			{% for documento in asignatura.getDocumentos() %}
 		    	<tr>
 		    		<td><img src="{{ asset('/images/iconos/' ~ documento.tipo ~ '.png') }}" width="30" height="30"></td>
-		    		<td><a href="{{ asset('/documentos/' ~ asignatura.titulo ~ '/' ~ documento.fichero ~ '.' ~ documento.tipo) }}" 
-                        target="_blank">{{documento.descripcion}}</a>
+		    		<td><a href="{{ '' ~ asset(documento.getFile() ~ '')}}" target="_blank">{{documento.descripcion}}</a>
 		    		</td>
 		    		<td>{{documento.usuario.username}}</td>
 		    	</tr>
@@ -61,7 +60,7 @@
                 {{ form_start(form) }}
                 {{ form_errors(form) }}
                 <div class="form-group">{{ form_row(form.descripcion) }}</div>
-                <div class="form-group">{{ form_row(form.fichero) }}</div>
+                <div class="form-group">{{ form_row(form.file) }}</div>
                 <div class="form-group">{{ form_row(form.enviar) }}</div>
                 {{ form_end(form) }}
             </div>
@@ -69,4 +68,10 @@
 		{% endif %}
 {% endblock %}
 
-
+{#
+  
+        'documentos/' ~ 
+        documento.getAsignatura().getTitulo ~ '/' ~ 
+        documento.getFilename() ~ '.' ~
+        documento.getTipo()
+#}

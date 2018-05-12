@@ -1,0 +1,7 @@
+{% extends 'SonataAdminBundle:CRUD:base_list_field.html.twig' %}
+
+{% block field %}
+	<a class="btn btn-primary btn-sm" href="{{ path('admin_app_consulta_respuesta_list', {'id': object.getId()}) }}">
+		<i class="fa fa-envelope"></i>&nbsp;Respuestas
+	</a>	
+{% endblock %}

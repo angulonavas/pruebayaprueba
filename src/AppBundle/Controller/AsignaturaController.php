@@ -18,6 +18,7 @@ use AppBundle\Entity\Seccion;
 
 use AppBundle\Form\DocumentoType;
 
+use AppBundle\Service\FileUploader;
 use AppBundle\Service\ObjetoUrl;
 
 class AsignaturaController extends Controller {
@@ -80,7 +81,63 @@ class AsignaturaController extends Controller {
     /**
      * @Route("/asignaturas/{asignatura}/documentos", name="contenido_documentos_asignatura")
      */
-    public function cargar_documentos_asignaturaAction(Request $request, $asignatura) {
+    public function cargar_documentos_asignaturaAction(Request $request, FileUploader $fileUploader, $asignatura) {
+
+        try {
+            // el almacenamiento del fichero lo realiza el listener AppBundle/EventListener/DocumentoUploadListener.php
+            // lo hace con ayuda del servicio FileUploader.php
+            $em = $this->getDoctrine()->getManager();
+            $asignatura = $em->getRepository(Asignatura::class)->buscarPorTitulo($asignatura);
+            if (!$asignatura) throw new Exception("Lo sentimos, la asignatura no está disponible", 1);
+
+            $documentos = $this->getDoctrine()->getManager()->getRepository(Documento::class)->buscarTodos($asignatura);
+            $asignatura->setDocumentos($documentos);
+
+            $documento = new Documento();
+
+            $form = $this->createForm(DocumentoType::class, $documento);
+            $form->handleRequest($request);
+
+            $mensaje = '';
+
+            if ($form->isSubmitted() && $form->isValid()) {
+
+                $documento = $form->getData();
+
+                // Almacenando la entrada del documento en BBDD
+                $documento->setPublicado(true);
+                $documento->setPrioridad(2);
+                $documento->setAsignatura($asignatura);
+                $documento->setUsuario($this->getUser());
+
+                $em = $this->getDoctrine()->getManager();
+                $em->persist($documento);
+                
+                // Antes de que el documento se persista, se lanzará un evento tras el cual se asingará el tipo de
+                // documento. con lo cual ahora els el momento de comprobar si el documento es de tipo pdf
+                if ($documento->getTipo() != 'pdf') throw new Exception("Sólo puedes subir en formato PDF", 1);
+                
+                $em->flush();
+
+                // refrescamos los documentos de la asignatura
+                $documentos = $this->getDoctrine()->getManager()->getRepository(Documento::class)->buscarTodos($asignatura);
+                $asignatura->setDocumentos($documentos);                
+            }
+
+            return $this->render('Asignatura/documentos.html.twig', [
+                'asignatura' => $asignatura,
+                'form' => $form->createView(),
+                'mensaje' => 'Fichero almacendo con éxito',
+                'activo' => 'documentos'
+            ]);
+        } catch (Exception $e) {
+            return $this->render('Contenido/acceso_denegado.html.twig', [
+                'error' => $e->getMessage()
+            ]);
+        }                            
+    }
+
+    public function cargar_documentos_asignatura_viejaVersionAction(Request $request, $asignatura) {
 
         try {
             $em = $this->getDoctrine()->getManager();

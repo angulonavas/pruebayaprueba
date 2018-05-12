@@ -30,5 +30,6 @@ class TemarioRepository extends \Doctrine\ORM\EntityRepository {
         $temarios = $qb->getQuery()->getResult(); 
 
         return $temarios;
-    } 	
+    } 
+
 }

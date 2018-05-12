@@ -24,7 +24,7 @@ class DocumentoType extends AbstractType {
                     'placeholder' => 'Indica con qué nombre quieres que aparezca el documento'
                 )
             ))
-            ->add('fichero', FileType::class, array(
+            ->add('file', FileType::class, array(
                 'label' => false,
                 'attr' => array('class' => 'btn btn-primary btn-block')
             ))

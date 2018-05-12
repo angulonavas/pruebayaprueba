@@ -5,7 +5,10 @@ namespace AppBundle\Admin;
 use Knp\Menu\ItemInterface as MenuItemInterface; 
 
 use AppBundle\Admin\ServicioAdmin;
+use AppBundle\Entity\Servicio;
+
 use SeguridadBundle\Admin\UsuarioAdmin;
+use SeguridadBundle\Entity\Usuario;
 
 use Sonata\AdminBundle\Admin\AbstractAdmin; 
 use Sonata\AdminBundle\Admin\AdminInterface;
@@ -13,6 +16,8 @@ use Sonata\AdminBundle\Datagrid\ListMapper;
 use Sonata\AdminBundle\Datagrid\DatagridMapper;
 use Sonata\AdminBundle\Form\FormMapper;
 use Sonata\AdminBundle\Route\RouteCollection;
+
+use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 
 use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\Extension\Core\Type\DateTimeType;
@@ -56,8 +61,14 @@ class MatriculaServiciosAdmin extends AbstractAdmin {
     protected function configureFormFields(FormMapper $formMapper) {
         $formMapper
             ->with('Usuarios matriculados en el servicio', ['class' => 'col-md-6'])
-                ->add('usuario.username', TextType::class)
-                ->add('servicio.titulo', TextType::class)
+                ->add('usuario', EntityType::class, [
+                    'class' => Usuario::class,
+                    'choice_label' => 'username',
+                ])                
+                ->add('servicio', EntityType::class, [
+                    'class' => Servicio::class,
+                    'choice_label' => 'titulo',
+                ])             
                 ->add('fecha', DatetimeType::class)
             ->end()
         ;

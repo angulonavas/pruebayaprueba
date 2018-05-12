@@ -4,9 +4,28 @@
 	<a class="" href="{{ asset(
 		'documentos/' ~ 
 		object.getAsignatura().getTitulo ~ '/' ~ 
-		object.getFichero() ~ '.' ~
+		object.getFilename() ~ '.' ~
+		object.getTipo())
+	}}" target="_blank">
+		descargar
+	</a>
+{% endblock %}
+
+
+{#
+	<a class="" href="{{ asset('' ~ object.getFile() ~ '') }}" target="_blank">
+		descargar
+	</a>	
+
+#}
+
+{#
+	<a class="" href="{{ asset(
+		'documentos/' ~ 
+		object.getAsignatura().getTitulo ~ '/' ~ 
+		object.getFilename() ~ '.' ~
 		object.getTipo())
 	}}" target="_blank">
 		descargar
 	</a>	
-{% endblock %}
+#}

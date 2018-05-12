@@ -84,6 +84,13 @@ class Asignatura
      */
     private $foros_asignatura;
 
+    /**
+     * @ORM\OneToMany(targetEntity="Consulta", mappedBy="asignatura")
+     */
+    private $consultas;
+
+
+
     public function __construct()
     {
         $this->categorias = new ArrayCollection();
@@ -271,6 +278,16 @@ class Asignatura
     // asigna un vector de documentos
     public function setDocumentos($documentos) {
         $this->documentos = $documentos;
+    }
+
+    // devuelve un array de consultas
+    public function getConsultas() {
+        return $this->consultas;
+    }
+
+    // carga el vector de temarios
+    public function setConsultas($consultas) {
+        $this->consultas = $consultas;
     }
 
     /**

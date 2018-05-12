@@ -2,6 +2,8 @@
 
 namespace AppBundle\Entity;
 
+use AppBundle\Entity\Respuesta;
+
 use Doctrine\ORM\Mapping as ORM;
 use Doctrine\Common\Collections\ArrayCollection;
 
@@ -56,10 +58,15 @@ class Consulta
     private $seccion;
 
     /**
-     * @ORM\OneToMany(targetEntity="AppBundle\Entity\Respuesta", mappedBy="consulta")
+     * @ORM\OneToMany(targetEntity="AppBundle\Entity\Respuesta", mappedBy="consulta",cascade={"persist"})
      */
-    private $respuestas;
+    protected $respuestas;
 
+    /**
+     * @ORM\ManyToOne(targetEntity="Asignatura", inversedBy="consultas")
+     * @ORM\JoinColumn(name="id_asignatura", referencedColumnName="id")
+     */
+    private $asignatura;
 
 
     public function __construct() {
@@ -195,6 +202,30 @@ class Consulta
     { 
         return $this->seccion; 
     }    
+
+    /** 
+     * Set asignatura
+     * 
+     * @param Asignatura $asignatura
+     * 
+     * @return Asignatura
+     */ 
+    public function setAsignatura($asignatura) 
+    { 
+        $this->asignatura = $asignatura; 
+
+        return $this; 
+    } 
+
+    /** 
+     * Get asignatura 
+     * 
+     * @return Asignatura 
+     */ 
+    public function getAsignatura() 
+    { 
+        return $this->asignatura; 
+    }  
 
     /** 
      * Set respuestas

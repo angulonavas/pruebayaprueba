@@ -5,6 +5,8 @@ namespace AppBundle\Admin;
 use AppBundle\Entity\Temario;
 use AppBundle\Entity\Seccion;
 
+use Doctrine\ORM\EntityManagerInterface;
+
 use Sonata\AdminBundle\Admin\AbstractAdmin;
 use Sonata\AdminBundle\Datagrid\ListMapper;
 use Sonata\AdminBundle\Datagrid\DatagridMapper;
@@ -13,11 +15,36 @@ use Sonata\AdminBundle\Route\RouteCollection;
 
 use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use Symfony\Component\Form\Extension\Core\Type\CheckboxType;
+use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
 
 class SeccionAdmin extends AbstractAdmin {
     
     protected $parentAssociationMapping = 'temario';
+/*
+    private $em;
+    
+    public function __construct(EntityManagerInterface $em) {
+        $this->em = $em;
+    }    
+*/    
+
+    /* función que devuelve un array con dos arrays:
+     * 1.- los titulos de las secciones.
+     * 2.- los id de las secciones
+     */
+    private function getSecciones_temario() {
+        $temario = $this->getSubject()->getTemario();
+        $container = $this->getConfigurationPool()->getContainer();
+        $secciones = $container->get('doctrine')->getManager()->getRepository(Seccion::class)->buscarTodos($temario); 
+
+        $opciones = ['' => null];
+        foreach ($secciones as $seccion) {
+            $opciones[$seccion->getTitulo()] = $seccion;
+        }
+
+        return $opciones;
+    }
 
     // método utilizado para mostrar el nombre de usuario en el breadcrums
     public function toString($object) {
@@ -44,18 +71,16 @@ class SeccionAdmin extends AbstractAdmin {
                 ->add('teorica', CheckboxType::class, array('required' => false))
                 ->add('publicado', CheckboxType::class, array('required' => false))
                 ->add('precio', TextType::class)
-                ->add('iva', TextType::class)
+                ->add('iva', TextType::class)                
                 ->add('temario', EntityType::class, [
                     'class' => Temario::class,
                     'choice_label' => 'titulo',
-                ])                
-                ->add('anterior', EntityType::class, [
-                    'class' => Seccion::class,
-                    'choice_label' => 'titulo',
+                ])       
+                ->add('anterior', ChoiceType::class, [
+                    'choices' => $this->getSecciones_temario(),
                 ])         
-                ->add('posterior', EntityType::class, [
-                    'class' => Seccion::class,
-                    'choice_label' => 'titulo',
+                ->add('posterior', ChoiceType::class, [
+                    'choices' => $this->getSecciones_temario(),
                 ])
             ->end()
         ;

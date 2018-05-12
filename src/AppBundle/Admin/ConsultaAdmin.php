@@ -2,7 +2,10 @@
 
 namespace AppBundle\Admin;
 
-use Sonata\AdminBundle\Admin\AbstractAdmin;
+use Knp\Menu\ItemInterface as MenuItemInterface; 
+
+use Sonata\AdminBundle\Admin\AbstractAdmin; 
+use Sonata\AdminBundle\Admin\AdminInterface;
 use Sonata\AdminBundle\Datagrid\ListMapper;
 use Sonata\AdminBundle\Datagrid\DatagridMapper;
 use Sonata\AdminBundle\Form\FormMapper;
@@ -14,37 +17,61 @@ use Symfony\Component\Form\Extension\Core\Type\TextareaType;
 
 class ConsultaAdmin extends AbstractAdmin {
 
-    private $id_asignatura = 12;
-    
+    protected $parentAssociationMapping = 'asignatura';
+
     // método utilizado para mostrar el nombre de usuario en el breadcrums
     public function toString($object) {
-        return 'Consulta';
+        $consulta = $this->getSubject();
+        return substr($consulta->getDescripcion(), 0, 20);
     }
-
+/*
     public function createQuery($context = 'list') { 
 
         $request = $this->getRequest(); 
         $id = $request->query->get('id'); 
 
-        if (isset($id)) $this->id_asignatura = $id;
-
         $query = parent::createQuery($context); 
         $rootAlias = $query->getRootAliases()[0]; 
 
-        $query->leftJoin($rootAlias.'.seccion', 's')
-            ->leftJoin('s.temario', 't')
-                ->where($query->expr()->eq('t.asignatura', ':asignatura')) 
-        ->setParameter('asignatura', $this->id_asignatura)
-        ;
+        if (isset($id)) {
+            $this->id_asignatura = $id;
+
+            $query->leftJoin($rootAlias.'.seccion', 's')
+                ->leftJoin('s.temario', 't')
+                    ->where($query->expr()->eq('t.asignatura', ':asignatura')) 
+            ->setParameter('asignatura', $id)
+            ;
+        }
 
         return $query; 
     }
+*/
 
-    // método llamado automáticamente para dar valores por defecto a las nuevas entidades
-    public function getNewInstance() {
-        $instance = parent::getNewInstance();
+    protected function configureSideMenu(MenuItemInterface $menu, $action, AdminInterface $childAdmin = null) { 
+            
+        // si se está mostrando el listado, no procede añadir nada al menú
+        if (!$childAdmin && !in_array($action, ['edit', 'show'])) { return; } 
+        
+        // obteniendo el id del objeto padre (si existe, si no, el id del objeto actual)
+        $admin = $this->isChild() ? $this->getParent() : $this; 
+        $id = $admin->getRequest()->get('id'); 
 
-        return $instance;
+        // obteniendo el objeto actual
+        $consulta = $this->getSubject();
+
+        // Añadiendo la ruta a la lista de consultas de la asignatura abierta
+        // Utilizamos route en vez de uri porque es una ruta fuera de la relación padre -> hijo
+        $menu->addChild('Consultas de '.$consulta->getAsignatura()->getTitulo(), [
+            'route' => 'admin_app_asignatura_consulta_list',
+            'routeParameters' => [
+                'id' => $consulta->getAsignatura()->getId()
+            ]
+        ]);
+
+        // Añadiendo la ruta al hijo del objeto actual
+        $menu->addChild('Respuestas', [ 
+            'uri' => $admin->generateUrl('admin.respuesta.list', ['id' => $id]) 
+        ]);      
     }
 
     protected function configureFormFields(FormMapper $formMapper) {
@@ -60,32 +87,40 @@ class ConsultaAdmin extends AbstractAdmin {
                 ->add('descripcion', TextareaType::class, [ 
                     'attr' => array('cols' => '100', 'rows' => '10') 
                 ])
-            ->end()
-
-            ->with('Respuestas', ['class' => 'col-md-12'])
-                ->add('respuestas', 'sonata_type_collection', [], [ 
-                    'edit' => 'inline', 
-                    'inline' => 'table', 
-                ])  
-            ->end()
-        ;
+            ->end()          
+            ;
     }
 
     protected function configureDatagridFilters(DatagridMapper $datagridMapper) {
         $datagridMapper
-        /*
-            ->add('estado', ChoiceType::class, array( 
-                'choices'  => array( 
+            ->add('estado', null, [], 'choice', [ 
+                'choices'  => [
                     'PENDIENTE' => 'PENDIENTE', 
                     'CONSTESTADA' => 'CONTESTADA', 
-                ))
-            )            
-*/            
-            ->add('estado')
+                ]
+            ])            
             ->add('fecha')            
             ->add('usuario.username')
             ->add('seccion.titulo')
-            ->add('seccion.temario.titulo');
+            ->add('seccion.temario.titulo')
+/*            
+            ->add('with_open_comments', 'doctrine_orm_callback', array(
+                'callback' => function($queryBuilder, $alias, $field, $value) {
+                    if (!$value['value']) {
+                        return;
+                    }
+                    $queryBuilder->leftJoin($alias.'.seccion', 's')
+                        ->leftJoin('s.temario', 't')
+                        ->andWhere('t.asignatura = :asignatura') 
+                        ->setParameter('asignatura', $this->id_asignatura)
+                    ;
+
+                    return true;
+                },
+                'field_type' => 'checkbox'
+            ))
+*/            
+        ;
     }
 
     protected function configureListFields(ListMapper $listMapper) {
@@ -97,6 +132,9 @@ class ConsultaAdmin extends AbstractAdmin {
             ->add('usuario.username')
             ->add('seccion.titulo')
             ->add('seccion.temario.titulo')
+            ->add('respuestas', 'string', [
+                'template' => ':Admin:boton_respuestas.html.twig'
+            ])            
         ;
     }
 }
