@@ -43,11 +43,14 @@ services:
         tags:
             - { name: twig.runtime }
 
+    # definición de eventos que queremos manejar a través del listener de documentos
     AppBundle\EventListener\DocumentoUploadListener:
         tags:
+            - { name: doctrine.event_listener, event: postLoad }
+            - { name: doctrine.event_listener, event: postRemove }
             - { name: doctrine.event_listener, event: prePersist }
             - { name: doctrine.event_listener, event: preUpdate }
-            - { name: doctrine.event_listener, event: postLoad }
+
 
     # SONATA ...................................................................
 
@@ -68,6 +71,7 @@ services:
         public: true        
 
     # Sonata: AsignaturaAdmin
+    # este admin posee dos hijos que serán subadmins: consulta y documento
     admin.asignatura:
         class: AppBundle\Admin\AsignaturaAdmin
         arguments: [~, AppBundle\Entity\Asignatura, ~]
@@ -149,6 +153,7 @@ services:
         public: true
 
     # Sonata: MatriculaSecciones
+    # este admin dispone de una plantilla personalizada para la edición de objetos: Admin/edit.html.twig
     admin.matricula_secciones:
         class: AppBundle\Admin\MatriculaSeccionesAdmin
         arguments: [~, AppBundle\Entity\Matricula_Secciones, ~] 
@@ -203,6 +208,8 @@ services:
         public: true
 
     # Sonata: SeccionAdmin
+    # este admin estará controlador por un controlador: AppBundle\Controller\SeccionAdminController
+    # este controlador será quien llame a las plantillas
     admin.seccion:
         class: AppBundle\Admin\SeccionAdmin
         arguments: [~, AppBundle\Entity\Seccion, AppBundle\Controller\SeccionAdminController]

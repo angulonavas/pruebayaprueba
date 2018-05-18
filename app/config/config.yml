@@ -91,6 +91,7 @@ sonata_block:
             contexts: [admin_area]            
 
 sonata_admin:
+    # se sobreescriben las plantillas del panel admin (dashboard) y del diseño de página principal (layout)
     templates:
         #dashboard: '@SonataAdmin/Core/dashboard.html.twig'
         dashboard: 'Admin/dashboard.html.twig'

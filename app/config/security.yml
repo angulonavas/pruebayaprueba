@@ -20,17 +20,14 @@ security:
             pattern: ^/(_(profiler|wdt)|css|images|js)/
             security: false
 
+        # firewall main para trabajar con usuarios: login, logout, remember me
         main:
             anonymous: ~
 
-            # se indica en el firewall de producción que el proveedor de seguridad es el definido en providers
+            # se indica en el firewall que el proveedor de seguridad es el definido en providers
             provider: our_db_provider            
 
-            # https://symfony.com/doc/current/security.html#a-configuring-how-your-users-will-authenticate
-            #http_basic: ~
-
-            # activamos el formulario preciso para autenticarse
-            # https://symfony.com/doc/current/security/form_login_setup.html
+            # activamos la ruta en la que se muestra el login para autenticarse
             form_login:
                 login_path: usuario_autentificar
                 check_path: usuario_autentificar
@@ -47,11 +44,12 @@ security:
                 target: /            
 
     encoders:
+        # definimos una codificación de tipo bcrypt(15) para la clave de usuario
         SeguridadBundle\Entity\Usuario: 
             algorithm: bcrypt
             cost: 15
 
-    # Control de acceso a las urls según el rol del usuario que se conecta.
+    # Control de acceso a las rutas según el rol del usuario que se conecta.
     # Por defecto, cualquier usuario (ROL_ANONIMO) tiene acceso al sistema.
     access_control:
         - { path: ^/admin, roles: ROLE_PROFESOR }
@@ -60,7 +58,7 @@ security:
         - { path: ^/pedido/revisar, roles: ROLE_ALUMNO }
         - { path: ^/factura, roles: ROLE_ALUMNO }
 
-    # jerarquia de roles: ROLE_ADMIN -> ROLE_PROFESOR -> ROLE_ALUMNO -> ROLE_ANONIMO
+    # a continuación definición de la jerarquia de roles: ROLE_ADMIN -> ROLE_PROFESOR -> ROLE_ALUMNO -> ROLE_ANONIMO
     role_hierarchy:
         ROLE_PROFESOR: ROLE_ALUMNO
         ROLE_ADMIN: ROLE_PROFESOR

@@ -1,6 +1,5 @@
 <?php
 
-// src/AppBundle/EventListener/BrochureUploadListener.php
 namespace AppBundle\EventListener;
 
 use Symfony\Component\HttpFoundation\File\File;
@@ -12,8 +11,10 @@ use Doctrine\ORM\Event\PreUpdateEventArgs;
 use AppBundle\Entity\Documento;
 use AppBundle\Service\FileUploader;
 
-class DocumentoUploadListener
-{
+// este listener se encarga de realizar las tareas de carga de ficheros desde usuario, carga desde la BBDD y eliminación
+// de ficheros cuando se reciben eventos sobre la entidad Documento relacionada con el fichero.
+class DocumentoUploadListener {
+
     private $uploader;
 
     // cargamos el servicio que hemos creado para trabajar con uploadiong de ficheros
@@ -79,5 +80,25 @@ class DocumentoUploadListener
             // cargamos el fichero y lo pasamos al documento. Ahora ya no posee un nombre de fichero sino el fichero en sí
             $documento->setFile(new UploadedFile($url, $fileName));
         }       
+    }
+
+    // evento que se lanza cuando se ha eliminado un documento de la BBDD
+    public function postRemove(LifecycleEventArgs $args) {
+
+        // obtenemos la entidad que ha provocado el evento
+        $documento = $args->getEntity();
+
+        // si la entidad no es documento nos saltamos el evento
+        if (!$documento instanceof Documento) { return; }
+
+        // obtenemos el nombre del fichero que viene de la BBDD.
+        if ($fileName = $documento->getFilename()) {
+
+            // obtenemos la url en la que está el fichero almacenado            
+            $url = $this->uploader->getDirectorio($documento->getAsignatura()).'/'.$fileName.'.'.$documento->getTipo();
+            
+            // eliminamos el fichero del directorio. 
+            unlink($url);
+        }  
     }         
 }

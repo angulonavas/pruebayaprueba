@@ -6,6 +6,7 @@ seguridad:
 logout:
     path: /logout
 
+# el enrutamiento dentro de AppBundle será por anotación
 app:
     resource: '@AppBundle/Controller/'
     type: annotation
