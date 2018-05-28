@@ -21,11 +21,6 @@ class SeccionAdminController extends Controller {
 
 	public function abrirTeoriaAction(Request $request) {
 
-/*
-<h1>Sección S1</h1>
-<p>Vamos a meter contenido</p>
-*/
-
 		// recuperamos la sección y otros recursos
 		$seccion = $this->admin->getSubject();
         $dir_asignatura = 'asignatura'.$seccion->getTemario()->getAsignatura()->getId();
